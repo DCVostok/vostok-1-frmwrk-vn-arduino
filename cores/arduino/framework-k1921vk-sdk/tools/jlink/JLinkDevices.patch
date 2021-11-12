@@ -1,0 +1,37 @@
+    <Device>
+      <ChipInfo Vendor="NIIET"
+          Name="K1921VK01T"
+          WorkRAMAddr="0x20000000"
+          WorkRAMSize="0x3000"
+          Core="JLINK_CORE_CORTEX_M4" />
+      <FlashBankInfo Name="K1921VK01T Flash"
+          BaseAddr="0x0"
+          MaxSize="0x100000"
+          Loader="Devices\NIIET\K1921VK01T.FLM"
+          LoaderType="FLASH_ALGO_TYPE_OPEN" />
+    </Device>
+    <Device>
+      <ChipInfo Vendor="NIIET"
+          Name="K1921VK028"
+          WorkRAMAddr="0x20000000"
+          WorkRAMSize="0x8000"
+          Core="JLINK_CORE_CORTEX_M4" />
+      <FlashBankInfo Name="K1921VK028 Flash"
+          BaseAddr="0x0"
+          MaxSize="0x200000"
+          Loader="Devices\NIIET\K1921VK028.FLM"
+          LoaderType="FLASH_ALGO_TYPE_OPEN" />
+    </Device>
+    <Device>
+      <ChipInfo Vendor="NIIET"
+          Name="K1921VK035"
+          WorkRAMAddr="0x20000000"
+          WorkRAMSize="0x1000"
+          Core="JLINK_CORE_CORTEX_M4" />
+      <FlashBankInfo Name="K1921VK035 Flash"
+          BaseAddr="0x0"
+          MaxSize="0x10000"
+          Loader="Devices\NIIET\K1921VK035.FLM"
+          LoaderType="FLASH_ALGO_TYPE_OPEN" />
+    </Device>
+

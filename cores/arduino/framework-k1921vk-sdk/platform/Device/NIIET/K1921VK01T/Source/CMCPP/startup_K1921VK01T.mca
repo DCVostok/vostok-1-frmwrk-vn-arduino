@@ -1,0 +1,1837 @@
+;/*****************************************************************************
+; * @file:    startup_K1921VK01T.mca
+; * @author   AlmaCode LLC
+; * @version: V1.3
+; * @date:    24/08/2017
+; * @brief:   NIIET Cortex Device CMSIS Startup File for the device
+; *           K1921VK01T
+; *****************************************************************************
+; * <br><br>
+; *
+; * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+; * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+; * TIME. AS A RESULT, ALMACODE SHALL NOT BE HELD LIABLE FOR ANY DIRECT,
+; * INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+; * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+; * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+; *
+; * <h2><center>&copy; COPYRIGHT 2017 AlmaCode LLC</center></h2>
+; *****************************************************************************
+; * FILE startup_K1921VK01T.mca
+; */
+
+.PMODULE  ?startup_device
+
+    .IF .NOT .DEFINED __VECTORS_ADDR
+      __VECTORS_ADDR  .EQU  00000000H
+    .ENDIF
+
+    .PUBLIC  __Vectors
+    .PUBLIC  __Vectors_End
+
+    .EXTRN(code) ?start
+
+    .RSEG CSTACK,data
+    .ALIGN  3
+
+    .ASEG INTVEC,code
+    .ALIGN  6
+    .ORG  __VECTORS_ADDR             ; if vector table is located in RAM,
+                                     ; change this value
+
+SET_HANDLER .MACRO Name
+    .EXTRNF16 Name          .VOID(.VOID)
+    .DCD      Name
+.ENDMAC
+
+__Vectors .LABELD
+    .DCD            (.SFE CSTACK) + 1       ; Top of Stack
+    SET_HANDLER     Reset_Handler           ; Reset Handler
+    SET_HANDLER     NMI_Handler             ; NMI Handler
+    SET_HANDLER     HardFault_Handler       ; Hard Fault Handler
+    SET_HANDLER     MemManage_Handler       ; MPU Fault Handler
+    SET_HANDLER     BusFault_Handler        ; Bus Fault Handler
+    SET_HANDLER     UsageFault_Handler      ; Usage Fault Handler
+    .DCD     0                              ; Reserved
+    .DCD     0                              ; Reserved
+    .DCD     0                              ; Reserved
+    .DCD     0                              ; Reserved
+    SET_HANDLER     SVC_Handler             ; SVCall Handler
+    SET_HANDLER     DebugMon_Handler        ; Debug Monitor Handler
+    .DCD     0                              ; Reserved
+    SET_HANDLER     PendSV_Handler          ; PendSV Handler
+    SET_HANDLER     SysTick_Handler         ; SysTick Handler
+    ; Interrupt Handlers
+    SET_HANDLER     WWDG_IRQHandler         ; IRQ0
+    SET_HANDLER     I2C0_IRQHandler         ; IRQ1
+    SET_HANDLER     I2C1_IRQHandler         ; IRQ2
+    SET_HANDLER     TIM0_IRQHandler         ; IRQ3
+    SET_HANDLER     TIM1_IRQHandler         ; IRQ4
+    SET_HANDLER     TIM2_IRQHandler         ; IRQ5
+    SET_HANDLER     DMA_Stream0_IRQHandler ; IRQ6
+    SET_HANDLER     DMA_Stream1_IRQHandler ; IRQ7
+    SET_HANDLER     DMA_Stream2_IRQHandler ; IRQ8
+    SET_HANDLER     DMA_Stream3_IRQHandler ; IRQ9
+    SET_HANDLER     DMA_Stream4_IRQHandler ; IRQ10
+    SET_HANDLER     DMA_Stream5_IRQHandler ; IRQ11
+    SET_HANDLER     DMA_Stream6_IRQHandler ; IRQ12
+    SET_HANDLER     DMA_Stream7_IRQHandler ; IRQ13
+    SET_HANDLER     DMA_Stream8_IRQHandler ; IRQ14
+    SET_HANDLER     DMA_Stream9_IRQHandler ; IRQ15
+    SET_HANDLER     DMA_Stream10_IRQHandler; IRQ16
+    SET_HANDLER     DMA_Stream11_IRQHandler; IRQ17
+    SET_HANDLER     DMA_Stream12_IRQHandler; IRQ18
+    SET_HANDLER     DMA_Stream13_IRQHandler; IRQ19
+    SET_HANDLER     DMA_Stream14_IRQHandler; IRQ20
+    SET_HANDLER     DMA_Stream15_IRQHandler; IRQ21
+    SET_HANDLER     DMA_Stream16_IRQHandler; IRQ22
+    SET_HANDLER     DMA_Stream17_IRQHandler; IRQ23
+    SET_HANDLER     DMA_Stream18_IRQHandler; IRQ24
+    SET_HANDLER     DMA_Stream19_IRQHandler; IRQ25
+    SET_HANDLER     DMA_Stream20_IRQHandler; IRQ26
+    SET_HANDLER     DMA_Stream21_IRQHandler; IRQ27
+    SET_HANDLER     DMA_Stream22_IRQHandler; IRQ28
+    SET_HANDLER     DMA_Stream23_IRQHandler; IRQ29
+    SET_HANDLER     UART0_MX_IRQHandler    ; IRQ30
+    SET_HANDLER     UART0_RX_IRQHandler    ; IRQ31
+    SET_HANDLER     UART0_TX_IRQHandler    ; IRQ32
+    SET_HANDLER     UART0_RT_IRQHandler    ; IRQ33
+    SET_HANDLER     UART0_E_IRQHandler     ; IRQ34
+    SET_HANDLER     UART0_IRQHandler       ; IRQ35
+    SET_HANDLER     UART1_MX_IRQHandler    ; IRQ36
+    SET_HANDLER     UART1_RX_IRQHandler    ; IRQ37
+    SET_HANDLER     UART1_TX_IRQHandler    ; IRQ38
+    SET_HANDLER     UART1_RT_IRQHandler    ; IRQ39
+    SET_HANDLER     UART1_E_IRQHandler     ; IRQ40
+    SET_HANDLER     UART1_IRQHandler       ; IRQ41
+    SET_HANDLER     UART2_MX_IRQHandler    ; IRQ42
+    SET_HANDLER     UART2_RX_IRQHandler    ; IRQ43
+    SET_HANDLER     UART2_TX_IRQHandler    ; IRQ44
+    SET_HANDLER     UART2_RT_IRQHandler    ; IRQ45
+    SET_HANDLER     UART2_E_IRQHandler     ; IRQ46
+    SET_HANDLER     UART2_IRQHandler       ; IRQ47
+    SET_HANDLER     UART3_MX_IRQHandler    ; IRQ48
+    SET_HANDLER     UART3_RX_IRQHandler    ; IRQ49
+    SET_HANDLER     UART3_TX_IRQHandler    ; IRQ50
+    SET_HANDLER     UART3_RT_IRQHandler    ; IRQ51
+    SET_HANDLER     UART3_E_IRQHandler     ; IRQ52
+    SET_HANDLER     UART3_IRQHandler       ; IRQ53
+    SET_HANDLER     PWM0_IRQHandler         ; IRQ54
+    SET_HANDLER     PWM0_HD_IRQHandler      ; IRQ55
+    SET_HANDLER     PWM0_TZ_IRQHandler      ; IRQ56
+    SET_HANDLER     PWM1_IRQHandler         ; IRQ57
+    SET_HANDLER     PWM1_HD_IRQHandler      ; IRQ58
+    SET_HANDLER     PWM1_TZ_IRQHandler      ; IRQ59
+    SET_HANDLER     PWM2_IRQHandler         ; IRQ60
+    SET_HANDLER     PWM2_HD_IRQHandler      ; IRQ61
+    SET_HANDLER     PWM2_TZ_IRQHandler      ; IRQ62
+    SET_HANDLER     PWM3_IRQHandler         ; IRQ63
+    SET_HANDLER     PWM3_HD_IRQHandler      ; IRQ64
+    SET_HANDLER     PWM3_TZ_IRQHandler      ; IRQ65
+    SET_HANDLER     PWM4_IRQHandler         ; IRQ66
+    SET_HANDLER     PWM4_HD_IRQHandler      ; IRQ67
+    SET_HANDLER     PWM4_TZ_IRQHandler      ; IRQ68
+    SET_HANDLER     PWM5_IRQHandler         ; IRQ69
+    SET_HANDLER     PWM5_HD_IRQHandler      ; IRQ70
+    SET_HANDLER     PWM5_TZ_IRQHandler      ; IRQ71
+    SET_HANDLER     PWM6_IRQHandler         ; IRQ72
+    SET_HANDLER     PWM6_HD_IRQHandler      ; IRQ73
+    SET_HANDLER     PWM6_TZ_IRQHandler      ; IRQ74
+    SET_HANDLER     PWM7_IRQHandler         ; IRQ75
+    SET_HANDLER     PWM7_HD_IRQHandler      ; IRQ76
+    SET_HANDLER     PWM7_TZ_IRQHandler      ; IRQ77
+    SET_HANDLER     PWM8_IRQHandler         ; IRQ78
+    SET_HANDLER     PWM8_HD_IRQHandler      ; IRQ79
+    SET_HANDLER     PWM8_TZ_IRQHandler      ; IRQ80
+    SET_HANDLER     ADC_SEQ0_IRQHandler     ; IRQ81
+    SET_HANDLER     ADC_SEQ1_IRQHandler     ; IRQ82
+    SET_HANDLER     ADC_SEQ2_IRQHandler     ; IRQ83
+    SET_HANDLER     ADC_SEQ3_IRQHandler     ; IRQ84
+    SET_HANDLER     ADC_SEQ4_IRQHandler     ; IRQ85
+    SET_HANDLER     ADC_SEQ5_IRQHandler     ; IRQ86
+    SET_HANDLER     ADC_SEQ6_IRQHandler     ; IRQ87
+    SET_HANDLER     ADC_SEQ7_IRQHandler     ; IRQ88
+    SET_HANDLER     ADC_CompInt_IRQHandler  ; IRQ89
+    SET_HANDLER     CAP0_IRQHandler         ; IRQ90
+    SET_HANDLER     CAP1_IRQHandler         ; IRQ91
+    SET_HANDLER     CAP2_IRQHandler         ; IRQ92
+    SET_HANDLER     CAP3_IRQHandler         ; IRQ93
+    SET_HANDLER     CAP4_IRQHandler         ; IRQ94
+    SET_HANDLER     CAP5_IRQHandler         ; IRQ95
+    SET_HANDLER     QEP0_IRQHandler         ; IRQ96
+    SET_HANDLER     QEP1_IRQHandler         ; IRQ97
+    SET_HANDLER     BootFlash_IRQHandler    ; IRQ98
+    SET_HANDLER     CMP0_IRQHandler         ; IRQ99
+    SET_HANDLER     CMP1_IRQHandler         ; IRQ100
+    SET_HANDLER     CMP2_IRQHandler         ; IRQ101
+    SET_HANDLER     SPI0_IRQHandler         ; IRQ102
+    SET_HANDLER     SPI1_IRQHandler         ; IRQ103
+    SET_HANDLER     SPI2_IRQHandler         ; IRQ104
+    SET_HANDLER     SPI3_IRQHandler         ; IRQ105
+    SET_HANDLER     UserFlash_IRQHandler    ; IRQ106
+    SET_HANDLER     GPIOA_IRQHandler        ; IRQ107
+    SET_HANDLER     GPIOB_IRQHandler        ; IRQ108
+    SET_HANDLER     GPIOC_IRQHandler        ; IRQ109
+    SET_HANDLER     GPIOD_IRQHandler        ; IRQ110
+    SET_HANDLER     GPIOE_IRQHandler        ; IRQ111
+    SET_HANDLER     GPIOF_IRQHandler        ; IRQ112
+    SET_HANDLER     GPIOG_IRQHandler        ; IRQ113
+    SET_HANDLER     GPIOH_IRQHandler        ; IRQ114
+    SET_HANDLER     Ethernet_IRQHandler     ; IRQ115
+    SET_HANDLER     CAN0_IRQHandler         ; IRQ116
+    SET_HANDLER     CAN1_IRQHandler         ; IRQ117
+    SET_HANDLER     CAN2_IRQHandler         ; IRQ118
+    SET_HANDLER     CAN3_IRQHandler         ; IRQ119
+    SET_HANDLER     CAN4_IRQHandler         ; IRQ120
+    SET_HANDLER     CAN5_IRQHandler         ; IRQ121
+    SET_HANDLER     CAN6_IRQHandler         ; IRQ122
+    SET_HANDLER     CAN7_IRQHandler         ; IRQ123
+    SET_HANDLER     CAN8_IRQHandler         ; IRQ124
+    SET_HANDLER     CAN9_IRQHandler         ; IRQ125
+    SET_HANDLER     CAN10_IRQHandler        ; IRQ126
+    SET_HANDLER     CAN11_IRQHandler        ; IRQ127
+    SET_HANDLER     CAN12_IRQHandler        ; IRQ128
+    SET_HANDLER     CAN13_IRQHandler        ; IRQ129
+    SET_HANDLER     CAN14_IRQHandler        ; IRQ130
+    SET_HANDLER     CAN15_IRQHandler        ; IRQ131
+    SET_HANDLER     RTC_IRQHandler          ; IRQ132
+    SET_HANDLER     USB_IRQHandler          ; IRQ133
+
+__Vectors_End .LABELD
+
+.ENDMOD
+
+
+;=====================================================================;
+;                                                                     ;
+;                     Default Reset handler                           ;
+;                                                                     ;
+;=====================================================================;
+.LMODULE2 ?Reset_Handler
+.PUBLIC Reset_Handler
+.EXTRN(code) ?start
+.EXTRNF16 SystemInit .VOID(.VOID)
+
+.RSEG CSTACK,data
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+Reset_Handler?T:
+Reset_Handler   .EQU    Reset_Handler?T+1
+.FUNCTYPE .VOID Reset_Handler(.VOID)
+    LDR     R0, =(.SFE CSTACK) + 1
+    MSR     MSP, R0
+    LDR     R0, =SystemInit
+    BLX     R0
+    LDR     R0, =?start
+    BX      R0
+.ENDMOD
+
+
+;=====================================================================;
+;                                                                     ;
+;                     Default interrupt handlers                      ;
+;                                                                     ;
+;=====================================================================;
+.LMODULE2 ?NMI_Handler
+.PUBLIC NMI_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+NMI_Handler?T:
+NMI_Handler .EQU  NMI_Handler?T+1
+.FUNCTYPE .VOID NMI_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?HardFault_Handler
+.PUBLIC HardFault_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+HardFault_Handler?T:
+HardFault_Handler .EQU  HardFault_Handler?T+1
+.FUNCTYPE .VOID HardFault_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?MemManage_Handler
+.PUBLIC MemManage_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+MemManage_Handler?T:
+MemManage_Handler .EQU  MemManage_Handler?T+1
+.FUNCTYPE .VOID MemManage_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?BusFault_Handler
+.PUBLIC BusFault_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+BusFault_Handler?T:
+BusFault_Handler .EQU  BusFault_Handler?T+1
+.FUNCTYPE .VOID BusFault_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UsageFault_Handler
+.PUBLIC UsageFault_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UsageFault_Handler?T:
+UsageFault_Handler .EQU  UsageFault_Handler?T+1
+.FUNCTYPE .VOID UsageFault_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SVC_Handler
+.PUBLIC SVC_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SVC_Handler?T:
+SVC_Handler .EQU  SVC_Handler?T+1
+.FUNCTYPE .VOID SVC_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DebugMon_Handler
+.PUBLIC DebugMon_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DebugMon_Handler?T:
+DebugMon_Handler .EQU  DebugMon_Handler?T+1
+.FUNCTYPE .VOID DebugMon_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PendSV_Handler
+.PUBLIC PendSV_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PendSV_Handler?T:
+PendSV_Handler .EQU  PendSV_Handler?T+1
+.FUNCTYPE .VOID PendSV_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SysTick_Handler
+.PUBLIC SysTick_Handler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SysTick_Handler?T:
+SysTick_Handler .EQU  SysTick_Handler?T+1
+.FUNCTYPE .VOID SysTick_Handler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?WWDG_IRQHandler
+.PUBLIC WWDG_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+WWDG_IRQHandler?T:
+WWDG_IRQHandler .EQU  WWDG_IRQHandler?T+1
+.FUNCTYPE .VOID WWDG_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?I2C0_IRQHandler
+.PUBLIC I2C0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+I2C0_IRQHandler?T:
+I2C0_IRQHandler .EQU  I2C0_IRQHandler?T+1
+.FUNCTYPE .VOID I2C0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?I2C1_IRQHandler
+.PUBLIC I2C1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+I2C1_IRQHandler?T:
+I2C1_IRQHandler .EQU  I2C1_IRQHandler?T+1
+.FUNCTYPE .VOID I2C1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?TIM0_IRQHandler
+.PUBLIC TIM0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+TIM0_IRQHandler?T:
+TIM0_IRQHandler .EQU  TIM0_IRQHandler?T+1
+.FUNCTYPE .VOID TIM0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?TIM1_IRQHandler
+.PUBLIC TIM1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+TIM1_IRQHandler?T:
+TIM1_IRQHandler .EQU  TIM1_IRQHandler?T+1
+.FUNCTYPE .VOID TIM1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?TIM2_IRQHandler
+.PUBLIC TIM2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+TIM2_IRQHandler?T:
+TIM2_IRQHandler .EQU  TIM2_IRQHandler?T+1
+.FUNCTYPE .VOID TIM2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream0_IRQHandler
+.PUBLIC DMA_Stream0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream0_IRQHandler?T:
+DMA_Stream0_IRQHandler .EQU  DMA_Stream0_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream1_IRQHandler
+.PUBLIC DMA_Stream1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream1_IRQHandler?T:
+DMA_Stream1_IRQHandler .EQU  DMA_Stream1_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream2_IRQHandler
+.PUBLIC DMA_Stream2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream2_IRQHandler?T:
+DMA_Stream2_IRQHandler .EQU  DMA_Stream2_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream3_IRQHandler
+.PUBLIC DMA_Stream3_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream3_IRQHandler?T:
+DMA_Stream3_IRQHandler .EQU  DMA_Stream3_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream3_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream4_IRQHandler
+.PUBLIC DMA_Stream4_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream4_IRQHandler?T:
+DMA_Stream4_IRQHandler .EQU  DMA_Stream4_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream4_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream5_IRQHandler
+.PUBLIC DMA_Stream5_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream5_IRQHandler?T:
+DMA_Stream5_IRQHandler .EQU  DMA_Stream5_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream5_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream6_IRQHandler
+.PUBLIC DMA_Stream6_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream6_IRQHandler?T:
+DMA_Stream6_IRQHandler .EQU  DMA_Stream6_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream6_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream7_IRQHandler
+.PUBLIC DMA_Stream7_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream7_IRQHandler?T:
+DMA_Stream7_IRQHandler .EQU  DMA_Stream7_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream7_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream8_IRQHandler
+.PUBLIC DMA_Stream8_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream8_IRQHandler?T:
+DMA_Stream8_IRQHandler .EQU  DMA_Stream8_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream8_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream9_IRQHandler
+.PUBLIC DMA_Stream9_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream9_IRQHandler?T:
+DMA_Stream9_IRQHandler .EQU  DMA_Stream9_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream9_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream10_IRQHandler
+.PUBLIC DMA_Stream10_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream10_IRQHandler?T:
+DMA_Stream10_IRQHandler .EQU  DMA_Stream10_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream10_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream11_IRQHandler
+.PUBLIC DMA_Stream11_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream11_IRQHandler?T:
+DMA_Stream11_IRQHandler .EQU  DMA_Stream11_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream11_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream12_IRQHandler
+.PUBLIC DMA_Stream12_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream12_IRQHandler?T:
+DMA_Stream12_IRQHandler .EQU  DMA_Stream12_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream12_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream13_IRQHandler
+.PUBLIC DMA_Stream13_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream13_IRQHandler?T:
+DMA_Stream13_IRQHandler .EQU  DMA_Stream13_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream13_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream14_IRQHandler
+.PUBLIC DMA_Stream14_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream14_IRQHandler?T:
+DMA_Stream14_IRQHandler .EQU  DMA_Stream14_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream14_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream15_IRQHandler
+.PUBLIC DMA_Stream15_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream15_IRQHandler?T:
+DMA_Stream15_IRQHandler .EQU  DMA_Stream15_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream15_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream16_IRQHandler
+.PUBLIC DMA_Stream16_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream16_IRQHandler?T:
+DMA_Stream16_IRQHandler .EQU  DMA_Stream16_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream16_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream17_IRQHandler
+.PUBLIC DMA_Stream17_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream17_IRQHandler?T:
+DMA_Stream17_IRQHandler .EQU  DMA_Stream17_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream17_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream18_IRQHandler
+.PUBLIC DMA_Stream18_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream18_IRQHandler?T:
+DMA_Stream18_IRQHandler .EQU  DMA_Stream18_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream18_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream19_IRQHandler
+.PUBLIC DMA_Stream19_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream19_IRQHandler?T:
+DMA_Stream19_IRQHandler .EQU  DMA_Stream19_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream19_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream20_IRQHandler
+.PUBLIC DMA_Stream20_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream20_IRQHandler?T:
+DMA_Stream20_IRQHandler .EQU  DMA_Stream20_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream20_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream21_IRQHandler
+.PUBLIC DMA_Stream21_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream21_IRQHandler?T:
+DMA_Stream21_IRQHandler .EQU  DMA_Stream21_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream21_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream22_IRQHandler
+.PUBLIC DMA_Stream22_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream22_IRQHandler?T:
+DMA_Stream22_IRQHandler .EQU  DMA_Stream22_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream22_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?DMA_Stream23_IRQHandler
+.PUBLIC DMA_Stream23_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+DMA_Stream23_IRQHandler?T:
+DMA_Stream23_IRQHandler .EQU  DMA_Stream23_IRQHandler?T+1
+.FUNCTYPE .VOID DMA_Stream23_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART0_MX_IRQHandler
+.PUBLIC UART0_MX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART0_MX_IRQHandler?T:
+UART0_MX_IRQHandler .EQU  UART0_MX_IRQHandler?T+1
+.FUNCTYPE .VOID UART0_MX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART0_RX_IRQHandler
+.PUBLIC UART0_RX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART0_RX_IRQHandler?T:
+UART0_RX_IRQHandler .EQU  UART0_RX_IRQHandler?T+1
+.FUNCTYPE .VOID UART0_RX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART0_TX_IRQHandler
+.PUBLIC UART0_TX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART0_TX_IRQHandler?T:
+UART0_TX_IRQHandler .EQU  UART0_TX_IRQHandler?T+1
+.FUNCTYPE .VOID UART0_TX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART0_RT_IRQHandler
+.PUBLIC UART0_RT_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART0_RT_IRQHandler?T:
+UART0_RT_IRQHandler .EQU  UART0_RT_IRQHandler?T+1
+.FUNCTYPE .VOID UART0_RT_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART0_E_IRQHandler
+.PUBLIC UART0_E_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART0_E_IRQHandler?T:
+UART0_E_IRQHandler .EQU  UART0_E_IRQHandler?T+1
+.FUNCTYPE .VOID UART0_E_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART0_IRQHandler
+.PUBLIC UART0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART0_IRQHandler?T:
+UART0_IRQHandler .EQU  UART0_IRQHandler?T+1
+.FUNCTYPE .VOID UART0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART1_MX_IRQHandler
+.PUBLIC UART1_MX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART1_MX_IRQHandler?T:
+UART1_MX_IRQHandler .EQU  UART1_MX_IRQHandler?T+1
+.FUNCTYPE .VOID UART1_MX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART1_RX_IRQHandler
+.PUBLIC UART1_RX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART1_RX_IRQHandler?T:
+UART1_RX_IRQHandler .EQU  UART1_RX_IRQHandler?T+1
+.FUNCTYPE .VOID UART1_RX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART1_TX_IRQHandler
+.PUBLIC UART1_TX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART1_TX_IRQHandler?T:
+UART1_TX_IRQHandler .EQU  UART1_TX_IRQHandler?T+1
+.FUNCTYPE .VOID UART1_TX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART1_RT_IRQHandler
+.PUBLIC UART1_RT_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART1_RT_IRQHandler?T:
+UART1_RT_IRQHandler .EQU  UART1_RT_IRQHandler?T+1
+.FUNCTYPE .VOID UART1_RT_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART1_E_IRQHandler
+.PUBLIC UART1_E_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART1_E_IRQHandler?T:
+UART1_E_IRQHandler .EQU  UART1_E_IRQHandler?T+1
+.FUNCTYPE .VOID UART1_E_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART1_IRQHandler
+.PUBLIC UART1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART1_IRQHandler?T:
+UART1_IRQHandler .EQU  UART1_IRQHandler?T+1
+.FUNCTYPE .VOID UART1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART2_MX_IRQHandler
+.PUBLIC UART2_MX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART2_MX_IRQHandler?T:
+UART2_MX_IRQHandler .EQU  UART2_MX_IRQHandler?T+1
+.FUNCTYPE .VOID UART2_MX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART2_RX_IRQHandler
+.PUBLIC UART2_RX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART2_RX_IRQHandler?T:
+UART2_RX_IRQHandler .EQU  UART2_RX_IRQHandler?T+1
+.FUNCTYPE .VOID UART2_RX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART2_TX_IRQHandler
+.PUBLIC UART2_TX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART2_TX_IRQHandler?T:
+UART2_TX_IRQHandler .EQU  UART2_TX_IRQHandler?T+1
+.FUNCTYPE .VOID UART2_TX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART2_RT_IRQHandler
+.PUBLIC UART2_RT_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART2_RT_IRQHandler?T:
+UART2_RT_IRQHandler .EQU  UART2_RT_IRQHandler?T+1
+.FUNCTYPE .VOID UART2_RT_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART2_E_IRQHandler
+.PUBLIC UART2_E_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART2_E_IRQHandler?T:
+UART2_E_IRQHandler .EQU  UART2_E_IRQHandler?T+1
+.FUNCTYPE .VOID UART2_E_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART2_IRQHandler
+.PUBLIC UART2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART2_IRQHandler?T:
+UART2_IRQHandler .EQU  UART2_IRQHandler?T+1
+.FUNCTYPE .VOID UART2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART3_MX_IRQHandler
+.PUBLIC UART3_MX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART3_MX_IRQHandler?T:
+UART3_MX_IRQHandler .EQU  UART3_MX_IRQHandler?T+1
+.FUNCTYPE .VOID UART3_MX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART3_RX_IRQHandler
+.PUBLIC UART3_RX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART3_RX_IRQHandler?T:
+UART3_RX_IRQHandler .EQU  UART3_RX_IRQHandler?T+1
+.FUNCTYPE .VOID UART3_RX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART3_TX_IRQHandler
+.PUBLIC UART3_TX_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART3_TX_IRQHandler?T:
+UART3_TX_IRQHandler .EQU  UART3_TX_IRQHandler?T+1
+.FUNCTYPE .VOID UART3_TX_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART3_RT_IRQHandler
+.PUBLIC UART3_RT_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART3_RT_IRQHandler?T:
+UART3_RT_IRQHandler .EQU  UART3_RT_IRQHandler?T+1
+.FUNCTYPE .VOID UART3_RT_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART3_E_IRQHandler
+.PUBLIC UART3_E_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART3_E_IRQHandler?T:
+UART3_E_IRQHandler .EQU  UART3_E_IRQHandler?T+1
+.FUNCTYPE .VOID UART3_E_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UART3_IRQHandler
+.PUBLIC UART3_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UART3_IRQHandler?T:
+UART3_IRQHandler .EQU  UART3_IRQHandler?T+1
+.FUNCTYPE .VOID UART3_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM0_IRQHandler
+.PUBLIC PWM0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM0_IRQHandler?T:
+PWM0_IRQHandler .EQU  PWM0_IRQHandler?T+1
+.FUNCTYPE .VOID PWM0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM0_HD_IRQHandler
+.PUBLIC PWM0_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM0_HD_IRQHandler?T:
+PWM0_HD_IRQHandler .EQU  PWM0_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM0_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM0_TZ_IRQHandler
+.PUBLIC PWM0_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM0_TZ_IRQHandler?T:
+PWM0_TZ_IRQHandler .EQU  PWM0_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM0_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM1_IRQHandler
+.PUBLIC PWM1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM1_IRQHandler?T:
+PWM1_IRQHandler .EQU  PWM1_IRQHandler?T+1
+.FUNCTYPE .VOID PWM1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM1_HD_IRQHandler
+.PUBLIC PWM1_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM1_HD_IRQHandler?T:
+PWM1_HD_IRQHandler .EQU  PWM1_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM1_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM1_TZ_IRQHandler
+.PUBLIC PWM1_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM1_TZ_IRQHandler?T:
+PWM1_TZ_IRQHandler .EQU  PWM1_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM1_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM2_IRQHandler
+.PUBLIC PWM2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM2_IRQHandler?T:
+PWM2_IRQHandler .EQU  PWM2_IRQHandler?T+1
+.FUNCTYPE .VOID PWM2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM2_HD_IRQHandler
+.PUBLIC PWM2_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM2_HD_IRQHandler?T:
+PWM2_HD_IRQHandler .EQU  PWM2_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM2_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM2_TZ_IRQHandler
+.PUBLIC PWM2_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM2_TZ_IRQHandler?T:
+PWM2_TZ_IRQHandler .EQU  PWM2_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM2_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM3_IRQHandler
+.PUBLIC PWM3_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM3_IRQHandler?T:
+PWM3_IRQHandler .EQU  PWM3_IRQHandler?T+1
+.FUNCTYPE .VOID PWM3_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM3_HD_IRQHandler
+.PUBLIC PWM3_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM3_HD_IRQHandler?T:
+PWM3_HD_IRQHandler .EQU  PWM3_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM3_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM3_TZ_IRQHandler
+.PUBLIC PWM3_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM3_TZ_IRQHandler?T:
+PWM3_TZ_IRQHandler .EQU  PWM3_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM3_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM4_IRQHandler
+.PUBLIC PWM4_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM4_IRQHandler?T:
+PWM4_IRQHandler .EQU  PWM4_IRQHandler?T+1
+.FUNCTYPE .VOID PWM4_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM4_HD_IRQHandler
+.PUBLIC PWM4_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM4_HD_IRQHandler?T:
+PWM4_HD_IRQHandler .EQU  PWM4_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM4_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM4_TZ_IRQHandler
+.PUBLIC PWM4_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM4_TZ_IRQHandler?T:
+PWM4_TZ_IRQHandler .EQU  PWM4_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM4_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM5_IRQHandler
+.PUBLIC PWM5_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM5_IRQHandler?T:
+PWM5_IRQHandler .EQU  PWM5_IRQHandler?T+1
+.FUNCTYPE .VOID PWM5_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM5_HD_IRQHandler
+.PUBLIC PWM5_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM5_HD_IRQHandler?T:
+PWM5_HD_IRQHandler .EQU  PWM5_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM5_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM5_TZ_IRQHandler
+.PUBLIC PWM5_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM5_TZ_IRQHandler?T:
+PWM5_TZ_IRQHandler .EQU  PWM5_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM5_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM6_IRQHandler
+.PUBLIC PWM6_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM6_IRQHandler?T:
+PWM6_IRQHandler .EQU  PWM6_IRQHandler?T+1
+.FUNCTYPE .VOID PWM6_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM6_HD_IRQHandler
+.PUBLIC PWM6_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM6_HD_IRQHandler?T:
+PWM6_HD_IRQHandler .EQU  PWM6_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM6_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM6_TZ_IRQHandler
+.PUBLIC PWM6_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM6_TZ_IRQHandler?T:
+PWM6_TZ_IRQHandler .EQU  PWM6_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM6_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM7_IRQHandler
+.PUBLIC PWM7_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM7_IRQHandler?T:
+PWM7_IRQHandler .EQU  PWM7_IRQHandler?T+1
+.FUNCTYPE .VOID PWM7_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM7_HD_IRQHandler
+.PUBLIC PWM7_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM7_HD_IRQHandler?T:
+PWM7_HD_IRQHandler .EQU  PWM7_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM7_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM7_TZ_IRQHandler
+.PUBLIC PWM7_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM7_TZ_IRQHandler?T:
+PWM7_TZ_IRQHandler .EQU  PWM7_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM7_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM8_IRQHandler
+.PUBLIC PWM8_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM8_IRQHandler?T:
+PWM8_IRQHandler .EQU  PWM8_IRQHandler?T+1
+.FUNCTYPE .VOID PWM8_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM8_HD_IRQHandler
+.PUBLIC PWM8_HD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM8_HD_IRQHandler?T:
+PWM8_HD_IRQHandler .EQU  PWM8_HD_IRQHandler?T+1
+.FUNCTYPE .VOID PWM8_HD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?PWM8_TZ_IRQHandler
+.PUBLIC PWM8_TZ_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+PWM8_TZ_IRQHandler?T:
+PWM8_TZ_IRQHandler .EQU  PWM8_TZ_IRQHandler?T+1
+.FUNCTYPE .VOID PWM8_TZ_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ0_IRQHandler
+.PUBLIC ADC_SEQ0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ0_IRQHandler?T:
+ADC_SEQ0_IRQHandler .EQU  ADC_SEQ0_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ1_IRQHandler
+.PUBLIC ADC_SEQ1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ1_IRQHandler?T:
+ADC_SEQ1_IRQHandler .EQU  ADC_SEQ1_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ2_IRQHandler
+.PUBLIC ADC_SEQ2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ2_IRQHandler?T:
+ADC_SEQ2_IRQHandler .EQU  ADC_SEQ2_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ3_IRQHandler
+.PUBLIC ADC_SEQ3_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ3_IRQHandler?T:
+ADC_SEQ3_IRQHandler .EQU  ADC_SEQ3_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ3_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ4_IRQHandler
+.PUBLIC ADC_SEQ4_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ4_IRQHandler?T:
+ADC_SEQ4_IRQHandler .EQU  ADC_SEQ4_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ4_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ5_IRQHandler
+.PUBLIC ADC_SEQ5_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ5_IRQHandler?T:
+ADC_SEQ5_IRQHandler .EQU  ADC_SEQ5_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ5_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ6_IRQHandler
+.PUBLIC ADC_SEQ6_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ6_IRQHandler?T:
+ADC_SEQ6_IRQHandler .EQU  ADC_SEQ6_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ6_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_SEQ7_IRQHandler
+.PUBLIC ADC_SEQ7_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_SEQ7_IRQHandler?T:
+ADC_SEQ7_IRQHandler .EQU  ADC_SEQ7_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_SEQ7_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?ADC_CompInt_IRQHandler
+.PUBLIC ADC_CompInt_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+ADC_CompInt_IRQHandler?T:
+ADC_CompInt_IRQHandler .EQU  ADC_CompInt_IRQHandler?T+1
+.FUNCTYPE .VOID ADC_CompInt_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAP0_IRQHandler
+.PUBLIC CAP0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAP0_IRQHandler?T:
+CAP0_IRQHandler .EQU  CAP0_IRQHandler?T+1
+.FUNCTYPE .VOID CAP0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAP1_IRQHandler
+.PUBLIC CAP1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAP1_IRQHandler?T:
+CAP1_IRQHandler .EQU  CAP1_IRQHandler?T+1
+.FUNCTYPE .VOID CAP1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAP2_IRQHandler
+.PUBLIC CAP2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAP2_IRQHandler?T:
+CAP2_IRQHandler .EQU  CAP2_IRQHandler?T+1
+.FUNCTYPE .VOID CAP2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAP3_IRQHandler
+.PUBLIC CAP3_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAP3_IRQHandler?T:
+CAP3_IRQHandler .EQU  CAP3_IRQHandler?T+1
+.FUNCTYPE .VOID CAP3_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAP4_IRQHandler
+.PUBLIC CAP4_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAP4_IRQHandler?T:
+CAP4_IRQHandler .EQU  CAP4_IRQHandler?T+1
+.FUNCTYPE .VOID CAP4_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAP5_IRQHandler
+.PUBLIC CAP5_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAP5_IRQHandler?T:
+CAP5_IRQHandler .EQU  CAP5_IRQHandler?T+1
+.FUNCTYPE .VOID CAP5_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?QEP0_IRQHandler
+.PUBLIC QEP0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+QEP0_IRQHandler?T:
+QEP0_IRQHandler .EQU  QEP0_IRQHandler?T+1
+.FUNCTYPE .VOID QEP0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?QEP1_IRQHandler
+.PUBLIC QEP1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+QEP1_IRQHandler?T:
+QEP1_IRQHandler .EQU  QEP1_IRQHandler?T+1
+.FUNCTYPE .VOID QEP1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?BootFlash_IRQHandler
+.PUBLIC BootFlash_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+BootFlash_IRQHandler?T:
+BootFlash_IRQHandler .EQU  BootFlash_IRQHandler?T+1
+.FUNCTYPE .VOID BootFlash_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CMP0_IRQHandler
+.PUBLIC CMP0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CMP0_IRQHandler?T:
+CMP0_IRQHandler .EQU  CMP0_IRQHandler?T+1
+.FUNCTYPE .VOID CMP0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CMP1_IRQHandler
+.PUBLIC CMP1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CMP1_IRQHandler?T:
+CMP1_IRQHandler .EQU  CMP1_IRQHandler?T+1
+.FUNCTYPE .VOID CMP1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CMP2_IRQHandler
+.PUBLIC CMP2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CMP2_IRQHandler?T:
+CMP2_IRQHandler .EQU  CMP2_IRQHandler?T+1
+.FUNCTYPE .VOID CMP2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SPI0_IRQHandler
+.PUBLIC SPI0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SPI0_IRQHandler?T:
+SPI0_IRQHandler .EQU  SPI0_IRQHandler?T+1
+.FUNCTYPE .VOID SPI0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SPI1_IRQHandler
+.PUBLIC SPI1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SPI1_IRQHandler?T:
+SPI1_IRQHandler .EQU  SPI1_IRQHandler?T+1
+.FUNCTYPE .VOID SPI1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SPI2_IRQHandler
+.PUBLIC SPI2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SPI2_IRQHandler?T:
+SPI2_IRQHandler .EQU  SPI2_IRQHandler?T+1
+.FUNCTYPE .VOID SPI2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?SPI3_IRQHandler
+.PUBLIC SPI3_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+SPI3_IRQHandler?T:
+SPI3_IRQHandler .EQU  SPI3_IRQHandler?T+1
+.FUNCTYPE .VOID SPI3_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?UserFlash_IRQHandler
+.PUBLIC UserFlash_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+UserFlash_IRQHandler?T:
+UserFlash_IRQHandler .EQU  UserFlash_IRQHandler?T+1
+.FUNCTYPE .VOID UserFlash_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOA_IRQHandler
+.PUBLIC GPIOA_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOA_IRQHandler?T:
+GPIOA_IRQHandler .EQU  GPIOA_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOA_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOB_IRQHandler
+.PUBLIC GPIOB_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOB_IRQHandler?T:
+GPIOB_IRQHandler .EQU  GPIOB_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOB_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOC_IRQHandler
+.PUBLIC GPIOC_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOC_IRQHandler?T:
+GPIOC_IRQHandler .EQU  GPIOC_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOC_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOD_IRQHandler
+.PUBLIC GPIOD_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOD_IRQHandler?T:
+GPIOD_IRQHandler .EQU  GPIOD_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOD_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOE_IRQHandler
+.PUBLIC GPIOE_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOE_IRQHandler?T:
+GPIOE_IRQHandler .EQU  GPIOE_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOE_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOF_IRQHandler
+.PUBLIC GPIOF_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOF_IRQHandler?T:
+GPIOF_IRQHandler .EQU  GPIOF_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOF_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOG_IRQHandler
+.PUBLIC GPIOG_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOG_IRQHandler?T:
+GPIOG_IRQHandler .EQU  GPIOG_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOG_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?GPIOH_IRQHandler
+.PUBLIC GPIOH_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+GPIOH_IRQHandler?T:
+GPIOH_IRQHandler .EQU  GPIOH_IRQHandler?T+1
+.FUNCTYPE .VOID GPIOH_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?Ethernet_IRQHandler
+.PUBLIC Ethernet_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+Ethernet_IRQHandler?T:
+Ethernet_IRQHandler .EQU  Ethernet_IRQHandler?T+1
+.FUNCTYPE .VOID Ethernet_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN0_IRQHandler
+.PUBLIC CAN0_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN0_IRQHandler?T:
+CAN0_IRQHandler .EQU  CAN0_IRQHandler?T+1
+.FUNCTYPE .VOID CAN0_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN1_IRQHandler
+.PUBLIC CAN1_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN1_IRQHandler?T:
+CAN1_IRQHandler .EQU  CAN1_IRQHandler?T+1
+.FUNCTYPE .VOID CAN1_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN2_IRQHandler
+.PUBLIC CAN2_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN2_IRQHandler?T:
+CAN2_IRQHandler .EQU  CAN2_IRQHandler?T+1
+.FUNCTYPE .VOID CAN2_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN3_IRQHandler
+.PUBLIC CAN3_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN3_IRQHandler?T:
+CAN3_IRQHandler .EQU  CAN3_IRQHandler?T+1
+.FUNCTYPE .VOID CAN3_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN4_IRQHandler
+.PUBLIC CAN4_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN4_IRQHandler?T:
+CAN4_IRQHandler .EQU  CAN4_IRQHandler?T+1
+.FUNCTYPE .VOID CAN4_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN5_IRQHandler
+.PUBLIC CAN5_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN5_IRQHandler?T:
+CAN5_IRQHandler .EQU  CAN5_IRQHandler?T+1
+.FUNCTYPE .VOID CAN5_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN6_IRQHandler
+.PUBLIC CAN6_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN6_IRQHandler?T:
+CAN6_IRQHandler .EQU  CAN6_IRQHandler?T+1
+.FUNCTYPE .VOID CAN6_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN7_IRQHandler
+.PUBLIC CAN7_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN7_IRQHandler?T:
+CAN7_IRQHandler .EQU  CAN7_IRQHandler?T+1
+.FUNCTYPE .VOID CAN7_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN8_IRQHandler
+.PUBLIC CAN8_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN8_IRQHandler?T:
+CAN8_IRQHandler .EQU  CAN8_IRQHandler?T+1
+.FUNCTYPE .VOID CAN8_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN9_IRQHandler
+.PUBLIC CAN9_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN9_IRQHandler?T:
+CAN9_IRQHandler .EQU  CAN9_IRQHandler?T+1
+.FUNCTYPE .VOID CAN9_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN10_IRQHandler
+.PUBLIC CAN10_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN10_IRQHandler?T:
+CAN10_IRQHandler .EQU  CAN10_IRQHandler?T+1
+.FUNCTYPE .VOID CAN10_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN11_IRQHandler
+.PUBLIC CAN11_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN11_IRQHandler?T:
+CAN11_IRQHandler .EQU  CAN11_IRQHandler?T+1
+.FUNCTYPE .VOID CAN11_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN12_IRQHandler
+.PUBLIC CAN12_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN12_IRQHandler?T:
+CAN12_IRQHandler .EQU  CAN12_IRQHandler?T+1
+.FUNCTYPE .VOID CAN12_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN13_IRQHandler
+.PUBLIC CAN13_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN13_IRQHandler?T:
+CAN13_IRQHandler .EQU  CAN13_IRQHandler?T+1
+.FUNCTYPE .VOID CAN13_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN14_IRQHandler
+.PUBLIC CAN14_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN14_IRQHandler?T:
+CAN14_IRQHandler .EQU  CAN14_IRQHandler?T+1
+.FUNCTYPE .VOID CAN14_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?CAN15_IRQHandler
+.PUBLIC CAN15_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+CAN15_IRQHandler?T:
+CAN15_IRQHandler .EQU  CAN15_IRQHandler?T+1
+.FUNCTYPE .VOID CAN15_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?RTC_IRQHandler
+.PUBLIC RTC_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+RTC_IRQHandler?T:
+RTC_IRQHandler .EQU  RTC_IRQHandler?T+1
+.FUNCTYPE .VOID RTC_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+.LMODULE2 ?USB_IRQHandler
+.PUBLIC USB_IRQHandler
+.RSEG ??DEFAULT_HANDLERS,code
+    .THUMB
+USB_IRQHandler?T:
+USB_IRQHandler .EQU  USB_IRQHandler?T+1
+.FUNCTYPE .VOID USB_IRQHandler(.VOID)
+    B       $
+.ENDMOD
+
+
+;=====================================================================;
+;                                                                     ;
+;       User-defined low-level initialization that is made            ;
+;                     before cstartup                                 ;
+;                                                                     ;
+;=====================================================================;
+.LMODULE2 ??SystemInit
+.PUBLIC SystemInit
+.RSEG   ??CODE_CLIB,code
+.THUMB
+SystemInit?T:
+SystemInit .EQU SystemInit?T+1
+.FUNCTYPE .VOID SystemInit(.VOID)
+.IF .MODEL .EQ 09H
+    LDR             R0,=0E000ED88h      ; CPACR
+    LDR             R0,[R0,#0]
+    ORR             R1,R0,#0F00000h     ; set CP10 and CP11 Full Access
+    LDR             R0,=0E000ED88h      ; CPACR
+    STR             R1,[R0,#0]
+    DSB                                 ; DSB operation ensures completion of all accesses
+    ISB                                 ; Full system ISB operation
+.ENDIF
+    BX      LR
+
+.END
+
+;/***************** (C) COPYRIGHT 2017 AlmaCode LLC **************************
+;*
+;* END OF FILE startup_K1921VK01T.mca */
+

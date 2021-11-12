@@ -1,0 +1,15 @@
+{
+  "name": "framework-k1921vk-sdk",
+  "version": "1.6.2",
+  "description": "The K1921VKx SDK is a set of software development tools for NIIET microcontrollers",
+  "keywords": [
+    "framework",
+    "k1921vksdk",
+    "k1921vk",
+    "niiet"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kenny5660/framework-k1921vk-sdk"
+  }
+}

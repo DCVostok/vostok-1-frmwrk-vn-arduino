@@ -1,0 +1,17 @@
+{
+  "name": "framework-k1921vk-arduino",
+  "version": "1.0.0",
+  "description": "Arduino Wiring-based Framework for NIIET k1921vk microcontrollers",
+  "keywords": [
+    "framework",
+    "arduino",
+    "k1921vk",
+    "1921",
+    "niiet"
+  ],
+
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}

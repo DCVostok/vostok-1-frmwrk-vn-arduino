@@ -1,0 +1,102 @@
+name=Vostok k1921vk boards
+version=1.0.0
+
+tools.k1921vkx_flasher.path={runtime.platform.path}/tools/k1921vkx_flasher/
+tools.k1921vkx_flasher.cmd=k1921vkx_flasher
+tools.k1921vkx_flasher.cmd.linux=k1921vkx_flasher.py
+tools.k1921vkx_flasher.cmd.windows=k1921vkx_flasher.exe
+
+tools.k1921vkx_flasher.upload.pattern_args=-c -w -E -v -f mflash -n main -F 0 -p {serial.port} -b {upload.speed} "{build.path}/{build.project_name}.bin"
+tools.k1921vkx_flasher.upload.pattern="{path}/{cmd}" {upload.pattern_args}
+tools.k1921vkx_flasher.upload.pattern.linux=python "{path}/{cmd}" {upload.pattern_args}
+
+
+compiler.prefix=arm-none-eabi-
+compiler.path={runtime.tools.arm-none-eabi-gcc.path}/bin/
+compiler.c.cmd={compiler.prefix}gcc
+compiler.cpp.cmd={compiler.prefix}g++
+compiler.S.cmd={compiler.prefix}gcc
+compiler.c.elf.cmd={compiler.prefix}g++
+compiler.as.cmd={compiler.prefix}as
+compiler.ar.cmd={compiler.prefix}ar
+compiler.size.cmd={compiler.prefix}size
+
+
+
+compiler.k1921vk.extra_include="-I{build.source.path}" "-I{build.core.path}/framework-k1921vk-sdk/platform/plib035/inc" "-I{build.core.path}/framework-k1921vk-sdk/platform/plib035/src" "-I{build.core.path}/framework-k1921vk-sdk/platform/CMSIS/Core/Include" "-I{build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Source/GCC" "-I{build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Source" "-I{build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Include" 
+
+compiler.extra_flags=-mcpu={build.cpu} {build.flags.fp} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls
+compiler.S.flags={compiler.extra_flags} -c -x assembler-with-cpp {compiler.k1921vk.extra_include}
+compiler.c.flags={compiler.extra_flags} -c {build.flags.optimize} {build.flags.debug} {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -MMD {compiler.k1921vk.extra_include}
+compiler.cpp.flags={compiler.extra_flags} -c {build.flags.optimize} {build.flags.debug} {compiler.warning_flags} -std={compiler.cpp.std} -ffunction-sections -fdata-sections -nostdlib -fno-threadsafe-statics --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -fno-use-cxa-atexit -MMD {compiler.k1921vk.extra_include}
+compiler.ar.flags=rcs
+compiler.c.elf.flags=-mcpu={build.cpu} {build.flags.fp} -mthumb {build.flags.optimize} {build.flags.debug} {build.flags.ldspecs} 
+compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
+
+compiler.elf2bin.flags=-O binary
+compiler.elf2hex.flags=-O ihex
+
+compiler.ldflags=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls -Wl,--gc-sections -specs=nosys.specs -specs=nano.specs -lgcc -lc
+compiler.define=-DMCU_{build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board}
+
+# Arduino Compile Warning Levels
+compiler.warning_flags=-w
+compiler.warning_flags.none=-w
+compiler.warning_flags.default=
+compiler.warning_flags.more=-Wall -Werror=all
+compiler.warning_flags.all=-Wall -Werror=all -Wextra
+
+# These can be overridden in platform.local.txt
+compiler.c.extra_flags=
+compiler.c.elf.extra_flags=
+compiler.S.extra_flags=
+compiler.cpp.extra_flags=
+compiler.cpp.std=c++11
+compiler.ar.extra_flags=
+compiler.objcopy.eep.extra_flags=
+compiler.elf2hex.extra_flags=
+compiler.libraries.ldflags=
+
+# Defaults config
+build.flags.fp=
+build.flags.optimize=-Os
+build.flags.debug=
+build.flash_offset=0
+build.ldscript={build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Source/GCC/{build.mcu}.ld
+
+# compile patterns
+# ---------------------
+
+## Compile c files
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.info.flags} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile c++ files
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.info.flags} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Compile S files
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {build.info.flags} {compiler.S.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+
+## Create archives
+recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"
+
+## Combine gc-sections, archives, and objects
+recipe.c.combine.pattern="{compiler.path}{compiler.c.elf.cmd}" {compiler.c.elf.flags} "-Wl,--default-script={build.ldscript}" "-Wl,-Map,{build.path}/{build.project_name}.map" {compiler.c.elf.extra_flags} {compiler.ldflags} -o "{build.path}/{build.project_name}.elf" "-L{build.path}" -Wl,--start-group {object_files} {compiler.libraries.ldflags} "{archive_file_path}" -lc -Wl,--end-group -lm -lgcc -lstdc++
+
+## Create output (.bin file)
+recipe.objcopy.bin.pattern="{compiler.path}{compiler.objcopy.cmd}" {compiler.elf2bin.flags} {compiler.elf2bin.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.bin"
+
+## Create output (.hex file)
+recipe.objcopy.hex.pattern="{compiler.path}{compiler.objcopy.cmd}" {compiler.elf2hex.flags} {compiler.elf2hex.extra_flags} "{build.path}/{build.project_name}.elf" "{build.path}/{build.project_name}.hex"
+
+build.preferred_out_format=bin
+
+## Save binary
+recipe.output.tmp_file={build.project_name}.{build.preferred_out_format}
+recipe.output.save_file={build.project_name}.{build.board}.{build.preferred_out_format}
+
+## Compute size
+recipe.size.pattern="{compiler.path}{compiler.size.cmd}" -A "{build.path}/{build.project_name}.elf"
+recipe.size.regex=^(?:\.text|\.data|\.rodata)\s+([0-9]+).*
+recipe.size.regex.data=^(?:\.data|\.bss|\.noinit)\s+([0-9]+).*
+recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
+
