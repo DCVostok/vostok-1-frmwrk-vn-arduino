@@ -1,6 +1,5 @@
 #define ARDUINO_MAIN
 #include "Arduino.h"
-#include "system_init.h"
 
 /*
  * \brief Main entry point of Arduino application

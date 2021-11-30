@@ -29,9 +29,9 @@
 #ifndef __K1921VK01T_H
 #define __K1921VK01T_H
 
-#define __I     volatile const                /*!< defines 'read only' permissions      */
-#define __O     volatile                      /*!< defines 'write only' permissions     */
-#define __IO    volatile                      /*!< defines 'read / write' permissions   */
+//#define __I     volatile const                /*!< defines 'read only' permissions      */
+//#define __O     volatile                      /*!< defines 'write only' permissions     */
+//#define __IO    volatile                      /*!< defines 'read / write' permissions   */
 
 /* Start of section using anonymous unions */
 #if defined (__CC_ARM)

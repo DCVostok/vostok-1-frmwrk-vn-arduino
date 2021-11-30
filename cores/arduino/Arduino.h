@@ -12,4 +12,6 @@
 
 #include "pins_arduino.h"
 
+#include "wiring_analog.h"
+
 #endif//ARDUINO_H

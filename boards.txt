@@ -12,9 +12,9 @@ uno.build.mcu=K1921VK035
 uno.build.cpu=cortex-m4f
 uno.build.f_cpu=100000000L
 uno.build.f_ext=16000000L
-uno.build.board=VOSTOK_UNO
+uno.build.board=VOSTOK_UNO_035
 uno.build.core=arduino
-uno.build.variant=uno
+uno.build.variant=vostok_uno_035
 
 
 # Vostok mega
@@ -27,6 +27,6 @@ mega.build.mcu=K1921VK01T
 mega.build.cpu=cortex-m4f
 mega.build.f_cpu=100000000L
 mega.build.f_ext=12000000L
-mega.build.board=VOSTOK_MEGA
+mega.build.board=VOSTOK_MEGA_01T
 mega.build.core=arduino
-mega.build.variant=mega
+mega.build.variant=vostok_mega_01t

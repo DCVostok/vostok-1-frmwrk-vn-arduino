@@ -42,8 +42,7 @@ void delay(uint32_t ms)
 }
 
 
-static void delayMicroseconds(uint32_t us)
-{
+void delayMicroseconds(unsigned int us){
   uint32_t currentTicks = SysTick->VAL;
   /* Number of ticks per millisecond */
   uint32_t tickPerMs = SysTick->LOAD + 1;
