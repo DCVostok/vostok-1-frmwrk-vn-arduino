@@ -215,6 +215,9 @@ namespace arduino{
                 UART_InitStruct.Tx = ENABLE;
                 UART_InitStruct.FIFO = ENABLE;
                 UART_InitStruct.BaudRate = baudRate;
+                UART_InitStruct.DataWidth = DataWidth;
+                UART_InitStruct.StopBit = StopBit;
+                UART_InitStruct.ParityBit = ParityBit;
                 
             #elif MCU_K1921VK01T
                 UART_InitStruct.UART_ClkFreq = SystemCoreClock;

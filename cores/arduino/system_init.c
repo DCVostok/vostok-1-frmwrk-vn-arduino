@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include "k1921vk_sdk.h"
+#include "wiring_private.h"
 
 //irq freq 1 Mhz and irq period 1 microsecond
 #define SYSTICK_IRQ_FREQ (1000)
@@ -7,7 +7,6 @@
 void init(){
     SystemCoreClockUpdate();
     SysTick_Config(SystemCoreClock/SYSTICK_IRQ_FREQ);
-
     #ifdef MCU_K1921VK035
         RCU_AHBClkCmd(RCU_AHBClk_GPIOA, ENABLE);
         RCU_AHBRstCmd(RCU_AHBRst_GPIOA, ENABLE);

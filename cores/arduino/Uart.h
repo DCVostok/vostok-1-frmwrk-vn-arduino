@@ -1,7 +1,7 @@
 #ifndef UART_H
 #define UART_H
 
-#include "k1921vk_sdk.h"
+#include "wiring_private.h"
 #include "api/RingBuffer.h"
 #include "api/HardwareSerial.h"
 #include "api/Print.h"

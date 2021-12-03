@@ -1,6 +1,6 @@
 #ifndef WIRING_ANALOG_H
 #define WIRING_ANALOG_H
-#include "k1921vk_sdk.h"
+#include "wiring_private.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +25,32 @@ extern "C" {
 #endif
 #ifndef ADC_CALIBRATION_OFFSET
   #define ADC_CALIBRATION_OFFSET (0)
+#endif
+
+#ifdef MCU_K1921VK035
+typedef enum
+{
+    PWM_ClkDiv_1   = ((uint32_t)PWM_TB_ClkDiv_1),    /*!< Без деления тактовой частоты. */
+    PWM_ClkDiv_2   = ((uint32_t)PWM_TB_ClkDiv_2),    /*!< Деление тактовой частоты на 2. */
+    PWM_ClkDiv_4   = ((uint32_t)PWM_TB_ClkDiv_4),    /*!< Деление тактовой частоты на 4. */
+    PWM_ClkDiv_8   = ((uint32_t)PWM_TB_ClkDiv_8),    /*!< Деление тактовой частоты на 8. */
+    PWM_ClkDiv_16  = ((uint32_t)PWM_TB_ClkDiv_16),    /*!< Деление тактовой частоты на 16. */
+    PWM_ClkDiv_32  = ((uint32_t)PWM_TB_ClkDiv_32),    /*!< Деление тактовой частоты на 32. */
+    PWM_ClkDiv_64  = ((uint32_t)PWM_TB_ClkDiv_64),    /*!< Деление тактовой частоты на 64. */
+    PWM_ClkDiv_128 = ((uint32_t)PWM_TB_ClkDiv_128),    /*!< Деление тактовой частоты на 128. */
+}PWM_ClkDiv_TypeDef;
+
+typedef enum
+{
+    PWM_ClkDivExtra_1   = ((uint32_t)PWM_TB_ClkDivExtra_1),    
+    PWM_ClkDivExtra_2   = ((uint32_t)PWM_TB_ClkDivExtra_2),    
+    PWM_ClkDivExtra_4   = ((uint32_t)PWM_TB_ClkDivExtra_4),    
+    PWM_ClkDivExtra_6   = ((uint32_t)PWM_TB_ClkDivExtra_6),    
+    PWM_ClkDivExtra_8   = ((uint32_t)PWM_TB_ClkDivExtra_8),    
+    PWM_ClkDivExtra_10  = ((uint32_t)PWM_TB_ClkDivExtra_10),   
+    PWM_ClkDivExtra_12  = ((uint32_t)PWM_TB_ClkDivExtra_12),   
+    PWM_ClkDivExtra_14  = ((uint32_t)PWM_TB_ClkDivExtra_14),   
+}PWM_ClkDivExtra_TypeDef;
 #endif
 
 

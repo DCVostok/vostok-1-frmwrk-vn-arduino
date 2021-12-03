@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include "k1921vk_sdk.h"
+#include "wiring_private.h"
 
 #ifdef __cplusplus
 extern "C" {

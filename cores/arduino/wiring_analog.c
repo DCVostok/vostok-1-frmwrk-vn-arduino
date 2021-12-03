@@ -93,7 +93,7 @@ void update_adc_config(){
     RCU_ADCClkConfig(RCU_PeriphClk_PLLClk, 2, ENABLE); //25MHz
     RCU_ADCClkCmd(ENABLE);
     RCU_ADCRstCmd(ENABLE);
-    for (i = 0; i < ADC_CH_Total; i++){
+    for (uint32_t i = 0; i < ADC_CH_Total; i++){
       ADC_CH_SetGainTrim (i, ADC_CALIBRATION_GAIN);
       ADC_CH_SetOffsetTrim (i,ADC_CALIBRATION_OFFSET);
     }
@@ -108,7 +108,7 @@ void update_adc_config(){
       int adc_clk_div = _internalReadResolution == 12 ? 3 : 1;// real_div = (2*(adc_clk_div+1)) 12.5/25 Мгц
       for(int i = 0; i < 12; i++){
 
-          RCC_ADCClkDivConfig(i, 2, ENABLE);
+          RCC_ADCClkDivConfig(i, adc_clk_div, ENABLE);
       }
       RCC_PeriphClkCmd(RCC_PeriphClk_ADC, ENABLE);
       for(int i = 0; i < 12; i++){
@@ -176,6 +176,11 @@ void analogWrite(pin_size_t pin, int value)
   if(pin_description == NULL){
     return;
   }
+  if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
+    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
+    digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
+  }
+  
   if (pin_description->pwm_ch != PIN_PWM_NONE){
     value = mapResolution(value, _writeResolution, _internalWriteResolution);
     GPIO_Init_TypeDef GPIO_InitStruct;
@@ -269,18 +274,21 @@ int analogRead(pin_size_t pin)
   uint32_t valueRead = 0;
   const PinDescription *pin_description = PIN_GET_DESCRIPTION_WITH_ADC(pin);
   if(pin_description == NULL){
-    return;
+    return 0;
   }
   if (pin_description->adc_ch != PIN_ADC_NONE){
     if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
       pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
       digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],LOW);
     }
+    
     #ifdef MCU_K1921VK035
+      const uint8_t ADC_SEQ_Module = ADC_SEQ_Num_0;
       ADC_SEQ_Init_TypeDef ADC_SEQ_InitStruct;
       GPIO_DigitalCmd(pin_description->port, pin_description->pin_msk, DISABLE);
+      
 
-      ADC_SEQ_Cmd(ADC_SEQ_Num_0, DISABLE);
+      ADC_SEQ_Cmd(ADC_SEQ_Module, DISABLE);
       ADC_SEQ_StructInit(&ADC_SEQ_InitStruct);
       ADC_SEQ_InitStruct.StartEvent = ADC_SEQ_StartEvent_SwReq;
       ADC_SEQ_InitStruct.SWStartEn = ENABLE;
@@ -289,24 +297,26 @@ int analogRead(pin_size_t pin)
       ADC_SEQ_InitStruct.Req[ADC_SEQ_ReqNum_0] = pin_description->adc_ch;
       ADC_SEQ_InitStruct.ReqMax = ADC_SEQ_ReqNum_1;
       ADC_SEQ_InitStruct.RestartCount = 0;
-      ADC_SEQ_Init(ADC_SEQ_Num_0, &ADC_SEQ_InitStruct);
-      ADC_SEQ_Cmd(ADC_SEQ_Num_0, ENABLE);
+      ADC_SEQ_Init(ADC_SEQ_Module, &ADC_SEQ_InitStruct);
+      ADC_SEQ_Cmd(ADC_SEQ_Module, ENABLE);
       ADC_SEQ_SwStartCmd();
     #elif MCU_K1921VK01T
+      const uint8_t ADC_SEQ_Module = ADC_SEQ_Module_0;
       ADC_SEQ_Init_TypeDef ADC_SEQ_InitStruct;
+
       ADC_SEQ_StructInit(&ADC_SEQ_InitStruct);
       ADC_SEQ_InitStruct.ADC_SEQ_StartEvent = ADC_SEQ_StartEvent_SWReq;
       ADC_SEQ_InitStruct.ADC_Channels =pin_description->adc_ch;
       ADC_SEQ_InitStruct.ADC_SEQ_ConversionCount = 1;
       ADC_SEQ_InitStruct.ADC_SEQ_ConversionDelay = 2;
       ADC_SEQ_InitStruct.ADC_SEQ_DC = ADC_DC_None;
-      ADC_SEQ_Init(ADC_SEQ_Module_0, &ADC_SEQ_InitStruct);
+      ADC_SEQ_Init(ADC_SEQ_Module, &ADC_SEQ_InitStruct);
       
       ADC_SEQ_SWReq();
     #endif
     
-      while (ADC_SEQ_FIFOEmptyStatus(ADC_SEQ_Module_0));
-      valueRead = ADC_SEQ_GetFIFOData(ADC_SEQ_Module_0);
+      while (ADC_SEQ_FIFOEmptyStatus(ADC_SEQ_Module));
+      valueRead = ADC_SEQ_GetFIFOData(ADC_SEQ_Module);
       valueRead = mapResolution(valueRead, _internalReadResolution, _readResolution);
   }
 

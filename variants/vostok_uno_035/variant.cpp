@@ -90,10 +90,10 @@ arduino::UartSerial Serial1(UART1,PIN_UART_TX1,PIN_UART_RX1);
 
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){
-  pin_size_t pwm_pin;
+  pin_size_t  pwm_pin = pin_num;
   while(pins_mux_map[pin_num] != PIN_MUX_NO){
     pinMode(pin_num,INPUT);
-    if (pins_description_map[pin_num] != PIN_PWM_NONE){
+    if (pins_description_map[pin_num].pwm_ch != PIN_PWM_NONE){
       pwm_pin = pin_num;
     }
       pin_num  = pins_mux_map[pin_num];

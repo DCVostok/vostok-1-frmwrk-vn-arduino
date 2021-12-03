@@ -5,17 +5,6 @@
 #endif
 
 
-void GPIOA_IRQHandler();
-void GPIOB_IRQHandler();
-#ifdef MCU_K1921VK01T
-void GPIOC_IRQHandler();
-void GPIOD_IRQHandler();
-void GPIOE_IRQHandler();
-void GPIOF_IRQHandler();
-void GPIOG_IRQHandler();
-void GPIOH_IRQHandler();
-#endif
-
 #define GPIO_IRQ_TABLE_GPIOAnum (0)
 #define GPIO_IRQ_TABLE_GPIOBnum (1)
 #define GPIO_IRQ_TABLE_GPIOCnum (2)
@@ -40,17 +29,6 @@ int8_t callbacks_num[PORT_NUM];
 
 
 void gpio_irq_table_init(){
-    IRQ_HandlerInit(GPIOA_IRQn, GPIOA_IRQHandler);
-    IRQ_HandlerInit(GPIOB_IRQn, GPIOB_IRQHandler);
-    #ifdef MCU_K1921VK01T
-    IRQ_HandlerInit(GPIOC_IRQn, GPIOC_IRQHandler);
-    IRQ_HandlerInit(GPIOD_IRQn, GPIOD_IRQHandler);
-    IRQ_HandlerInit(GPIOE_IRQn, GPIOE_IRQHandler);
-    IRQ_HandlerInit(GPIOF_IRQn, GPIOF_IRQHandler);
-    IRQ_HandlerInit(GPIOG_IRQn, GPIOG_IRQHandler);
-    IRQ_HandlerInit(GPIOH_IRQn, GPIOH_IRQHandler);
-    #endif
-    
     #ifdef USE_FREERTOS
         NVIC_SetPriority(GPIOA_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY);
         NVIC_SetPriority(GPIOB_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY);
@@ -259,4 +237,4 @@ void GPIOH_IRQHandler(){
         }
     }
 }
-#endif
+#endif //MCU_K1921VK01T

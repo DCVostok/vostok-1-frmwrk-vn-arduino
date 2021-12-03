@@ -37,7 +37,7 @@ compiler.elf2bin.flags=-O binary
 compiler.elf2hex.flags=-O ihex
 
 compiler.ldflags=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls -Wl,--gc-sections -specs=nosys.specs -specs=nano.specs -lgcc -lc
-compiler.define=-DMCU_{build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board}
+compiler.define=-DMCU_{build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch}
 
 # Arduino Compile Warning Levels
 compiler.warning_flags=-w
