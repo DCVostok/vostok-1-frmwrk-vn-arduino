@@ -38,6 +38,23 @@ namespace arduino{
             RCU_UARTClkConfig(uart_num, RCU_PeriphClk_PLLClk, 0, DISABLE);
             RCU_UARTClkCmd(uart_num, ENABLE);
             RCU_UARTRstCmd(uart_num, ENABLE);
+            if(_nt_uart == UART0){
+                NVIC_SetPriority(UART0_RX_IRQn,_c_irq_priority);
+                NVIC_EnableIRQ(UART0_RX_IRQn);
+                NVIC_SetPriority(UART0_E_RT_IRQn,_c_irq_priority);
+                NVIC_EnableIRQ(UART0_E_RT_IRQn);
+                NVIC_SetPriority(UART0_TX_IRQn,_c_irq_priority);
+                NVIC_EnableIRQ(UART0_TX_IRQn);
+            }
+            else{
+                NVIC_SetPriority(UART1_RX_IRQn,_c_irq_priority);
+                NVIC_EnableIRQ(UART1_RX_IRQn);
+                NVIC_SetPriority(UART1_E_RT_IRQn,_c_irq_priority);
+                NVIC_EnableIRQ(UART1_E_RT_IRQn);
+                NVIC_SetPriority(UART1_TX_IRQn,_c_irq_priority);
+                NVIC_EnableIRQ(UART1_TX_IRQn);
+            }
+            
             
         #elif MCU_K1921VK01T
             if(_nt_uart == NT_UART0){
@@ -63,11 +80,11 @@ namespace arduino{
                 GPIO_InitStruct.GPIO_Pin = pin_description_tx->pin_msk;
                 GPIO_Init(pin_description_tx->port, &GPIO_InitStruct);
 
-                NVIC_SetPriority(UART0_RT_IRQn,irq_priority);
+                NVIC_SetPriority(UART0_RT_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART0_RT_IRQn);
-                NVIC_SetPriority(UART0_RX_IRQn,irq_priority);
+                NVIC_SetPriority(UART0_RX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART0_RX_IRQn);
-                NVIC_SetPriority(UART0_TX_IRQn,irq_priority);
+                NVIC_SetPriority(UART0_TX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART0_TX_IRQn);
                 RCC_UARTClkCmd(NT_UART0, ENABLE);
                 RCC_PeriphRstCmd(RCC_PeriphRst_UART0, ENABLE);
@@ -95,11 +112,11 @@ namespace arduino{
                 GPIO_InitStruct.GPIO_Pin = pin_description_tx->pin_msk;
                 GPIO_Init(pin_description_tx->port, &GPIO_InitStruct);
 
-                NVIC_SetPriority(UART1_RT_IRQn,irq_priority);
+                NVIC_SetPriority(UART1_RT_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART1_RT_IRQn);
-                NVIC_SetPriority(UART1_RX_IRQn,irq_priority);
+                NVIC_SetPriority(UART1_RX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART1_RX_IRQn);
-                NVIC_SetPriority(UART1_TX_IRQn,irq_priority);
+                NVIC_SetPriority(UART1_TX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART1_TX_IRQn);
                 RCC_UARTClkCmd(NT_UART1, ENABLE);
                 RCC_PeriphRstCmd(RCC_PeriphRst_UART1, ENABLE);
@@ -135,11 +152,11 @@ namespace arduino{
                 GPIO_InitStruct.GPIO_Pin = pin_description_tx->pin_msk;
                 GPIO_Init(pin_description_tx->port, &GPIO_InitStruct);
 
-                NVIC_SetPriority(UART2_RT_IRQn,irq_priority);
+                NVIC_SetPriority(UART2_RT_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART2_RT_IRQn);
-                NVIC_SetPriority(UART2_RX_IRQn,irq_priority);
+                NVIC_SetPriority(UART2_RX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART2_RX_IRQn);
-                NVIC_SetPriority(UART2_TX_IRQn,irq_priority);
+                NVIC_SetPriority(UART2_TX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART2_TX_IRQn);
                 RCC_UARTClkCmd(NT_UART2, ENABLE);
                 RCC_PeriphRstCmd(RCC_PeriphRst_UART2, ENABLE);
@@ -167,11 +184,11 @@ namespace arduino{
                 GPIO_InitStruct.GPIO_Pin = pin_description_tx->pin_msk;
                 GPIO_Init(pin_description_tx->port, &GPIO_InitStruct);
 
-                NVIC_SetPriority(UART3_RT_IRQn,irq_priority);
+                NVIC_SetPriority(UART3_RT_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART3_RT_IRQn);
-                NVIC_SetPriority(UART3_RX_IRQn,irq_priority);
+                NVIC_SetPriority(UART3_RX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART3_RX_IRQn);
-                NVIC_SetPriority(UART3_TX_IRQn,irq_priority);
+                NVIC_SetPriority(UART3_TX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART3_TX_IRQn);
                 RCC_UARTClkCmd(NT_UART3, ENABLE);
                 RCC_PeriphRstCmd(RCC_PeriphRst_UART3, ENABLE);

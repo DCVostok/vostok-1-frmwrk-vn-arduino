@@ -29,9 +29,10 @@ namespace arduino{
         void IrqHandlerRx();
         void IrqHandlerRxTimeout();
         void IrqHandlerTx();
-        static const int irq_priority = 2;
+        
 
       private:
+        static const int _c_irq_priority = 2;
         void init_gpio_nvic_rcc();
         UART_TypeDef* _nt_uart;
         RingBuffer _rxBuffer;
