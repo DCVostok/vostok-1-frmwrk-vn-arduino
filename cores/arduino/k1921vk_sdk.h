@@ -13,6 +13,9 @@
     typedef NT_UART_TypeDef UART_TypeDef;
     typedef NT_GPIO_TypeDef GPIO_TypeDef;
     typedef NT_PWM_TypeDef  PWM_TypeDef;
+    typedef NT_I2C_TypeDef I2C_TypeDef;
+    typedef NT_SPI_TypeDef SPI_TypeDef;
+    
     
 #else
     #error "MCU_* not defined"

@@ -78,6 +78,8 @@ static const uint8_t SCK  = PIN_SPI_SCK ;
   // "external" public i2c interface
 #define PIN_WIRE_SDA         (PIN_A5)
 #define PIN_WIRE_SCL         (PIN_A4)
+#define PERIPH_WIRE I2C
+#define WIRE_IT_HANDLER I2C_IRQHandler
 
 static const uint8_t SDA = PIN_WIRE_SDA;
 static const uint8_t SCL = PIN_WIRE_SCL;

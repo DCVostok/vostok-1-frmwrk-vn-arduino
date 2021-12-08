@@ -49,7 +49,42 @@ const pin_size_t adc_ls_ctrl_map[] =
 
 
 arduino::UartSerial Serial(NT_UART0,PIN_UART_TX0,PIN_UART_RX0);
+void UART0_RX_IRQHandler(){
+    Serial.IrqHandlerRx();
+}
+void UART0_TX_IRQHandler(){
+    Serial.IrqHandlerTx();
+}
+void UART0_RT_IRQHandler(){
+    Serial.IrqHandlerRxTimeout();
+}
 arduino::UartSerial Serial1(NT_UART1,PIN_UART_TX1,PIN_UART_RX1);
+void UART1_RX_IRQHandler(){
+    Serial1.IrqHandlerRx();
+}
+void UART1_TX_IRQHandler(){
+    Serial1.IrqHandlerTx();
+}
+void UART1_RT_IRQHandler(){
+    Serial1.IrqHandlerRxTimeout();
+}
 arduino::UartSerial Serial2(NT_UART2,PIN_UART_TX2,PIN_UART_RX2);
+void UART2_RX_IRQHandler(){
+    Serial2.IrqHandlerRx();
+}
+void UART2_TX_IRQHandler(){
+    Serial2.IrqHandlerTx();
+}
+void UART2_RT_IRQHandler(){
+    Serial2.IrqHandlerRxTimeout();
+}
 arduino::UartSerial Serial3(NT_UART3,PIN_UART_TX3,PIN_UART_RX3);
-
+void UART3_RX_IRQHandler(){
+    Serial3.IrqHandlerRx();
+}
+void UART3_TX_IRQHandler(){
+    Serial3.IrqHandlerTx();
+}
+void UART3_RT_IRQHandler(){
+    Serial3.IrqHandlerRxTimeout();
+}

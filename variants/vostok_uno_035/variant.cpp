@@ -86,7 +86,25 @@ const pin_size_t adc_ls_ctrl_map[] =
 
 
 arduino::UartSerial Serial(UART0,PIN_UART_TX0,PIN_UART_RX0);
+void UART0_RX_IRQHandler(){
+    Serial.IrqHandlerRx();
+}
+void UART0_TX_IRQHandler(){
+    Serial.IrqHandlerTx();
+}
+void UART0_E_RT_IRQHandler(){
+    Serial.IrqHandlerRxTimeout();
+}
 arduino::UartSerial Serial1(UART1,PIN_UART_TX1,PIN_UART_RX1);
+void UART1_RX_IRQHandler(){
+    Serial1.IrqHandlerRx();
+}
+void UART1_TX_IRQHandler(){
+    Serial1.IrqHandlerTx();
+}
+void UART1_E_RT_IRQHandler(){
+    Serial1.IrqHandlerRxTimeout();
+}
 
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){

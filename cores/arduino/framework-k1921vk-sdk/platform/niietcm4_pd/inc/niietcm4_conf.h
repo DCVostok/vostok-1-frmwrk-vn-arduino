@@ -34,23 +34,6 @@
 #ifndef __NIIETCM4_CONF_H
 #define __NIIETCM4_CONF_H
 
-/* Includes ------------------------------------------------------------------*/
-/* Раскомментируйте/закоментируйте, чтобы включить/отключить заголовочный файл периферии */
-#include "niietcm4_gpio.h"
-#include "niietcm4_rcc.h"
-#include "niietcm4_dma.h"
-#include "niietcm4_uart.h"
-#include "niietcm4_timer.h"
-#include "niietcm4_rtc.h"
-#include "niietcm4_bootflash.h"
-#include "niietcm4_userflash.h"
-#include "niietcm4_extmem.h"
-#include "niietcm4_adc.h"
-#include "niietcm4_watchdog.h"
-#include "niietcm4_cap.h"
-#include "niietcm4_pwm.h"
-#include "niietcm4_irq.h"
-
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Раскомментируйте строку ниже для включения макроса "assert_param" в коде драйвера */
@@ -72,6 +55,27 @@
 #else
   #define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */
+
+
+/* Includes ------------------------------------------------------------------*/
+/* Раскомментируйте/закоментируйте, чтобы включить/отключить заголовочный файл периферии */
+#include "niietcm4_gpio.h"
+#include "niietcm4_rcc.h"
+#include "niietcm4_dma.h"
+#include "niietcm4_uart.h"
+#include "niietcm4_timer.h"
+#include "niietcm4_rtc.h"
+#include "niietcm4_bootflash.h"
+#include "niietcm4_userflash.h"
+#include "niietcm4_extmem.h"
+#include "niietcm4_adc.h"
+#include "niietcm4_watchdog.h"
+#include "niietcm4_cap.h"
+#include "niietcm4_pwm.h"
+#include "niietcm4_irq.h"
+#include "niietcm4_i2c.h"
+
+
 
 #endif /* __NIIETCM4_CONF_H */
 
