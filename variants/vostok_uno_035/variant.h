@@ -45,8 +45,8 @@ static const uint8_t A5  = PIN_A5;
  */ 
 #define PIN_LS_0    (21ul)
 #define PIN_LS_1    (PIN_LS_0+1)
-#define PIN_LS_2    (PIN_LS_0+1)
-#define PIN_LS_3    (PIN_LS_0+1)
+#define PIN_LS_2    (PIN_LS_0+2)
+#define PIN_LS_3    (PIN_LS_0+3)
 
 /*
  * SPI Interfaces
@@ -60,11 +60,13 @@ static const uint8_t USER_BTN  = PIN_USER_BTN;
  */
 #define SPI_INTERFACES_COUNT 1
 
+
+#define PERIPH_SPI SPI0
 #define PIN_SPI_MISO         (12)
 #define PIN_SPI_SCK          (13)
 #define PIN_SPI_MOSI         (11)
-
-static const uint8_t SS	  = 10 ;
+#define PIN_SPI_SS           (10)
+static const uint8_t SS	  = PIN_SPI_SS ;
 static const uint8_t MOSI = PIN_SPI_MOSI ;
 static const uint8_t MISO = PIN_SPI_MISO ;
 static const uint8_t SCK  = PIN_SPI_SCK ;

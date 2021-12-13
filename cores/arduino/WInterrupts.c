@@ -10,7 +10,7 @@ void attachInterrupt(pin_size_t pin, voidFuncPtr callback, PinStatus mode)
 void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus mode, void* param)
 {
   const PinDescription *pin_description = PIN_GET_DESCRIPTION(pin);
-   if(pin_description == NULL){
+  if(pin_description == NULL){
     return;
   }
   if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){

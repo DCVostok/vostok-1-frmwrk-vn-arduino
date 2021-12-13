@@ -10054,7 +10054,7 @@ typedef struct {
 #define DMA                  ((DMA_TypeDef                 *) DMA_BASE)
 #define UART0                ((UART_TypeDef                *) UART0_BASE)
 #define UART1                ((UART_TypeDef                *) UART1_BASE)
-#define SPI                  ((SPI_TypeDef                 *) SPI_BASE)
+#define SPI0                  ((SPI_TypeDef                 *) SPI_BASE)
 #define TMR0                 ((TMR_TypeDef                 *) TMR0_BASE)
 #define TMR1                 ((TMR_TypeDef                 *) TMR1_BASE)
 #define TMR2                 ((TMR_TypeDef                 *) TMR2_BASE)

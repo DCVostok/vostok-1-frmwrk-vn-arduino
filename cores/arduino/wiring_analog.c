@@ -1,5 +1,5 @@
 #include "Arduino.h"
-#include "k1921vk_sdk.h"
+#include "wiring_private.h"
 #include "wiring_analog.h"
 
 #ifdef __cplusplus
@@ -306,7 +306,7 @@ int analogRead(pin_size_t pin)
 
       ADC_SEQ_StructInit(&ADC_SEQ_InitStruct);
       ADC_SEQ_InitStruct.ADC_SEQ_StartEvent = ADC_SEQ_StartEvent_SWReq;
-      ADC_SEQ_InitStruct.ADC_Channels =pin_description->adc_ch;
+      ADC_SEQ_InitStruct.ADC_Channels =((uint32_t)1) << pin_description->adc_ch;
       ADC_SEQ_InitStruct.ADC_SEQ_ConversionCount = 1;
       ADC_SEQ_InitStruct.ADC_SEQ_ConversionDelay = 2;
       ADC_SEQ_InitStruct.ADC_SEQ_DC = ADC_DC_None;

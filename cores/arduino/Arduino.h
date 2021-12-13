@@ -7,6 +7,9 @@
 #include <math.h>
 #include "api/ArduinoAPI.h"
 
+#define interrupts()    __enable_irq()
+#define noInterrupts()  __disable_irq()
+#define digitalPinToInterrupt(P)   ( P ) 
 
 #include "api/itoa.h"
 

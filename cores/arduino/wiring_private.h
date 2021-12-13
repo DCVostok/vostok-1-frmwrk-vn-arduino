@@ -25,6 +25,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+#include "bitFlip.h"
 #include "k1921vk_sdk.h"
 #define UNUSED(x) (void)(x)
 

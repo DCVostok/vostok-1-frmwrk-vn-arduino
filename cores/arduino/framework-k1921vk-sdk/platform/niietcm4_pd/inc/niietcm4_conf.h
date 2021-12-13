@@ -74,7 +74,7 @@
 #include "niietcm4_pwm.h"
 #include "niietcm4_irq.h"
 #include "niietcm4_i2c.h"
-
+#include "niietcm4_spi.h"
 
 
 #endif /* __NIIETCM4_CONF_H */
