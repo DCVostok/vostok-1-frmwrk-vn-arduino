@@ -10,7 +10,7 @@ namespace arduino {
 class TwoWire : public HardwareI2C
 {
   public:
-    TwoWire(I2C_TypeDef *i2c, uint8_t pinSDA, uint8_t pinSCL);
+    TwoWire(I2C_TypeDef *i2c, pin_size_t pinSDA, pin_size_t pinSCL);
     void begin();
     void begin(uint8_t address);
     void end();
@@ -50,8 +50,8 @@ class TwoWire : public HardwareI2C
     
     eWire_mode_t _mode;
     I2C_TypeDef* _i2c;
-    uint8_t _uc_pinSDA;
-    uint8_t _uc_pinSCL;
+    pin_size_t _uc_pinSDA;
+    pin_size_t _uc_pinSCL;
 
     bool _transmissionBegun;
     bool _send_txBufferDone;
