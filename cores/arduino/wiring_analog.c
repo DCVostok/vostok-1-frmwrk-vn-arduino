@@ -91,6 +91,7 @@ void update_adc_config(){
 
   #ifdef MCU_K1921VK035
     RCU_ADCClkConfig(RCU_PeriphClk_PLLClk, 2, ENABLE); //25MHz
+    //RCU_ADCClkConfig(RCU_PeriphClk_PLLClk, 7, ENABLE); ////12.5MHz
     RCU_ADCClkCmd(ENABLE);
     RCU_ADCRstCmd(ENABLE);
     for (uint32_t i = 0; i < ADC_CH_Total; i++){
@@ -288,14 +289,14 @@ int analogRead(pin_size_t pin)
       GPIO_DigitalCmd(pin_description->port, pin_description->pin_msk, DISABLE);
       
 
-      ADC_SEQ_Cmd(ADC_SEQ_Module, DISABLE);
+      //ADC_SEQ_Cmd(ADC_SEQ_Module, DISABLE);
       ADC_SEQ_StructInit(&ADC_SEQ_InitStruct);
       ADC_SEQ_InitStruct.StartEvent = ADC_SEQ_StartEvent_SwReq;
       ADC_SEQ_InitStruct.SWStartEn = ENABLE;
       ADC_SEQ_InitStruct.ReqAverage = ADC_SEQ_Average_4;
       ADC_SEQ_InitStruct.ReqAverageEn = ENABLE;
       ADC_SEQ_InitStruct.Req[ADC_SEQ_ReqNum_0] = pin_description->adc_ch;
-      ADC_SEQ_InitStruct.ReqMax = ADC_SEQ_ReqNum_1;
+      ADC_SEQ_InitStruct.ReqMax = ADC_SEQ_ReqNum_0;
       ADC_SEQ_InitStruct.RestartCount = 0;
       ADC_SEQ_Init(ADC_SEQ_Module, &ADC_SEQ_InitStruct);
       ADC_SEQ_Cmd(ADC_SEQ_Module, ENABLE);
@@ -315,7 +316,7 @@ int analogRead(pin_size_t pin)
       ADC_SEQ_SWReq();
     #endif
     
-      while (ADC_SEQ_FIFOEmptyStatus(ADC_SEQ_Module));
+      while (!ADC_SEQ_GetFIFOLoad(ADC_SEQ_Module));
       valueRead = ADC_SEQ_GetFIFOData(ADC_SEQ_Module);
       valueRead = mapResolution(valueRead, _internalReadResolution, _readResolution);
   }

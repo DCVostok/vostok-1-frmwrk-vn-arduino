@@ -230,7 +230,7 @@ namespace arduino{
             #ifdef MCU_K1921VK035
                 UART_InitStruct.Rx = ENABLE;
                 UART_InitStruct.Tx = ENABLE;
-                UART_InitStruct.FIFO = ENABLE;
+                UART_InitStruct.FIFO = DISABLE;
                 UART_InitStruct.BaudRate = baudRate;
                 UART_InitStruct.DataWidth = DataWidth;
                 UART_InitStruct.StopBit = StopBit;
@@ -238,7 +238,7 @@ namespace arduino{
                 
             #elif MCU_K1921VK01T
                 UART_InitStruct.UART_ClkFreq = SystemCoreClock;
-                UART_InitStruct.UART_FIFOEn = ENABLE;
+                UART_InitStruct.UART_FIFOEn = DISABLE;
                 UART_InitStruct.UART_BaudRate = baudRate;
                 UART_InitStruct.UART_DataWidth = DataWidth;
                 UART_InitStruct.UART_StopBit =   StopBit;
@@ -284,14 +284,15 @@ namespace arduino{
     }
     
     size_t UartSerial::write(const uint8_t data){
-            if(tx_in_progress){
+            if(!tx_in_progress){
                 UART_SendData(_nt_uart,data);
+                tx_in_progress = true;
             }
             else{
                 while (!availableForWrite());
                 _txBuffer.store_char(data);
                 if(!tx_in_progress){
-                    UART_SendData(_nt_uart,data);
+                    UART_SendData(_nt_uart,_txBuffer.read_char());
                 }
             }
             return 1;
@@ -319,8 +320,8 @@ namespace arduino{
 			UART_SendData(_nt_uart,_txBuffer.read_char());
 		}
 		else{
-			tx_in_progress = false;
-			UART_ITStatusClear(_nt_uart,UART_ITSource_TxFIFOLevel);
+			tx_in_progress = false;   
 		}
+        UART_ITStatusClear(_nt_uart,UART_ITSource_TxFIFOLevel);
     }
 }

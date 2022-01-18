@@ -38,7 +38,7 @@ const PinDescription pins_description_map[]=
 
   { GPIOA,  GPIO_Pin_9, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(1)},  // mux with D11 / A9 /PWM_0_B
   { GPIOA,  GPIO_Pin_10, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(2)}, // mux with D10 / A10 /PWM_1_A
-  { GPIOA,  GPIO_Pin_12, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(4)}, // mux with D5 / A9 /PWM_2_A
+  { GPIOA,  GPIO_Pin_12, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(4)}, // mux with D5 / A12 /PWM_2_A
 
 } ;
 const pin_size_t pins_mux_map[] = {
@@ -86,26 +86,28 @@ const pin_size_t adc_ls_ctrl_map[] =
 
 
 arduino::UartSerial Serial(UART0,PIN_UART_TX0,PIN_UART_RX0);
-void UART0_RX_IRQHandler(){
-    Serial.IrqHandlerRx();
-}
-void UART0_TX_IRQHandler(){
-    Serial.IrqHandlerTx();
-}
-void UART0_E_RT_IRQHandler(){
-    Serial.IrqHandlerRxTimeout();
-}
 arduino::UartSerial Serial1(UART1,PIN_UART_TX1,PIN_UART_RX1);
-void UART1_RX_IRQHandler(){
-    Serial1.IrqHandlerRx();
-}
-void UART1_TX_IRQHandler(){
-    Serial1.IrqHandlerTx();
-}
-void UART1_E_RT_IRQHandler(){
-    Serial1.IrqHandlerRxTimeout();
-}
+extern "C" {
+  void UART0_RX_IRQHandler(){
+      Serial.IrqHandlerRx();
+  }
+  void UART0_TX_IRQHandler(){
+      Serial.IrqHandlerTx();
+  }
+  void UART0_E_RT_IRQHandler(){
+      Serial.IrqHandlerRxTimeout();
+  }
 
+  void UART1_RX_IRQHandler(){
+      Serial1.IrqHandlerRx();
+  }
+  void UART1_TX_IRQHandler(){
+      Serial1.IrqHandlerTx();
+  }
+  void UART1_E_RT_IRQHandler(){
+      Serial1.IrqHandlerRxTimeout();
+  }
+}
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){
   pin_size_t  pwm_pin = pin_num;

@@ -16,5 +16,5 @@
 #include "pins_arduino.h"
 
 #include "wiring_analog.h"
-
+#include "wiring_private.h"
 #endif//ARDUINO_H

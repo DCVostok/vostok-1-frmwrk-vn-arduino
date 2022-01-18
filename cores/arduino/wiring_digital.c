@@ -4,7 +4,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+#define INPUT_FILTER_SAMPLE_PEROD 50
 void pinMode( pin_size_t ulPin, PinMode ulMode ){
   const PinDescription *pin_description = PIN_GET_DESCRIPTION(ulPin);
   if(pin_description == NULL){
@@ -36,6 +36,10 @@ void pinMode( pin_size_t ulPin, PinMode ulMode ){
                                                            GPIO_PullUp_Dis;;
     gpio_init_struct.GPIO_Pin = pin_description->pin_msk;
   #endif
+  GPIO_QualSampleConfig(pin_description->port,INPUT_FILTER_SAMPLE_PEROD);
+  GPIO_QualModeConfig(pin_description->port,pin_description->pin_msk,GPIO_QualMode_6Sample);
+  GPIO_QualCmd(pin_description->port,pin_description->pin_msk,ENABLE);
+
   GPIO_Init(pin_description->port,&gpio_init_struct);
   return;
 }

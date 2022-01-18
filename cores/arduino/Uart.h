@@ -39,7 +39,7 @@ namespace arduino{
         RingBuffer _txBuffer;
         int _pin_tx;
         int _pin_rx;
-        bool tx_in_progress;
+        volatile bool tx_in_progress;
     };
 }
 #endif
