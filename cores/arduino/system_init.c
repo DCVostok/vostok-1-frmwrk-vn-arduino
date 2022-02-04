@@ -24,6 +24,10 @@ void init(){
 
 }
 
-void initVariant(){
 
+
+#ifdef MCU_K1921VK035
+void NMI_Handler(){
+    
 }
+#endif
