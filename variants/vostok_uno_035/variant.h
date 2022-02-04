@@ -5,9 +5,10 @@
 
 #ifdef __cplusplus
   #include "Uart.h"
+extern "C"{
 #endif
 
-#define PINS_COUNT           (24u)
+#define PINS_COUNT           (27u)
 #define NUM_DIGITAL_PINS     (24u)
 #define NUM_ANALOG_INPUTS    (4u)
 
@@ -105,6 +106,7 @@ static const uint8_t SCL = PIN_WIRE_SCL;
 #define PIN_MUX_NO 0xfe
 #define PIN_MUX_WITH(pinNum) (pinNum)
 
+
 extern const pin_size_t pins_mux_map[];// key - arduino pin num
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num);
@@ -112,5 +114,7 @@ pin_size_t pin_get_description_with_pwm(pin_size_t pin_num);
 #define PIN_GET_DESCRIPTION_WITH_PWM(pinNum) PIN_GET_DESCRIPTION(pin_get_description_with_pwm(pinNum))
 
 
-
+#ifdef __cplusplus
+}
+#endif
 #endif//VARIANT_H

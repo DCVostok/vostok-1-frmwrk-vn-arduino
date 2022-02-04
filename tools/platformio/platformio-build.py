@@ -35,6 +35,7 @@ env.Append(
         ("F_CPU", str(board.get("build.f_cpu"))),
         ("MCU_"+mcu),# MCU name
         ("ARDUINO_"+board.get("build.board")),
+        ("ARDUINO","10808"),
         ],
     )
 

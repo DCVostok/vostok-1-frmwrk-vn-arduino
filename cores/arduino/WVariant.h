@@ -49,7 +49,7 @@ typedef struct _PwmChDescription
 #define PWM_CH_DESCRIPTION_CH_B (1)
 
 #ifndef PIN_GET_DESCRIPTION
-  #define PIN_GET_DESCRIPTION(pinNum) (pinNum < PINS_COUNT ? &(pins_description_map[pinNum]) : NULL)
+  #define PIN_GET_DESCRIPTION(pinNum) (pinNum <= PINS_COUNT ? &(pins_description_map[pinNum]) : NULL)
 #endif
 
 #ifndef PIN_GET_DESCRIPTION_WITH_PWM

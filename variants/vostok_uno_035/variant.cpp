@@ -52,7 +52,7 @@ const pin_size_t pins_mux_map[] = {
   PIN_MUX_NO,// D7
   PIN_MUX_NO,// D8
   PIN_MUX_NO,// D9
-  PIN_MUX_WITH(10),// D10
+  PIN_MUX_WITH(26),// D10
   PIN_MUX_WITH(25),// D11
   PIN_MUX_NO,// D12
   PIN_MUX_NO,// D13
@@ -107,16 +107,28 @@ extern "C" {
   void UART1_E_RT_IRQHandler(){
       Serial1.IrqHandlerRxTimeout();
   }
-}
+
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){
   pin_size_t  pwm_pin = pin_num;
   while(pins_mux_map[pin_num] != PIN_MUX_NO){
     pinMode(pin_num,INPUT);
+    pin_num  = pins_mux_map[pin_num];
     if (pins_description_map[pin_num].pwm_ch != PIN_PWM_NONE){
       pwm_pin = pin_num;
+      break;
     }
-      pin_num  = pins_mux_map[pin_num];
   }
+  
   return pwm_pin;
+}
+
+
+  void initVariant(){
+         GPIO_LockKeyCmd(GPIOA,ENABLE);
+         WRITE_REG(GPIOA->LOCKCLR, GPIO_Pin_4 | GPIO_Pin_6); // DISABLE LOCK at JTAG_TRST and JTAG_TDI, need wait 2 CLK periods for unlock
+         WRITE_REG(GPIOA->LOCKCLR, GPIO_Pin_4 | GPIO_Pin_6); // DISABLE LOCK at JTAG_TRST and JTAG_TDI
+         WRITE_REG(GPIOA->LOCKCLR, GPIO_Pin_4 | GPIO_Pin_6); // DISABLE LOCK at JTAG_TRST and JTAG_TDI 
+         GPIO_LockKeyCmd(GPIOA,DISABLE);
+  }
 }

@@ -35,7 +35,14 @@ namespace arduino{
             GPIO_Init(pin_description_tx->port,&GPIO_InitStruct);
 
             UART_Num_TypeDef uart_num = _nt_uart == UART0 ? UART0_Num : UART1_Num;
-            RCU_UARTClkConfig(uart_num, RCU_PeriphClk_PLLClk, 0, DISABLE);
+            RCU_PeriphClk_TypeDef Rcu_uart_clk_sel = RCU_PeriphClk_PLLClk;
+            if (RCU->SYSCLKCFG_bit.SYSSEL == RCU_SYSCLKCFG_SYSSEL_OSICLK){
+              Rcu_uart_clk_sel = RCU_PeriphClk_OSIClk;
+            }
+            if (RCU->SYSCLKCFG_bit.SYSSEL == RCU_SYSCLKCFG_SYSSEL_OSECLK){
+              Rcu_uart_clk_sel = RCU_PeriphClk_OSEClk;
+            } 
+            RCU_UARTClkConfig(uart_num, Rcu_uart_clk_sel, 0, DISABLE);
             RCU_UARTClkCmd(uart_num, ENABLE);
             RCU_UARTRstCmd(uart_num, ENABLE);
             if(_nt_uart == UART0){

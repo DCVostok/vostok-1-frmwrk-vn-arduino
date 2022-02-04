@@ -90,7 +90,14 @@ void enablePwmBlocks(){
 void update_adc_config(){
 
   #ifdef MCU_K1921VK035
-    RCU_ADCClkConfig(RCU_PeriphClk_PLLClk, 2, ENABLE); //25MHz
+    RCU_PeriphClk_TypeDef Rcu_adc_clk_sel = RCU_PeriphClk_PLLClk;
+    if (RCU->SYSCLKCFG_bit.SYSSEL == RCU_SYSCLKCFG_SYSSEL_OSICLK){
+      Rcu_adc_clk_sel = RCU_PeriphClk_OSIClk;
+    }
+    if (RCU->SYSCLKCFG_bit.SYSSEL == RCU_SYSCLKCFG_SYSSEL_OSECLK){
+      Rcu_adc_clk_sel = RCU_PeriphClk_OSEClk;
+    } 
+    RCU_ADCClkConfig(Rcu_adc_clk_sel, ((SystemCoreClock/25)/2)-1, ENABLE); //25MHz
     //RCU_ADCClkConfig(RCU_PeriphClk_PLLClk, 7, ENABLE); ////12.5MHz
     RCU_ADCClkCmd(ENABLE);
     RCU_ADCRstCmd(ENABLE);
@@ -183,6 +190,9 @@ void analogWrite(pin_size_t pin, int value)
   }
   
   if (pin_description->pwm_ch != PIN_PWM_NONE){
+    if(pwn_enabled == 0){
+      enablePwmBlocks();
+    }
     value = mapResolution(value, _writeResolution, _internalWriteResolution);
     GPIO_Init_TypeDef GPIO_InitStruct;
     PWM_CMP_Init_TypeDef PWM_CMP_InitStruct;
@@ -196,34 +206,44 @@ void analogWrite(pin_size_t pin, int value)
       PWM_TB_InitStruct.Mode = PWM_TB_Mode_Up;
       PWM_TB_InitStruct.ClkDiv = (_writeFreq >> 3);
       PWM_TB_InitStruct.ClkDivExtra = _writeFreq & 0b111;
-      PWM_TB_InitStruct.Period = 1 << MAX_PWM_RESOLUTION;
+      PWM_TB_InitStruct.Period = (1 << MAX_PWM_RESOLUTION) - 1;
       PWM_TB_Init(pwm_ch_description->pwm, &PWM_TB_InitStruct);
 
       PWM_AQ_StructInit(&PWM_AQ_InitStruct);
+      PWM_AQ_InitStruct.ActionA_CTREqCMPAUp = PWM_AQ_Action_ToZero; 
+      PWM_AQ_InitStruct.ActionA_CTREqPeriod = PWM_AQ_Action_ToOne;
       PWM_AQ_InitStruct.ActionB_CTREqCMPBUp = PWM_AQ_Action_ToZero; 
       PWM_AQ_InitStruct.ActionB_CTREqPeriod = PWM_AQ_Action_ToOne;
       PWM_AQ_Init(pwm_ch_description->pwm, &PWM_AQ_InitStruct);
 
-      PWM_CMP_StructInit(&PWM_CMP_InitStruct);
+
+      PWM_CMP_CmpALoadEventConfig(pwm_ch_description->pwm, PWM_CMP_LoadEvent_CTREqZero);
+      PWM_CMP_CmpADirectLoadCmd(pwm_ch_description->pwm, DISABLE);
+      
+      PWM_CMP_CmpBLoadEventConfig(pwm_ch_description->pwm, PWM_CMP_LoadEvent_CTREqZero);
+      PWM_CMP_CmpBDirectLoadCmd(pwm_ch_description->pwm, DISABLE);
+
       if(pwm_ch_description->pwm_ch == PWM_CH_DESCRIPTION_CH_A){
-        PWM_CMP_InitStruct.CmpA = value;
+        PWM_CMP_SetCmpA(pwm_ch_description->pwm, value);
       }
       else{
-        PWM_CMP_InitStruct.CmpB = value;
+       PWM_CMP_SetCmpB(pwm_ch_description->pwm, value);
       }
-      PWM_CMP_Init(pwm_ch_description->pwm, &PWM_CMP_InitStruct);
+      
+      
 
       GPIO_StructInit(&GPIO_InitStruct);
       GPIO_InitStruct.AltFunc = ENABLE;
       GPIO_InitStruct.Pin = pin_description->pin_msk;
       GPIO_Init(pin_description->port, &GPIO_InitStruct);
       GPIO_DigitalCmd(pin_description->port, pin_description->pin_msk, ENABLE);
+      PWM_TB_PrescCmd(PWM_TB_Presc_1, ENABLE);
+      PWM_TB_PrescCmd(PWM_TB_Presc_0, ENABLE);
+      PWM_TB_PrescCmd(PWM_TB_Presc_2, ENABLE);
     #elif MCU_K1921VK01T
     PWM_CTR_Init_TypeDef PWM_CTR_InitStruct;
 
-    if(pwn_enabled == 0){
-      enablePwmBlocks();
-    }
+    
 
     PWM_CTR_StructInit(&PWM_CTR_InitStruct);
     PWM_CTR_InitStruct.PWM_ChAction_CTREqPeriod_A = PWM_ChAction_ToOne;

@@ -184,8 +184,8 @@ void PWM_CMP_Init(PWM_TypeDef* PWMx, PWM_CMP_Init_TypeDef* InitStruct)
     PWM_CMP_CmpALoadEventConfig(PWMx, InitStruct->LoadEventCmpA);
     PWM_CMP_CmpADirectLoadCmd(PWMx, InitStruct->CmpADirectLoad);
     PWM_CMP_SetCmpA(PWMx, InitStruct->CmpA);
-    PWM_CMP_CmpALoadEventConfig(PWMx, InitStruct->LoadEventCmpB);
-    PWM_CMP_CmpADirectLoadCmd(PWMx, InitStruct->CmpBDirectLoad);
+    PWM_CMP_CmpBLoadEventConfig(PWMx, InitStruct->LoadEventCmpB);
+    PWM_CMP_CmpBDirectLoadCmd(PWMx, InitStruct->CmpBDirectLoad);
     PWM_CMP_SetCmpB(PWMx, InitStruct->CmpB);
 }
 
