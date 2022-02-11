@@ -49,6 +49,12 @@ env.Append(
     ]
 )
 
+env.Append(
+    LIBSOURCE_DIRS=[
+        os.path.join(ARDUINO_PACKADGE_DIR, "libraries")
+    ]
+)
+
 #
 # Compile CMSIS sources
 #

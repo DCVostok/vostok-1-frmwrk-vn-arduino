@@ -16,24 +16,25 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#if defined(ARDUINO_ARCH_K1921VK)
+#if defined(MCU_K1921VK035) || defined(MCU_K1921VK01T)
 
 #include <Arduino.h>
 #include <Servo.h>
 #include <k1921vk_sdk.h>
 
-uint32_t TicksInMicrosecond = SystemCoreClock/1000000;
+#define TICKS_IN_MICROSECOND (SystemCoreClock/1000000)
 
-#define usToTicks(_us)    (TicksInMicrosecond * _us)     // converts microseconds to tick
-#define ticksToUs(_ticks) (( (unsigned)_ticks)/ TicksInMicrosecond) // converts from ticks back to microseconds
+#define usToTicks(_us)    (TICKS_IN_MICROSECOND * _us)     // converts microseconds to tick
+#define ticksToUs(_ticks) (( (unsigned)_ticks)/ TICKS_IN_MICROSECOND) // converts from ticks back to microseconds
+#define REFRESH_INTERVAL_TICKS  usToTicks(REFRESH_INTERVAL)
 
-#define TRIM_DURATION       2                               // compensation ticks to trim adjust for digitalWrite delays
+#define TRIM_DURATION       30                               // compensation ticks to trim adjust for digitalWrite delays
 
 static servo_t servos[MAX_SERVOS];                          // static array of servo structures
 uint8_t ServoCount = 0;                                     // the total number of attached servos
 static volatile int8_t CurTimerServo[_Nbr_timers ];             // counter for the servo being pulsed for each timer (or -1 if refresh interval)
 static uint32_t CumulativeTicksSinceRefresh[_Nbr_timers ]; 
-uint32_t Refresh_interval_ticks = usToTicks(REFRESH_INTERVAL);
+
 
 #define SERVO_INDEX_TO_TIMER_ID(_servo_nbr) ((timer_Sequence_t)(_servo_nbr / SERVOS_PER_TIMER)) // returns the timer controlling this servo
 
@@ -44,17 +45,18 @@ uint32_t Refresh_interval_ticks = usToTicks(REFRESH_INTERVAL);
 //------------------------------------------------------------------------------
 void Servo_Handler(timer_Sequence_t timer);
 
-#if defined (_useTimer0)
-void SERVO_TIMER0_IRQHandler(void) {
-    Servo_Handler(_timer0);
+extern "C"{
+  #if defined (_useTimer0)
+  void SERVO_TIMER0_IRQHandler(void) {
+      Servo_Handler(_timer0);
+  }
+  #endif
+  #if defined (_useTimer1)
+  void SERVO_TIMER1_IRQHandler(void) {
+      Servo_Handler(_timer1);
+  }
+  #endif
 }
-#endif
-#if defined (_useTimer1)
-void SERVO_TIMER1_IRQHandler(void) {
-    Servo_Handler(_timer1);
-}
-#endif
-
 inline void ServoTimer_setCounter(timer_Sequence_t timer_id,uint32_t value){
 #if defined (_useTimer0)
     if (timer_id == _timer0){
@@ -71,13 +73,20 @@ inline void ServoTimer_setCounter(timer_Sequence_t timer_id,uint32_t value){
 inline void ServoTimer_ClearIrq(timer_Sequence_t timer_id){
 #if defined (_useTimer0)
     if (timer_id == _timer0){
+      #ifdef MCU_K1921VK035
+        SERVO_TIMER0->INTSTATUS_bit.INT = 1;
+      #elif MCU_K1921VK01T  
         SERVO_TIMER0->INTSTATUS_INTCLEAR_bit.INT = 1;
-        
+      #endif
     }   
 #endif
 #if defined (_useTimer1)
     if (timer_id == _timer1){
-      SERVO_TIMER1->INTSTATUS_INTCLEAR_bit.INT = 1;
+      #ifdef MCU_K1921VK035
+        SERVO_TIMER1->INTSTATUS_bit.INT = 1;
+      #elif MCU_K1921VK01T  
+        SERVO_TIMER1->INTSTATUS_INTCLEAR_bit.INT = 1;
+      #endif
     }
 #endif
 }
@@ -97,7 +106,7 @@ void Servo_Handler(timer_Sequence_t timer_id)
 
   CurTimerServo[timer_id]++;    // increment to the next servo
   CurServoIndex++;
-  if (CurServoIndex < ServoCount && CurTimerServo[timer_id] < SERVOS_PER_TIMER) {
+  if (CurServoIndex < ServoCount && CurTimerServo[timer_id] < SERVOS_PER_TIMER && servos[CurServoIndex].ticks > 0) {
     ServoTimer_setCounter(timer_id,servos[CurServoIndex].ticks);
     CumulativeTicksSinceRefresh[timer_id] += servos[CurServoIndex].ticks;
     if (servos[CurServoIndex].Pin.isActive) {
@@ -106,12 +115,12 @@ void Servo_Handler(timer_Sequence_t timer_id)
     }
   } else {
     // finished all channels so wait for the refresh period to expire before starting over
-    if (CumulativeTicksSinceRefresh[timer_id] + 4 < Refresh_interval_ticks) {
+    if (CumulativeTicksSinceRefresh[timer_id] + 4 < REFRESH_INTERVAL_TICKS) {
       // allow a few ticks to ensure the next OCR1A not missed
-      ServoTimer_setCounter(timer_id,Refresh_interval_ticks - CumulativeTicksSinceRefresh[timer_id]);
+      ServoTimer_setCounter(timer_id,REFRESH_INTERVAL_TICKS - CumulativeTicksSinceRefresh[timer_id]);
     } else {
       // generate update to restart immediately from the beginning with the 1st servo
-      ServoTimer_setCounter(timer_id,10);
+      ServoTimer_setCounter(timer_id,50);
     }
     CurTimerServo[timer_id] = -1; // this will get incremented at the end of the refresh period to start again at the first channel
   }
@@ -127,13 +136,13 @@ static void initISR(timer_Sequence_t timer_id)
     #ifdef MCU_K1921VK035
       RCU_APBClkCmd(SERVO_TIMER0_RCU_CLK, ENABLE);
       RCU_APBRstCmd(SERVO_TIMER0_RCU_RST, ENABLE);
-      TMR_SetLoad(SERVO_TIMER0,usToTicks(20000);
-      TMR_SetCounter(SERVO_TIMER0,usToTicks(1000);//first irq after 1ms
+      TMR_SetLoad(SERVO_TIMER0,REFRESH_INTERVAL_TICKS);
+      TMR_SetCounter(SERVO_TIMER0,usToTicks(1000));//first irq after 1ms
       TMR_ITCmd(SERVO_TIMER0, ENABLE);
       TMR_Cmd(SERVO_TIMER0, ENABLE);
     #elif MCU_K1921VK01T
       RCC_PeriphRstCmd(SERVO_TIMER0_RCC_PERIPH_RST, ENABLE);
-      TIMER_SetReload(SERVO_TIMER0,usToTicks(20000));
+      TIMER_SetReload(SERVO_TIMER0,REFRESH_INTERVAL_TICKS);
       TIMER_SetCounter(SERVO_TIMER0,usToTicks(1000));//first irq after 1ms
       TIMER_ITCmd(SERVO_TIMER0, ENABLE);
       TIMER_Cmd(SERVO_TIMER0, ENABLE);
@@ -148,8 +157,8 @@ static void initISR(timer_Sequence_t timer_id)
     #ifdef MCU_K1921VK035
       RCU_APBClkCmd(SERVO_TIMER1_RCU_CLK, ENABLE);
       RCU_APBRstCmd(SERVO_TIMER1_RCU_RST, ENABLE);
-      TMR_SetLoad(SERVO_TIMER1,usToTicks(20000);
-      TMR_SetCounter(SERVO_TIMER1,usToTicks(1000);//first irq after 1ms
+      TMR_SetLoad(SERVO_TIMER1,usToTicks(200000));
+      TMR_SetCounter(SERVO_TIMER1,usToTicks(1000));//first irq after 1ms
       TMR_ITCmd(SERVO_TIMER1, ENABLE);
       TMR_Cmd(SERVO_TIMER1, ENABLE);
     #elif MCU_K1921VK01T
@@ -283,8 +292,7 @@ void Servo::writeMicroseconds(int value)
     else if (value > MAX_PULSE_WIDTH)
       value = MAX_PULSE_WIDTH;
 
-    value = value - TRIM_DURATION;
-    value = usToTicks(value);  // convert to ticks after compensating for interrupt overhead
+    value = usToTicks(value) - TRIM_DURATION;  // convert to ticks after compensating for interrupt overhead
     servos[channel].ticks = value;
   }
 }
@@ -298,7 +306,7 @@ int Servo::readMicroseconds()
 {
   unsigned int pulsewidth;
   if (this->servoIndex != INVALID_SERVO)
-    pulsewidth = ticksToUs(servos[this->servoIndex].ticks)  + TRIM_DURATION;
+    pulsewidth = ticksToUs(servos[this->servoIndex].ticks + TRIM_DURATION);
   else
     pulsewidth  = 0;
 

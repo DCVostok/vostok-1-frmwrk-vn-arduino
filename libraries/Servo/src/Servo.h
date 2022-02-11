@@ -59,7 +59,7 @@
  */
 
 // Architecture specific include
-#if defined(ARDUINO_ARCH_K1921VK)
+#if defined(MCU_K1921VK035) || defined(MCU_K1921VK01T)
 #include "ServoTimers.h"
 #else
 #error "This library only supports boards with an NIIET K1921VK processor."
@@ -72,7 +72,7 @@
 #define DEFAULT_PULSE_WIDTH  1500     // default pulse width when servo is attached
 #define REFRESH_INTERVAL    20000     // minimum time to refresh servos in microseconds 
 
-#define SERVOS_PER_TIMER       12     // the maximum number of servos controlled by one timer 
+#define SERVOS_PER_TIMER       8     // the maximum number of servos controlled by one timer 
 #define MAX_SERVOS   (_Nbr_timers  * SERVOS_PER_TIMER)
 
 #define INVALID_SERVO         255     // flag indicating an invalid servo index
@@ -103,8 +103,8 @@ public:
   bool attached();                   // return true if this servo is attached, otherwise false 
 private:
    uint8_t servoIndex;               // index into the channel data for this servo
-   int8_t min;                       // minimum is this value times 4 added to MIN_PULSE_WIDTH    
-   int8_t max;                       // maximum is this value times 4 added to MAX_PULSE_WIDTH   
+   int16_t min;                       // minimum is this value times 4 added to MIN_PULSE_WIDTH    
+   int16_t max;                       // maximum is this value times 4 added to MAX_PULSE_WIDTH   
 };
 
 #endif

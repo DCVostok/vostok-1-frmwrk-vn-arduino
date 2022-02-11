@@ -195,7 +195,6 @@ void analogWrite(pin_size_t pin, int value)
     }
     value = mapResolution(value, _writeResolution, _internalWriteResolution);
     GPIO_Init_TypeDef GPIO_InitStruct;
-    PWM_CMP_Init_TypeDef PWM_CMP_InitStruct;
     const PwmChDescription *pwm_ch_description = &(pwm_ch_description_map[pin_description->pwm_ch]);
     #ifdef MCU_K1921VK035
       PWM_TB_Init_TypeDef PWM_TB_InitStruct;
