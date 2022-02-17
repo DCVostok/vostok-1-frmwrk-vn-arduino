@@ -27,6 +27,8 @@ TwoWire::TwoWire(I2C_TypeDef *i2c, uint8_t pinSDA, uint8_t pinSCL)
   this->_uc_pinSDA=pinSDA;
   this->_uc_pinSCL=pinSCL;
   _transmissionBegun = false;
+  _i2c_periph_status = I2C_STATUS_DONE;
+  _mode = OFF;
 }
 
 void TwoWire::init_periph(void) {
@@ -91,14 +93,19 @@ void TwoWire::init_periph(void) {
 
 }
 void TwoWire::begin(void) {//master mode
+    if(_mode != OFF){
+      return;
+    }
       _mode = MASTER;
       init_periph();
       I2C_SlaveCmd(_i2c,DISABLE);
 }
 
 void TwoWire::begin(uint8_t address) {//slave mode
+    if(_mode != OFF){
+      return;
+    }
     _mode = SLAVE;
-
     init_periph();
     I2C_SetSlaveAddr(_i2c,address);
     I2C_SlaveCmd(_i2c,ENABLE);
@@ -106,7 +113,7 @@ void TwoWire::begin(uint8_t address) {//slave mode
 
 void TwoWire::setClock(uint32_t baudrate) {
       uint32_t freq_calc;
-      freq_calc = SystemCoreClock / 4*baudrate;
+      freq_calc = SystemCoreClock / (4*baudrate);
       #ifdef MCU_K1921VK035
         I2C_FSDivHighConfig(freq_calc >> 7);
         I2C_FSDivLowConfig( freq_calc & 0x7F);
@@ -127,37 +134,42 @@ void TwoWire::end() {
       RCC_PeriphClkCmd(_i2c == NT_I2C0 ? RCC_PeriphClk_I2C0:RCC_PeriphClk_I2C1, DISABLE);
       RCC_PeriphRstCmd(_i2c == NT_I2C0 ? RCC_PeriphRst_I2C0:RCC_PeriphRst_I2C1, DISABLE);
   #endif
+  _mode = OFF;
 }
 
 size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit)
 {
+  uint32_t start_time;
   if(quantity == 0)
   {
     return 0;
   }
 
   size_t byteRead = 0;
-
   _rxBuffer.clear();
-
-  I2C_State_TypeDef i2c_cur_state;
+  
+  _i2cAddress = (address<<1)|WIRE_READ_FLAG;
+  _i2c_periph_status = I2C_STATUS_RUN;
+  _request_quantity = quantity;
   I2C_StartCmd(_i2c);
-  while (I2C_GetState(_i2c) != I2C_State_STDONE ||I2C_GetState(_i2c) != I2C_State_RSDONE );
-  I2C_SetData(_i2c, address<<1|WIRE_READ_FLAG);
-  while ((i2c_cur_state = I2C_GetState(_i2c)) != I2C_State_MRADPA || i2c_cur_state !=I2C_State_MRADNA );
-  if(i2c_cur_state == I2C_State_MRADNA){
-    I2C_StopCmd(_i2c);
+  start_time = millis();
+  while (_i2c_periph_status == I2C_STATUS_RUN){ //wait
+    if(millis() - start_time > TWO_WIRE_TIME_OUT){
+      I2C_StopCmd(_i2c);
+      while (_i2c->CTL0_bit.STOP);
+      return 4;
+    }
+  }
+  if(_i2c_periph_status != I2C_STATUS_DONE){
+    _txBuffer.clear();
     while (_i2c->CTL0_bit.STOP);
     return 0;
   }
-    _request_quantity = quantity;
-    while (_request_quantity > 0);//wait while rx is done
-    
-    if (stopBit)
-    {
+  if (stopBit)
+  {
       I2C_StopCmd(_i2c);
       while (_i2c->CTL0_bit.STOP);
-    }
+  }
 
   return byteRead;
 }
@@ -182,41 +194,45 @@ void TwoWire::beginTransmission(uint8_t address) {
 //  4 : Other error
 uint8_t TwoWire::endTransmission(bool stopBit)
 {
+  uint32_t start_time;
   if(!_transmissionBegun){
     _txBuffer.clear();
     return 4;
   }
   _transmissionBegun = false ;
-
-  I2C_State_TypeDef i2c_cur_state;
+  _i2cAddress = (_txAddress<<1)|WIRE_WRITE_FLAG;
+  _i2c_periph_status = I2C_STATUS_RUN;
   I2C_StartCmd(_i2c);
-  while (I2C_GetState(_i2c) != I2C_State_STDONE ||I2C_GetState(_i2c) != I2C_State_RSDONE );
-  I2C_SetData(_i2c, _txAddress<<1|WIRE_WRITE_FLAG);
-  while ((i2c_cur_state = I2C_GetState(_i2c)) != I2C_State_MTADPA || i2c_cur_state !=I2C_State_MTADNA );
-  if(i2c_cur_state == I2C_State_MTADNA){
+  start_time = millis();
+  while (_i2c_periph_status == I2C_STATUS_RUN){ //wait
+    if(millis() - start_time > TWO_WIRE_TIME_OUT){
+      I2C_StopCmd(_i2c);
+      while (_i2c->CTL0_bit.STOP);
+      return 4;
+    }
+  }
+
+  if(_i2c_periph_status == I2C_STATUS_ADDR_NACK){
     _txBuffer.clear();
-    I2C_StopCmd(_i2c);
     while (_i2c->CTL0_bit.STOP);
     return 2;
   }
-  
-
-  if(_txBuffer.available()){
-    _send_txBufferDone = false;
-    I2C_SetData(_i2c, _txBuffer.read_char());//other bufer part sent by IRQ
-  }
-  while (!_send_txBufferDone); //wait
-  if( I2C_GetState(_i2c) != I2C_State_MTDAPA){
+  if(_i2c_periph_status == I2C_STATUS_DATA_NACK){
     _txBuffer.clear();
-    I2C_StopCmd(_i2c);
     while (_i2c->CTL0_bit.STOP);
     return 3;
   }
+  if(_i2c_periph_status == I2C_STATUS_ERROR){
+    _txBuffer.clear();
+    while (_i2c->CTL0_bit.STOP);
+    return 4;
+  }
+  
   
   if (stopBit)
   {
     I2C_StopCmd(_i2c);
-    while (_i2c->CTL0_bit.STOP);;
+    while (_i2c->CTL0_bit.STOP);
   }
   return 0;
 }
@@ -288,17 +304,52 @@ void TwoWire::onService(void)
 {
   switch (I2C_GetState(_i2c))
   {
+    case I2C_State_STDONE:
+        I2C_SetData(_i2c, _i2cAddress);
+    break;
+    case I2C_State_RSDONE:
+        I2C_SetData(_i2c, _i2cAddress);
+    break;
+
+    case I2C_State_MTADPA:// master sent write_ADDR and receive ACK
+      if(_txBuffer.available()){
+        I2C_SetData(_i2c, _txBuffer.read_char());
+      }
+      else{
+        I2C_StopCmd(_i2c);
+        _i2c_periph_status = I2C_STATUS_DONE;
+      }
+    break;
+
+    case I2C_State_MTADNA:// master sent write_ADDR and receive NACK
+        I2C_StopCmd(_i2c);
+        _i2c_periph_status = I2C_STATUS_ADDR_NACK;
+    break;
+
     case I2C_State_MTDAPA: // master sent byte
       if(_txBuffer.available()){
         I2C_SetData(_i2c, _txBuffer.read_char());
       }
       else{
-        _send_txBufferDone = true;
+        I2C_StopCmd(_i2c);
+        _i2c_periph_status = I2C_STATUS_DONE;
       }
     break;
 
-    case I2C_State_MTDANA:
-        _send_txBufferDone = true;
+    case I2C_State_MTDANA:// master sent byte NACK
+        I2C_StopCmd(_i2c);
+        _i2c_periph_status = I2C_STATUS_DATA_NACK;
+    break;
+
+    case I2C_State_MRADPA:// master sent read_ADDR and receive ACK
+        if(_request_quantity <=1){
+          I2C_NACKCmd(_i2c);
+        }
+    break;
+
+    case I2C_State_MRADNA:// master sent read_ADDR and receive NACK
+        I2C_StopCmd(_i2c);
+        _i2c_periph_status = I2C_STATUS_ADDR_NACK;
     break;
 
     case I2C_State_MRDAPA://master read byte
@@ -312,6 +363,7 @@ void TwoWire::onService(void)
     case I2C_State_MRDANA://master read last byte after NACK
       _rxBuffer.store_char(I2C_GetData(_i2c));
       _request_quantity=0;
+      _i2c_periph_status = I2C_STATUS_DONE;
     break;
 
     case I2C_State_MTMCER:
@@ -371,7 +423,8 @@ void TwoWire::onService(void)
     break;
 
     case I2C_State_BERROR:
-      _send_txBufferDone = true;
+      I2C_StopCmd(_i2c);
+      _i2c_periph_status = I2C_STATUS_ERROR;
     break;
   
     default:
@@ -381,50 +434,57 @@ void TwoWire::onService(void)
 }
 }//namespace arduino
 
-
 #if WIRE_INTERFACES_COUNT > 0
   arduino::TwoWire Wire(PERIPH_WIRE, PIN_WIRE_SDA, PIN_WIRE_SCL);
+  
+extern "C"{
   void WIRE_IT_HANDLER(void) {
     Wire.onService();
   }
+}
 #endif
 
 #if WIRE_INTERFACES_COUNT > 1
    arduino::TwoWire Wire1(PERIPH_WIRE1, PIN_WIRE1_SDA, PIN_WIRE1_SCL);
-
+extern "C"{
   void WIRE1_IT_HANDLER(void) {
     Wire1.onService();
   }
+}
 #endif
 
 #if WIRE_INTERFACES_COUNT > 2
    arduino::TwoWire Wire2(&PERIPH_WIRE2, PIN_WIRE2_SDA, PIN_WIRE2_SCL);
-
+extern "C"{
   void WIRE2_IT_HANDLER(void) {
     Wire2.onService();
   }
+}
 #endif
 
 #if WIRE_INTERFACES_COUNT > 3
    arduino::TwoWire Wire3(&PERIPH_WIRE3, PIN_WIRE3_SDA, PIN_WIRE3_SCL);
-
+extern "C"{
   void WIRE3_IT_HANDLER(void) {
     Wire3.onService();
   }
+}
 #endif
 
 #if WIRE_INTERFACES_COUNT > 4
    arduino::TwoWire Wire4(&PERIPH_WIRE4, PIN_WIRE4_SDA, PIN_WIRE4_SCL);
-
+extern "C"{
   void WIRE4_IT_HANDLER(void) {
     Wire4.onService();
   }
+}
 #endif
 
 #if WIRE_INTERFACES_COUNT > 5
    arduino::TwoWire Wire5(&PERIPH_WIRE5, PIN_WIRE5_SDA, PIN_WIRE5_SCL);
-
+extern "C"{
   void WIRE5_IT_HANDLER(void) {
     Wire5.onService();
   }
+}
 #endif

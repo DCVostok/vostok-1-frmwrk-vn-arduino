@@ -1,10 +1,12 @@
 #ifndef TwoWire_h
 #define TwoWire_h
-
+#include "Arduino.h"
 #include "api/HardwareI2C.h"
 
 #include "wiring_private.h"
 #include "api/RingBuffer.h"
+
+#define TWO_WIRE_TIME_OUT (100)//ms
 
 namespace arduino {
 class TwoWire : public HardwareI2C
@@ -45,8 +47,17 @@ class TwoWire : public HardwareI2C
     void init_periph();
     typedef enum {
       MASTER,
-      SLAVE
+      SLAVE,
+      OFF
     }eWire_mode_t;
+
+    typedef enum {
+      I2C_STATUS_RUN,
+      I2C_STATUS_DONE,
+      I2C_STATUS_ADDR_NACK,
+      I2C_STATUS_DATA_NACK,
+      I2C_STATUS_ERROR
+    }eI2c_periph_status_t;
     
     eWire_mode_t _mode;
     I2C_TypeDef* _i2c;
@@ -54,7 +65,7 @@ class TwoWire : public HardwareI2C
     pin_size_t _uc_pinSCL;
 
     bool _transmissionBegun;
-    bool _send_txBufferDone;
+    volatile eI2c_periph_status_t _i2c_periph_status;
     size_t _request_quantity;
     // RX Buffer
     RingBufferN<256> _rxBuffer;
@@ -62,8 +73,10 @@ class TwoWire : public HardwareI2C
     //TX buffer
     RingBufferN<256> _txBuffer;
     uint8_t _txAddress;
-    static const uint8_t WIRE_WRITE_FLAG = 1;
-    static const uint8_t WIRE_READ_FLAG = 0;
+    uint8_t _i2cAddress;
+
+    static const uint8_t WIRE_WRITE_FLAG = 0;
+    static const uint8_t WIRE_READ_FLAG = 1;
     // Callback user functions
     void (*_onRequestCallback)(void);
     void (*_onReceiveCallback)(int);
