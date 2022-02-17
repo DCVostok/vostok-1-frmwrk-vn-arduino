@@ -36,10 +36,10 @@ namespace arduino{
         void init_gpio_nvic_rcc();
         UART_TypeDef* _nt_uart;
         RingBuffer _rxBuffer;
-        RingBuffer _txBuffer;
+        //RingBuffer _txBuffer;
         int _pin_tx;
         int _pin_rx;
-        volatile bool tx_in_progress;
+        //volatile bool tx_in_progress;
     };
 }
 #endif

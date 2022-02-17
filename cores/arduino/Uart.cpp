@@ -50,16 +50,16 @@ namespace arduino{
                 NVIC_EnableIRQ(UART0_RX_IRQn);
                 NVIC_SetPriority(UART0_E_RT_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART0_E_RT_IRQn);
-                NVIC_SetPriority(UART0_TX_IRQn,_c_irq_priority);
-                NVIC_EnableIRQ(UART0_TX_IRQn);
+                //NVIC_SetPriority(UART0_TX_IRQn,_c_irq_priority);
+                //NVIC_EnableIRQ(UART0_TX_IRQn);
             }
             else{
                 NVIC_SetPriority(UART1_RX_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART1_RX_IRQn);
                 NVIC_SetPriority(UART1_E_RT_IRQn,_c_irq_priority);
                 NVIC_EnableIRQ(UART1_E_RT_IRQn);
-                NVIC_SetPriority(UART1_TX_IRQn,_c_irq_priority);
-                NVIC_EnableIRQ(UART1_TX_IRQn);
+                //NVIC_SetPriority(UART1_TX_IRQn,_c_irq_priority);
+                //NVIC_EnableIRQ(UART1_TX_IRQn);
             }
             
             
@@ -214,7 +214,7 @@ namespace arduino{
 
     void UartSerial::begin(unsigned long baudRate, uint16_t config){
         
-            tx_in_progress = false;
+            //tx_in_progress = false;
             init_gpio_nvic_rcc();
             UART_Init_TypeDef UART_InitStruct;
             UART_StructInit(&UART_InitStruct);
@@ -251,7 +251,7 @@ namespace arduino{
                 UART_InitStruct.UART_StopBit =   StopBit;
                 UART_InitStruct.UART_ParityBit = ParityBit;
             #endif
-            UART_ITCmd (_nt_uart,UART_ITSource_TxFIFOLevel, ENABLE);
+            //UART_ITCmd (_nt_uart,UART_ITSource_TxFIFOLevel, ENABLE);
             UART_ITCmd (_nt_uart,UART_ITSource_RxFIFOLevel, ENABLE);
 
             UART_Init(_nt_uart, &UART_InitStruct);
@@ -272,37 +272,30 @@ namespace arduino{
             RCC_UARTClkCmd(_nt_uart, DISABLE);
         #endif
         _rxBuffer.clear();
-        _txBuffer.clear();
+        //_txBuffer.clear();
     }
     int UartSerial::available(){
         return _rxBuffer.available();
     }
     int UartSerial::availableForWrite(){
-        return _txBuffer.availableForStore();
+        return 1;
+        //return _txBuffer.availableForStore();
     }
     int UartSerial::peek(){
         return _rxBuffer.peek();
     }
     void UartSerial::flush(){
-          while(_txBuffer.available());
+          //while(_txBuffer.available());
     }
     int UartSerial::read(){
         return _rxBuffer.read_char();
     }
     
     size_t UartSerial::write(const uint8_t data){
-            if(!tx_in_progress){
-                UART_SendData(_nt_uart,data);
-                tx_in_progress = true;
-            }
-            else{
-                while (!availableForWrite());
-                _txBuffer.store_char(data);
-                if(!tx_in_progress){
-                    UART_SendData(_nt_uart,_txBuffer.read_char());
-                }
-            }
-            return 1;
+        while (_nt_uart->FR_bit.BUSY) {
+        };
+        UART_SendData(_nt_uart,data);
+        return 1;
     }
 
     void UartSerial::IrqHandlerRx(){
@@ -323,12 +316,12 @@ namespace arduino{
 
     }
     void UartSerial::IrqHandlerTx(){
-		if(_txBuffer.available()){
-			UART_SendData(_nt_uart,_txBuffer.read_char());
-		}
-		else{
-			tx_in_progress = false;   
-		}
-        UART_ITStatusClear(_nt_uart,UART_ITSource_TxFIFOLevel);
+		// if(_txBuffer.available()){
+		// 	UART_SendData(_nt_uart,_txBuffer.read_char());
+		// }
+		// else{
+		// 	tx_in_progress = false;   
+		// }
+        // UART_ITStatusClear(_nt_uart,UART_ITSource_TxFIFOLevel);
     }
 }
