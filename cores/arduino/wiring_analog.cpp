@@ -102,8 +102,8 @@ void update_adc_config(){
     RCU_ADCClkCmd(ENABLE);
     RCU_ADCRstCmd(ENABLE);
     for (uint32_t i = 0; i < ADC_CH_Total; i++){
-      ADC_CH_SetGainTrim (i, ADC_CALIBRATION_GAIN);
-      ADC_CH_SetOffsetTrim (i,ADC_CALIBRATION_OFFSET);
+      ADC_CH_SetGainTrim ((ADC_CH_Num_TypeDef)i, ADC_CALIBRATION_GAIN);
+      ADC_CH_SetOffsetTrim ((ADC_CH_Num_TypeDef)i,ADC_CALIBRATION_OFFSET);
     }
     ADC_AM_Cmd(ENABLE);
     while (!ADC_AM_ReadyStatus()) {
@@ -203,8 +203,8 @@ void analogWrite(pin_size_t pin, int value)
 
       PWM_TB_StructInit(&PWM_TB_InitStruct);
       PWM_TB_InitStruct.Mode = PWM_TB_Mode_Up;
-      PWM_TB_InitStruct.ClkDiv = (_writeFreq >> 3);
-      PWM_TB_InitStruct.ClkDivExtra = _writeFreq & 0b111;
+      PWM_TB_InitStruct.ClkDiv = (PWM_TB_ClkDiv_TypeDef)(_writeFreq >> 3);
+      PWM_TB_InitStruct.ClkDivExtra = (PWM_TB_ClkDivExtra_TypeDef)(_writeFreq & 0b111);
       PWM_TB_InitStruct.Period = (1 << MAX_PWM_RESOLUTION) - 1;
       PWM_TB_Init(pwm_ch_description->pwm, &PWM_TB_InitStruct);
 
@@ -303,7 +303,7 @@ int analogRead(pin_size_t pin)
     }
     
     #ifdef MCU_K1921VK035
-      const uint8_t ADC_SEQ_Module = ADC_SEQ_Num_0;
+      ADC_SEQ_Num_TypeDef ADC_SEQ_Module = ADC_SEQ_Num_0;
       ADC_SEQ_Init_TypeDef ADC_SEQ_InitStruct;
       GPIO_DigitalCmd(pin_description->port, pin_description->pin_msk, DISABLE);
       
@@ -314,7 +314,7 @@ int analogRead(pin_size_t pin)
       ADC_SEQ_InitStruct.SWStartEn = ENABLE;
       ADC_SEQ_InitStruct.ReqAverage = ADC_SEQ_Average_4;
       ADC_SEQ_InitStruct.ReqAverageEn = ENABLE;
-      ADC_SEQ_InitStruct.Req[ADC_SEQ_ReqNum_0] = pin_description->adc_ch;
+      ADC_SEQ_InitStruct.Req[ADC_SEQ_ReqNum_0] = (ADC_CH_Num_TypeDef)pin_description->adc_ch;
       ADC_SEQ_InitStruct.ReqMax = ADC_SEQ_ReqNum_0;
       ADC_SEQ_InitStruct.RestartCount = 0;
       ADC_SEQ_Init(ADC_SEQ_Module, &ADC_SEQ_InitStruct);

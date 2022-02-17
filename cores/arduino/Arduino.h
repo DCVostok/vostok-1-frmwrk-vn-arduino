@@ -17,4 +17,9 @@
 
 #include "wiring_analog.h"
 #include "wiring_private.h"
+#include "api/deprecated-avr-comp/avr/dtostrf.h"
+#ifdef __cplusplus
+using namespace arduino;
+#endif
+
 #endif//ARDUINO_H
