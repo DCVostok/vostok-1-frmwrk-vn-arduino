@@ -20,7 +20,7 @@
 #include "wiring_private.h"
 
 
-uint32_t toneMaxFrequency = SystemCoreClock / 2;
+#define TONE_MAX_FREQ (SystemCoreClock / 2)
 uint32_t lastOutputPin = 0xFFFFFFFF;
 
 GPIO_TypeDef* gpio_port;
@@ -70,6 +70,7 @@ void tone (unsigned char outputPin, unsigned int frequency, unsigned long durati
   if(pin_description == NULL){
     return;
   }
+  frequency = frequency > TONE_MAX_FREQ ? TONE_MAX_FREQ : frequency;
   if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
     pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
     digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
@@ -107,7 +108,7 @@ void tone (unsigned char outputPin, unsigned int frequency, unsigned long durati
   }
   reset_timer();
   #ifdef MCU_K1921VK035
-    TMR_SetLoad(TONE_TIMER,SystemCoreClock/frequency);
+    TMR_SetLoad(TONE_TIMER,SystemCoreClock/(frequency*2));
     TMR_ITCmd(TONE_TIMER, ENABLE);
     TMR_Cmd(TONE_TIMER, ENABLE);
   #elif MCU_K1921VK01T
