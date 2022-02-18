@@ -14,7 +14,7 @@ namespace arduino{
 SPIClassK1921VK::SPIClassK1921VK(SPI_TypeDef *spi, pin_size_t pinMISO, pin_size_t pinSCK, pin_size_t pinMOSI)
 {
   _initialized = false;
-  _interruptMode = SPI_IRQ_PROTECT_MODE_GLOBAL;
+  _interruptMode = SPI_IRQ_PROTECT_MODE_NONE;
   _interruptPortNum = (IRQn_Type)0;
   _spi = spi;
   // pins
@@ -178,10 +178,13 @@ void SPIClassK1921VK::init()
     _initialized = true;
 }
 void SPIClassK1921VK::setClock(uint32_t clk){
-  uint32_t div_val = SystemCoreClock / clk;
-  uint32_t SCKDiv =div_val & 0xff;
-  uint32_t SCKDivExtra = div_val >> 8;
-  SCKDivExtra = SCKDivExtra <2 ? 2:SCKDivExtra;
+  volatile uint32_t SCKDiv;
+  uint32_t SCKDivExtra = 1;
+  do{
+  SCKDivExtra++;
+  SCKDiv = (SystemCoreClock / clk / SCKDivExtra) - 1;
+  }while (SCKDiv > 0xff);
+  
   SPI_SCKDivConfig(_spi,SCKDiv,SCKDivExtra);
 }
 
