@@ -79,9 +79,12 @@ void gpio_irq_table_Add_CallBackWithParam(GPIO_TypeDef* nt_port, uint32_t pin_ms
     call_backs_param_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = param;
     pin_mask_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = pin_msk;
     callbacks_num[gpio_irq_tableNum]++;
+    GPIO_ITCmd(nt_port, pin_msk, ENABLE);
+
 }
 
 void gpio_irq_table_Remove_Callback(GPIO_TypeDef* nt_port, uint32_t pin_msk){
+    GPIO_ITCmd(nt_port, pin_msk, DISABLE);
     #ifdef MCU_K1921VK035
         int gpio_irq_tableNum = nt_port == GPIOA?GPIO_IRQ_TABLE_GPIOAnum:
                                 nt_port == GPIOB?GPIO_IRQ_TABLE_GPIOBnum:
@@ -126,6 +129,7 @@ void GPIOA_IRQHandler(){
                 else{
                     call_backs_table[GPIO_IRQ_TABLE_GPIOAnum][i](call_backs_param_table[GPIO_IRQ_TABLE_GPIOAnum][i]);
                 }
+                GPIO_ITStatusClear(GPIOA,pin_mask_table[GPIO_IRQ_TABLE_GPIOAnum][i]);
             }
         #elif MCU_K1921VK01T
             if(GPIO_ITStatus(NT_GPIOA,pin_mask_table[GPIO_IRQ_TABLE_GPIOAnum][i])){
@@ -137,7 +141,8 @@ void GPIOA_IRQHandler(){
                 }
             }
         #endif
-    }   
+    }
+    
 }
 void GPIOB_IRQHandler(){
 
@@ -150,6 +155,7 @@ void GPIOB_IRQHandler(){
                 else{
                     call_backs_table[GPIO_IRQ_TABLE_GPIOBnum][i](call_backs_param_table[GPIO_IRQ_TABLE_GPIOBnum][i]);
                 }
+                GPIO_ITStatusClear(GPIOB,pin_mask_table[GPIO_IRQ_TABLE_GPIOBnum][i]);
             }
         #elif MCU_K1921VK01T
             if(GPIO_ITStatus(NT_GPIOB,pin_mask_table[GPIO_IRQ_TABLE_GPIOBnum][i])){
@@ -162,6 +168,7 @@ void GPIOB_IRQHandler(){
             }
         #endif
     }
+    
 }
 #ifdef MCU_K1921VK01T
 void GPIOC_IRQHandler(){

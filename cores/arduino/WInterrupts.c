@@ -19,16 +19,18 @@ void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus m
   }
   GPIO_IntType_TypeDef GPIO_IntType = mode == LOW || mode == HIGH ? GPIO_IntType_Level: GPIO_IntType_Edge;
   #ifdef MCU_K1921VK035
+    GPIO_IntEdge_TypeDef GPIO_IntEDGE = mode == CHANGE ? GPIO_IntEdge_Any: GPIO_IntEdge_Polarity;
     GPIO_IntPol_TypeDef GPIO_IntPol = mode == RISING || mode == HIGH ? GPIO_IntPol_Positive: GPIO_IntPol_Negative;
     GPIO_ITPolConfig(pin_description->port, pin_description->pin_msk, GPIO_IntPol);
-    GPIO_ITEdgeConfig(pin_description->port, pin_description->pin_msk, GPIO_IntType);
+    GPIO_ITEdgeConfig(pin_description->port, pin_description->pin_msk, GPIO_IntEDGE);
+    GPIO_ITTypeConfig(pin_description->port, pin_description->pin_msk, GPIO_IntType);
   #elif MCU_K1921VK01T
     GPIO_IntPol_TypeDef GPIO_IntPol = mode == RISING || mode == HIGH ? GPIO_IntPol_Pos: GPIO_IntPol_Neg;
     GPIO_ITConfig(pin_description->port, pin_description->pin_msk, GPIO_IntType, GPIO_IntPol);
   #endif
 
   
-  GPIO_ITCmd(pin_description->port, pin_description->pin_msk, ENABLE);
+  
   if (!enabled) {
     gpio_irq_table_init();
     enabled = 1;
