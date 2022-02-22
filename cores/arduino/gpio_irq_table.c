@@ -74,12 +74,28 @@ void gpio_irq_table_Add_CallBackWithParam(GPIO_TypeDef* nt_port, uint32_t pin_ms
                             GPIO_IRQ_TABLE_GPIOAnum;
     #endif
 
-    assert_param(callbacks_num[gpio_irq_tableNum] < 16);
-    call_backs_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = call_back;
-    call_backs_param_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = param;
-    pin_mask_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = pin_msk;
-    callbacks_num[gpio_irq_tableNum]++;
-    GPIO_ITCmd(nt_port, pin_msk, ENABLE);
+    int find_num_callback = -1;
+    for(uint8_t i = 0; i < callbacks_num[gpio_irq_tableNum];++i){
+        if(pin_mask_table[gpio_irq_tableNum][i] == pin_msk){
+            find_num_callback = i;
+            break;
+        }
+    }
+    if(find_num_callback == -1){//add new
+        assert_param(callbacks_num[gpio_irq_tableNum] < 16);
+        call_backs_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = call_back;
+        call_backs_param_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = param;
+        pin_mask_table[gpio_irq_tableNum][callbacks_num[gpio_irq_tableNum]] = pin_msk;
+        callbacks_num[gpio_irq_tableNum]++;
+        GPIO_ITCmd(nt_port, pin_msk, ENABLE);
+    }else{//rewrite
+        call_backs_table[gpio_irq_tableNum][find_num_callback] = call_back;
+        call_backs_param_table[gpio_irq_tableNum][find_num_callback] = param;
+        pin_mask_table[gpio_irq_tableNum][find_num_callback] = pin_msk;
+  
+        GPIO_ITCmd(nt_port, pin_msk, ENABLE);
+    }
+    
 
 }
 
