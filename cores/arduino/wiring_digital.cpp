@@ -5,6 +5,9 @@
 extern "C" {
 #endif
 #define INPUT_FILTER_SAMPLE_PEROD 50
+
+
+
 void pinMode( pin_size_t ulPin, PinMode ulMode ){
   const PinDescription *pin_description = PIN_GET_DESCRIPTION(ulPin);
   if(pin_description == NULL){
@@ -70,6 +73,38 @@ PinStatus digitalRead( pin_size_t ulPin )
     digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
   }
   return GPIO_ReadBit(pin_description->port, pin_description->pin_msk) ? HIGH: LOW;
+}
+
+GPIO_TypeDef * digitalPinToPort(pin_size_t ulPin){
+  const PinDescription *pin_description = PIN_GET_DESCRIPTION(ulPin);
+  if(pin_description == NULL){
+    return 0;
+  }
+  if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
+    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
+    digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
+  }
+  return pin_description->port;
+}
+uint32_t digitalPinToBitMask(pin_size_t ulPin){
+  const PinDescription *pin_description = PIN_GET_DESCRIPTION(ulPin);
+  if(pin_description == NULL){
+    return 0;
+  }
+  if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
+    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
+    digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
+  }
+  return pin_description->pin_msk;
+}
+
+uint32_t * portOutputRegister(GPIO_TypeDef * gpio){
+
+  return (uint32_t *)(&(gpio->DATAOUT));
+}
+uint32_t * portInputRegister(GPIO_TypeDef * gpio){
+
+  return (uint32_t *)(&(gpio->DATAOUT));
 }
 
 #ifdef __cplusplus

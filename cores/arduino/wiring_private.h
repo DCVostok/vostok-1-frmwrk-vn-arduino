@@ -21,6 +21,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <api/Common.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,7 +29,10 @@ extern "C" {
 #include "bitFlip.h"
 #include "k1921vk_sdk.h"
 #define UNUSED(x) (void)(x)
-
+GPIO_TypeDef * digitalPinToPort(pin_size_t ulPin);
+uint32_t * portOutputRegister(GPIO_TypeDef * gpio);
+uint32_t * portInputRegister(GPIO_TypeDef * gpio);
+uint32_t digitalPinToBitMask(pin_size_t ulPin);
 #ifdef __cplusplus
 } // extern "C"
 
