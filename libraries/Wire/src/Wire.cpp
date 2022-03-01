@@ -245,7 +245,7 @@ uint8_t TwoWire::endTransmission()
 size_t TwoWire::write(uint8_t ucData)
 {
   // No writing, without begun transmission or a full buffer
-  if ( !_transmissionBegun || _txBuffer.isFull() )
+  if ( (!_transmissionBegun && _mode == MASTER) || _txBuffer.isFull() || _mode == OFF)
   {
     return 0 ;
   }
@@ -371,9 +371,9 @@ void TwoWire::onService(void)
     break;
 
     case I2C_State_SRADPA:// slave adrr match
-        if(_onReceiveCallback != NULL && _rxBuffer.available()){
-          _onReceiveCallback(_rxBuffer.available());
-        }
+        // if(_onReceiveCallback != NULL && _rxBuffer.available()){
+        //   _onReceiveCallback(_rxBuffer.available());
+        // }
         _rxBuffer.clear();
     break;
 
@@ -393,6 +393,9 @@ void TwoWire::onService(void)
       }
       if(_txBuffer.available()){
         I2C_SetData(_i2c, _txBuffer.read_char());
+      }
+      else{
+        I2C_SetData(_i2c, 0x0);
       }
     break;
 
