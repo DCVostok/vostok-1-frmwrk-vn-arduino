@@ -20,15 +20,18 @@ compiler.c.elf.cmd={compiler.prefix}g++
 compiler.as.cmd={compiler.prefix}as
 compiler.ar.cmd={compiler.prefix}ar
 compiler.size.cmd={compiler.prefix}size
+compiler.objcopy.cmd={compiler.prefix}objcopy
+compiler.elf2hex.cmd={compiler.prefix}objcopy
 
 
 
-compiler.k1921vk.extra_include="-I{build.source.path}" "-I{build.core.path}/framework-k1921vk-sdk/platform/plib035/inc" "-I{build.core.path}/framework-k1921vk-sdk/platform/plib035/src" "-I{build.core.path}/framework-k1921vk-sdk/platform/CMSIS/Core/Include" "-I{build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Source/GCC" "-I{build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Source" "-I{build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Include" 
+compiler.k1921vk.extra_include="-I{build.source.path}" "-I{runtime.platform.path}\framework-k1921vk-sdk\platform\Device\NIIET\K1921VK035\Source/GCC" "-I{runtime.platform.path}\framework-k1921vk-sdk\platform\plib035\src" "-I{runtime.platform.path}\framework-k1921vk-sdk\platform\plib035\inc" "-I{runtime.platform.path}/framework-k1921vk-sdk/platform/CMSIS/Core/Include" "-I{runtime.platform.path}\framework-k1921vk-sdk\platform\Device\NIIET\K1921VK035\Source" "-I{runtime.platform.path}\framework-k1921vk-sdk\platform\Device\NIIET\K1921VK035\Include"
+compiler.define="-DMCU_{build.mcu}" "-DF_CPU={build.f_cpu}" "-DARDUINO={runtime.ide.version}" "-DARDUINO_{build.board}" "-DARDUINO_ARCH_{build.arch}" "-D_GNU_SOURCE" "-D{build.clk_select}"
 
-compiler.extra_flags=-mcpu={build.cpu} {build.flags.fp} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls
+compiler.extra_flags={compiler.define} -mcpu={build.cpu} {build.flags.fp} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls -fsingle-precision-constant
 compiler.S.flags={compiler.extra_flags} -c -x assembler-with-cpp {compiler.k1921vk.extra_include}
-compiler.c.flags={compiler.extra_flags} -c {build.flags.optimize} {build.flags.debug} {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib --param max-inline-insns-single=500 -MMD {compiler.k1921vk.extra_include}
-compiler.cpp.flags={compiler.extra_flags} -c {build.flags.optimize} {build.flags.debug} {compiler.warning_flags} -std={compiler.cpp.std} -ffunction-sections -fdata-sections -nostdlib -fno-threadsafe-statics --param max-inline-insns-single=500 -fno-rtti -fno-exceptions -fno-use-cxa-atexit -MMD {compiler.k1921vk.extra_include}
+compiler.c.flags={compiler.extra_flags} -c {build.flags.optimize} {build.flags.debug} {compiler.warning_flags} -std=gnu11 -ffunction-sections -fdata-sections -nostdlib -fno-builtin -MMD {compiler.k1921vk.extra_include}
+compiler.cpp.flags={compiler.extra_flags} -c {build.flags.optimize} {build.flags.debug} {compiler.warning_flags} -std={compiler.cpp.std} -ffunction-sections -fdata-sections -nostdlib -fno-threadsafe-statics -fno-rtti -fno-exceptions -fno-use-cxa-atexit -MMD {compiler.k1921vk.extra_include}
 compiler.ar.flags=rcs
 compiler.c.elf.flags=-mcpu={build.cpu} {build.flags.fp} -mthumb {build.flags.optimize} {build.flags.debug} {build.flags.ldspecs} 
 compiler.objcopy.eep.flags=-O ihex -j .eeprom --set-section-flags=.eeprom=alloc,load --no-change-warnings --change-section-lma .eeprom=0
@@ -37,7 +40,7 @@ compiler.elf2bin.flags=-O binary
 compiler.elf2hex.flags=-O ihex
 
 compiler.ldflags=-mthumb -mcpu=cortex-m4 -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls -Wl,--gc-sections -specs=nosys.specs -specs=nano.specs -lgcc -lc
-compiler.define=-DMCU_{build.mcu} -DF_CPU={build.f_cpu} -DARDUINO={runtime.ide.version} -DARDUINO_{build.board} -DARDUINO_ARCH_{build.arch}
+
 
 # Arduino Compile Warning Levels
 compiler.warning_flags=-w
@@ -56,25 +59,27 @@ compiler.ar.extra_flags=
 compiler.objcopy.eep.extra_flags=
 compiler.elf2hex.extra_flags=
 compiler.libraries.ldflags=
+compiler.elf2bin.extra_flags=
+compiler.elf2hex.extra_flags=
 
 # Defaults config
 build.flags.fp=
 build.flags.optimize=-Os
 build.flags.debug=
 build.flash_offset=0
-build.ldscript={build.core.path}/framework-k1921vk-sdk/platform/Device/NIIET/{build.mcu}/Source/GCC/{build.mcu}.ld
+build.ldscript={runtime.platform.path}\framework-k1921vk-sdk\platform\Device\NIIET\K1921VK035\Source/GCC/K1921VK035.ld
 
 # compile patterns
 # ---------------------
 
 ## Compile c files
-recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {build.info.flags} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.c.o.pattern="{compiler.path}{compiler.c.cmd}" {compiler.c.flags} {compiler.c.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile c++ files
-recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {build.info.flags} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.cpp.o.pattern="{compiler.path}{compiler.cpp.cmd}" {compiler.cpp.flags} {compiler.cpp.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
 
 ## Compile S files
-recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {build.info.flags} {compiler.S.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
+recipe.S.o.pattern="{compiler.path}{compiler.S.cmd}" {compiler.S.flags} {compiler.S.extra_flags} {build.extra_flags} {includes} "{source_file}" -o "{object_file}"
 
 ## Create archives
 recipe.ar.pattern="{compiler.path}{compiler.ar.cmd}" {compiler.ar.flags} {compiler.ar.extra_flags} "{archive_file_path}" "{object_file}"

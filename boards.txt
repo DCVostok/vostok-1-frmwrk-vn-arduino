@@ -9,12 +9,15 @@ uno.upload.maximum_size=65536
 uno.upload.maximum_data_size=16384
 uno.upload.speed=1000000
 uno.build.mcu=K1921VK035
-uno.build.cpu=cortex-m4f
+uno.build.cpu=cortex-m4
 uno.build.f_cpu=100000000L
 uno.build.f_ext=16000000L
+uno.build.clk_select=SYSCLK_PLL
 uno.build.board=VOSTOK_UNO_035
 uno.build.core=arduino
 uno.build.variant=vostok_uno_035
+uno.build.extra_flags=
+uno.build.flags.ldspecs=
 
 
 # Vostok mega
@@ -24,9 +27,10 @@ mega.upload.maximum_size=1048576
 mega.upload.maximum_data_size=196608
 mega.upload.speed=1000000
 mega.build.mcu=K1921VK01T
-mega.build.cpu=cortex-m4f
+mega.build.cpu=cortex-m4
 mega.build.f_cpu=100000000L
 mega.build.f_ext=12000000L
 mega.build.board=VOSTOK_MEGA_01T
 mega.build.core=arduino
 mega.build.variant=vostok_mega_01t
+uno.build.extra_flags=
