@@ -13,7 +13,7 @@ variant = board.get("build.variant")
 
 ARDUINO_PACKADGE_DIR = platform.get_package_dir("framework-k1921vk-arduino")
 ARDUINO_CORE_DIR = os.path.join(ARDUINO_PACKADGE_DIR,"cores","arduino")
-SDK_DIR = os.path.join(ARDUINO_PACKADGE_DIR,"cores","arduino","framework-k1921vk-sdk")
+SDK_DIR = os.path.join(ARDUINO_PACKADGE_DIR,"framework-k1921vk-sdk")
 DEVICE_DIR =  os.path.join(SDK_DIR,"platform","Device","NIIET",mcu)
 DEVICE_SDK_DIR = ""
 if mcu == "K1921VK01T":
@@ -28,6 +28,9 @@ VARIANT_DIR = os.path.join(ARDUINO_PACKADGE_DIR,"variants",variant)
 env.Append(
         CPPPATH=[
             os.path.join(DEVICE_SDK_DIR, "inc"),
+            os.path.join(DEVICE_SDK_DIR, "src"),
+            os.path.join(DEVICE_DIR, "Source"),
+            os.path.join(DEVICE_DIR, "Source","GCC"),
             os.path.join(VARIANT_DIR),
             os.path.join(ARDUINO_CORE_DIR)
         ],
@@ -55,29 +58,7 @@ env.Append(
     ]
 )
 
-#
-# Compile CMSIS sources
-#
 
-sources_path = os.path.join(DEVICE_DIR, "Source")
-env.BuildSources(
-    os.path.join("$BUILD_DIR", "FrameworkCMSIS"), sources_path,
-    src_filter=[
-        "-<*>",
-        "+<system_%s.c>" % mcu,
-        "+<GCC/startup_%s.S>" % mcu]
-)
-
-#
-# Compile device SDK sources
-#
-
-sources_path = os.path.join(DEVICE_SDK_DIR, "src")
-env.BuildSources(
-    os.path.join("$BUILD_DIR", "device_sdk"), sources_path,
-    src_filter=[
-        "+<*>"]
-)
 
 #
 # Compile arduino core sources
@@ -93,7 +74,7 @@ env.BuildSources(
 )
 
 #
-# Compile arduino core sources
+# Compile arduino variant sources
 #
 
 sources_path = os.path.join(VARIANT_DIR)
