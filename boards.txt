@@ -3,7 +3,7 @@
 
 ##############################################################
 # Vostok uno
-uno.name=Vostok uno
+uno.name=Vostok UNO-VN035
 uno.upload.tool=k1921vkx_flasher
 uno.upload.maximum_size=65536
 uno.upload.maximum_data_size=16384
@@ -13,15 +13,15 @@ uno.build.cpu=cortex-m4
 uno.build.f_cpu=100000000L
 uno.build.f_ext=16000000L
 uno.build.clk_select=SYSCLK_PLL
-uno.build.board=VOSTOK_UNO_035
+uno.build.board=VOSTOK_UNO_VN035
 uno.build.core=arduino
-uno.build.variant=vostok_uno_035
+uno.build.variant=vostok_uno_vn035
 uno.build.extra_flags=
 uno.build.flags.ldspecs=
 
 
 # Vostok mega
-mega.name=Vostok mega
+mega.name=Vostok MEGA-VN01T
 mega.upload.tool=k1921vkx_flasher
 mega.upload.maximum_size=1048576
 mega.upload.maximum_data_size=196608
@@ -30,7 +30,7 @@ mega.build.mcu=K1921VK01T
 mega.build.cpu=cortex-m4
 mega.build.f_cpu=100000000L
 mega.build.f_ext=12000000L
-mega.build.board=VOSTOK_MEGA_01T
+mega.build.board=VOSTOK_MEGA_VN01T
 mega.build.core=arduino
-mega.build.variant=vostok_mega_01t
+mega.build.variant=vostok_mega_vn01t
 uno.build.extra_flags=
