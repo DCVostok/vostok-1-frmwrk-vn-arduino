@@ -6,8 +6,8 @@ This repo adds the support of [NIIET k1921vk MCUs](https://niiet.ru/product-cate
 1. [Install VS_Code](https://code.visualstudio.com/)  
 2. [Install VS_Code+PlatformIO](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode)  
 3. Create PlatformIO project and configure a platform option in [platformio.ini](http://docs.platformio.org/page/projectconf.html) file:  
-Note: Examples with platfromIO projects  you can find in [/examples/Platformio](https://github.com/kenny5660/framework-k1921vk-arduino/tree/master/examples/Platformio)
-4. Click build button, Platform IO automatically download all the necessary components
+Note: You can use PlatformIO project example [Blink](https://github.com/DCVostok/vostok-1-frmwrk-vn-arduino/tree/main/examples/Platformio/Blink)
+4. Click **PlatfromIO:Build** button, Platform IO automatically download all the necessary components. (On Windows requires an installed git)
 ```ini
 [env:Vostok_uno]
 platform = k1921vk
@@ -16,9 +16,10 @@ framework = arduino
 upload_port = COM11
 monitor_port = COM11
 monitor_speed = 115200
+platform_packages = framework-k1921vk-arduino @ https://github.com/DCVostok/vostok-1-frmwrk-vn-arduino#main
 ...
 ```
-Or you can use GUI
+Or you can use GUI (Not working yet)
 1. Open Platfrom IO menu in VS_Code
 2. Create "New Project"
     * Name - Project name
