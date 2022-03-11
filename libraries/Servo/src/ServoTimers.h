@@ -13,11 +13,11 @@
 
 #if defined (_useTimer0)
 #ifdef MCU_K1921VK035
-  #define SERVO_TIMER0      TMR1
-  #define SERVO_TIMER0_IRQ  TMR1_IRQn
-  #define SERVO_TIMER0_RCU_RST  RCU_APBRst_TMR1
-  #define SERVO_TIMER0_RCU_CLK  RCU_APBClk_TMR1
-  #define SERVO_TIMER0_IRQHandler TMR1_IRQHandler
+  #define SERVO_TIMER0      TMR3
+  #define SERVO_TIMER0_IRQ  TMR3_IRQn
+  #define SERVO_TIMER0_RCU_RST  RCU_APBRst_TMR3
+  #define SERVO_TIMER0_RCU_CLK  RCU_APBClk_TMR3
+  #define SERVO_TIMER0_IRQHandler TMR3_IRQHandler
 #elif MCU_K1921VK01T
   #define SERVO_TIMER0      NT_TIMER1
   #define SERVO_TIMER0_IRQ  TIM1_IRQn
@@ -27,11 +27,11 @@
 #endif
 #if defined (_useTimer1)
 #ifdef MCU_K1921VK035
-  #define SERVO_TIMER1      TMR0
-  #define SERVO_TIMER1_IRQ  TMR0_IRQn
-  #define SERVO_TIMER1_RCU_RST  RCU_APBRst_TMR0
-  #define SERVO_TIMER1_RCU_CLK  RCU_APBClk_TMR0
-  #define SERVO_TIMER1_IRQHandler TMR0_IRQHandler
+  #define SERVO_TIMER1      TMR2
+  #define SERVO_TIMER1_IRQ  TMR2_IRQn
+  #define SERVO_TIMER1_RCU_RST  RCU_APBRst_TMR2
+  #define SERVO_TIMER1_RCU_CLK  RCU_APBClk_TMR2
+  #define SERVO_TIMER1_IRQHandler TMR2_IRQHandler
 #elif MCU_K1921VK01T
   #define SERVO_TIMER1      NT_TIMER0
   #define SERVO_TIMER1_IRQ  TIM0_IRQn

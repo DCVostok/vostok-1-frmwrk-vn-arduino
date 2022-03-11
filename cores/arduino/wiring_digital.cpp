@@ -58,7 +58,13 @@ void digitalWrite( pin_size_t ulPin, PinStatus ulVal )
     pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
     digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
   }
-  GPIO_WriteBit(pin_description->port, pin_description->pin_msk,(BitState)ulVal);
+  if(ulVal == LOW){
+    GPIO_ClearBits(pin_description->port, pin_description->pin_msk);
+  }
+  else{
+    GPIO_SetBits(pin_description->port, pin_description->pin_msk);
+  }
+  
   return;
 }
 
