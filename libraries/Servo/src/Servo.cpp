@@ -106,7 +106,7 @@ void Servo_Handler(timer_Sequence_t timer_id)
 
   CurTimerServo[timer_id]++;    // increment to the next servo
   CurServoIndex++;
-  if (CurServoIndex < ServoCount && CurTimerServo[timer_id] < SERVOS_PER_TIMER && servos[CurServoIndex].ticks > 0) {
+  if (CurServoIndex < ServoCount && CurTimerServo[timer_id] < SERVOS_PER_TIMER) {
     ServoTimer_setCounter(timer_id,servos[CurServoIndex].ticks);
     CumulativeTicksSinceRefresh[timer_id] += servos[CurServoIndex].ticks;
     if (servos[CurServoIndex].Pin.isActive) {
@@ -226,7 +226,7 @@ Servo::Servo()
 {
   if (ServoCount < MAX_SERVOS) {
     this->servoIndex = ServoCount++;                    // assign a servo index to this instance
-    servos[this->servoIndex].ticks = usToTicks(DEFAULT_PULSE_WIDTH);   // store default values
+    servos[this->servoIndex].ticks = 0;   // store default values
   } else {
     this->servoIndex = INVALID_SERVO;  // too many servos
   }
@@ -250,6 +250,9 @@ uint8_t Servo::attach(int pin, int min, int max)
     timer_id = SERVO_INDEX_TO_TIMER_ID(servoIndex);
     if (isTimerActive(timer_id) == false) {
       initISR(timer_id);
+    }
+    if( servos[this->servoIndex].ticks < MIN_PULSE_WIDTH){
+      writeMicroseconds(DEFAULT_PULSE_WIDTH);
     }
     servos[this->servoIndex].Pin.isActive = true;  // this must be set after the check for isTimerActive
   }
