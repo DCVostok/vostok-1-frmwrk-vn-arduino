@@ -1,5 +1,6 @@
-# TimerOne library
-    Allows use Timer1 on Vostok boards (Vostok uno-vn35 etc.). 
+# TimerZero library
+    Allows use Timer0 on Vostok boards (Vostok uno-vn35 etc.).  
+    TimerZero lib conflicts with Servo lib, so only 8 servos can be used.  
 ## void initialize(long microseconds=1000000);
     Init timer and start with period *microseconds*.  
     Default period 1 second.
@@ -24,7 +25,7 @@
 
 ```
 #include <Arduino.h>
-#include <TimerOne.h>
+#include <TimerZero.h>
 
 void timer_blink(){
   digitalWrite(13,!digitalRead(13));
@@ -35,10 +36,10 @@ void setup() {
   Serial.begin(115200);
   pinMode(13,OUTPUT);
   digitalWrite(13,LOW);
-  Timer1.initialize(100000);
-  Timer1.attachInterrupt(timer_blink);
+  Timer0.initialize(100000);
+  Timer0.attachInterrupt(timer_blink);
   delay(10000);
-  Timer1.setPeriod(500000);
+  Timer0.setPeriod(500000);
 }
 
 void loop() {

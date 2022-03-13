@@ -52,7 +52,7 @@ extern "C"{
   }
   #endif
   #if defined (_useTimer1)
-  void SERVO_TIMER1_IRQHandler(void) {
+ __WEAK void SERVO_TIMER1_IRQHandler(void) {
       Servo_Handler(_timer1);
   }
   #endif

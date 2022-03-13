@@ -27,11 +27,11 @@
 #endif
 #if defined (_useTimer1)
 #ifdef MCU_K1921VK035
-  #define SERVO_TIMER1      TMR2
-  #define SERVO_TIMER1_IRQ  TMR2_IRQn
-  #define SERVO_TIMER1_RCU_RST  RCU_APBRst_TMR2
-  #define SERVO_TIMER1_RCU_CLK  RCU_APBClk_TMR2
-  #define SERVO_TIMER1_IRQHandler TMR2_IRQHandler
+  #define SERVO_TIMER1      TMR0
+  #define SERVO_TIMER1_IRQ  TMR0_IRQn
+  #define SERVO_TIMER1_RCU_RST  RCU_APBRst_TMR0
+  #define SERVO_TIMER1_RCU_CLK  RCU_APBClk_TMR0
+  #define SERVO_TIMER1_IRQHandler TMR0_IRQHandler
 #elif MCU_K1921VK01T
   #define SERVO_TIMER1      NT_TIMER0
   #define SERVO_TIMER1_IRQ  TIM0_IRQn

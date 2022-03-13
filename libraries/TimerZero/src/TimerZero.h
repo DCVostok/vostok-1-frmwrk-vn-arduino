@@ -1,11 +1,12 @@
-#ifndef TIMERONE_h
-#define TIMERONE_h
+#ifndef TIMERZERO_H
+#define TIMERZERO_H
 
 #include <Arduino.h>
 
-class TimerOne
+class TimerZero
 {
   public:
+    // methods
     void initialize(long microseconds=1000000);
     void start();
     void stop();
@@ -18,5 +19,5 @@ class TimerOne
     void (*irqCallback)();
 };
 
-extern TimerOne Timer1;
+extern TimerZero Timer0;
 #endif
