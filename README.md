@@ -46,3 +46,6 @@ Coming soon!
 |Wire|Built-in arduino I2c library|+|I2c bus is not working on Vostok UNO VN035, if slave devices is using additional pull-up resistors.  Solution: Remove pull-up resistors from slave devices|
 |[NewPing](https://bitbucket.org/teckel12/arduino-new-ping/src/master/)|Library for ultrasonic sensor|+|[See example](examples/Platformio/NewPing)|
 |[SD Library](https://www.arduino.cc/en/Reference/SD)|The SD library allows for reading from and writing to SD cards|+|[See example](examples/Platformio/SD_card)|
+
+# Pinout Vostok UNO-VN035
+![Pinout Vostok UNO-VN035](doc/Pinout_VostokUnoVN035.png)
