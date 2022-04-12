@@ -7,9 +7,11 @@ This repo adds the support of [NIIET k1921vk MCUs](https://niiet.ru/product-cate
 2. [Install VS_Code+PlatformIO](https://docs.platformio.org/en/latest/integration/ide/vscode.html#ide-vscode)  
 3. Create PlatformIO project and configure a platform option in [platformio.ini](http://docs.platformio.org/page/projectconf.html) file:  
 Note: You can use PlatformIO project example [Blink](examples/Platformio/Blink)
-4. Wait until PlatformIO prepare project, Platform IO automatically download all the necessary components.
-Note: On Windows requires an installed git. Github authorization may be requested.
-5. Click **PlatfromIO:Build** button.
+4. Wait until PlatformIO prepare project, Platform IO automatically download all the necessary components.  
+
+5. Click **PlatfromIO:Build** button.  
+Note 1: Russian or other unicode characters in the path to the project or platform io core may cause problems.  
+Note 2: On Windows requires an installed git. Github authorization may be requested.  
 ## Example platformio.ini 
 ```ini
 [env:Vostok_uno]
@@ -35,6 +37,48 @@ Or you can use GUI (Not working yet)
 
 Coming soon!
 
+# Additional functions in arduino core
+## analogReadResolution
+Set resolution for ADC and analogRead function. Default resolution is 10 bit (0-1023). Max resolution is 12 bit (0 - 4095).  
+`res` - resolution in bits.
+
+```
+void analogReadResolution(int res)
+```
+
+## analogWriteResolution
+Set resolution for PWM and analogWrite function. Default resolution is 8 bit (0-255). Max resolution is 10 bit (0 - 1023).  
+`res` - resolution in bits.
+
+```
+void analogWriteResolution(int res)
+```
+
+## analogWriteFrequency
+Set frequency of PWM for analogWrite function. Default freq is E_ANALOG_WRITE_FREQ_1K_Hz (1000 Hz).  
+`freq` - frequency from enum eAnalogWriteFreq
+
+```
+typedef enum { // CLKDIV|HSPCLKDIV
+  E_ANALOG_WRITE_FREQ_54_Hz  , // real freq 54 Hz
+  E_ANALOG_WRITE_FREQ_508_Hz , // real freq 508 Hz
+  E_ANALOG_WRITE_FREQ_1K_Hz  , // real freq 1017 Hz
+  E_ANALOG_WRITE_FREQ_97K_Hz , // real freq 97656 Hz
+  E_ANALOG_WRITE_FREQ_49K_Hz , // real freq 48828 Hz
+  E_ANALOG_WRITE_FREQ_24K_Hz , // real freq 24414 Hz
+  E_ANALOG_WRITE_FREQ_12K_Hz , // real freq 12207 Hz
+  E_ANALOG_WRITE_FREQ_6K_Hz  , // real freq 6103 Hz
+  E_ANALOG_WRITE_FREQ_3K_Hz  , // real freq 3051 Hz
+  E_ANALOG_WRITE_FREQ_10K_Hz , // real freq 9765 Hz
+  E_ANALOG_WRITE_FREQ_8K_Hz  , // real freq 8138 Hz
+  E_ANALOG_WRITE_FREQ_7K_Hz  , // real freq 6975 Hz
+} eAnalogWriteFreq;
+```
+
+```
+void analogWriteFrequency(eAnalogWriteFreq freq)
+```
+
 # Tested arduino libs
 
 |Library|Description|Result|Notes|
@@ -46,6 +90,11 @@ Coming soon!
 |Wire|Built-in arduino I2c library|+|I2c bus is not working on Vostok UNO VN035, if slave devices is using additional pull-up resistors.  Solution: Remove pull-up resistors from slave devices|
 |[NewPing](https://bitbucket.org/teckel12/arduino-new-ping/src/master/)|Library for ultrasonic sensor|+|[See example](examples/Platformio/NewPing)|
 |[SD Library](https://www.arduino.cc/en/Reference/SD)|The SD library allows for reading from and writing to SD cards|+|[See example](examples/Platformio/SD_card)|
+|[MPU6050](https://github.com/electroniccats/mpu6050)|MPU-6050 6-axis accelerometer/gyroscope Arduino Library.|+|  |
+|[Adafruit_ADXL343](https://github.com/adafruit/Adafruit_ADXL343)|This driver is for the [Adafruit ADXL343 Breakout](http://www.adafruit.com/products/), and is based on [Adafruit's Unified Sensor Library](https://github.com/adafruit/Adafruit_Sensor).|+|  |
+|[BME280](https://github.com/finitespace/BME280)|Provides an Arduino library for reading and interpreting Bosch BME280 data over I2C, SPI or Sw SPI.|+|  |
+|[LiquidCrystal_I2C](https://github.com/enjoyneering/LiquidCrystal_I2C)|This is fast Arduino library for LCD HD44780 and its clones. It works in 4-bit mode via I²C bus with 8-bit PCF8574/PCF8574A I/O expander.|+|  |
+
 
 # Pinout Vostok UNO-VN035
 ![Pinout Vostok UNO-VN035](doc/Pinout_VostokUnoVN035.png)
