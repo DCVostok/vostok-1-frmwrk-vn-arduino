@@ -12,43 +12,45 @@ variant = board.get("build.variant")
 
 
 ARDUINO_PACKADGE_DIR = platform.get_package_dir("framework-k1921vk-arduino")
-ARDUINO_CORE_DIR = os.path.join(ARDUINO_PACKADGE_DIR,"cores","arduino")
-SDK_DIR = os.path.join(ARDUINO_PACKADGE_DIR,"framework-k1921vk-sdk")
-DEVICE_DIR =  os.path.join(SDK_DIR,"platform","Device","NIIET",mcu)
+CMSIS_DIR = platform.get_package_dir("framework-cmsis")
+ARDUINO_CORE_DIR = os.path.join(ARDUINO_PACKADGE_DIR, "cores", "arduino")
+SDK_DIR = platform.get_package_dir("framework-k1921vk-sdk")
+DEVICE_DIR = os.path.join(SDK_DIR, "platform", "Device", "NIIET", mcu)
 DEVICE_SDK_DIR = ""
 if mcu == "K1921VK01T":
-    DEVICE_SDK_DIR=os.path.join(SDK_DIR,"platform","niietcm4_pd")
+    DEVICE_SDK_DIR = os.path.join(SDK_DIR, "platform", "niietcm4_pd")
 elif mcu == "K1921VK028":
-    DEVICE_SDK_DIR=os.path.join(SDK_DIR,"platform","plib028")
+    DEVICE_SDK_DIR = os.path.join(SDK_DIR, "platform", "plib028")
 elif mcu == "K1921VK035":
-    DEVICE_SDK_DIR=os.path.join(SDK_DIR,"platform","plib035")
+    DEVICE_SDK_DIR = os.path.join(SDK_DIR, "platform", "plib035")
 
-VARIANT_DIR = os.path.join(ARDUINO_PACKADGE_DIR,"variants",variant)
+VARIANT_DIR = os.path.join(ARDUINO_PACKADGE_DIR, "variants", variant)
 
 env.Append(
-        CPPPATH=[
-            os.path.join(DEVICE_SDK_DIR, "inc"),
-            os.path.join(DEVICE_SDK_DIR, "src"),
-            os.path.join(DEVICE_DIR, "Source"),
-            os.path.join(DEVICE_DIR, "Source","GCC"),
-            os.path.join(VARIANT_DIR),
-            os.path.join(ARDUINO_CORE_DIR)
-        ],
-        CPPDEFINES=[
+    CPPPATH=[
+        os.path.join(DEVICE_SDK_DIR, "inc"),
+        os.path.join(DEVICE_SDK_DIR, "src"),
+        os.path.join(DEVICE_DIR, "Source"),
+        os.path.join(DEVICE_DIR, "Source", "GCC"),
+        os.path.join(VARIANT_DIR),
+        os.path.join(ARDUINO_CORE_DIR)
+    ],
+    CPPDEFINES=[
         ("F_CPU", str(board.get("build.f_cpu"))),
-        ("MCU_"+mcu),# MCU name
+        ("MCU_"+mcu),  # MCU name
         ("ARDUINO_"+board.get("build.board")),
-        ("ARDUINO","10808"),
-        ],
-    )
+        ("ARDUINO", "10808"),
+    ],
+)
 
 if not board.get("build.ldscript", ""):
-    env.Replace(LDSCRIPT_PATH=os.path.join(DEVICE_DIR, "Source","GCC","%s.ld"%mcu))
+    env.Replace(LDSCRIPT_PATH=os.path.join(
+        DEVICE_DIR, "Source", "GCC", "%s.ld" % mcu))
 
 env.Append(
     CPPPATH=[
         os.path.join(DEVICE_DIR, "Include"),
-        os.path.join( SDK_DIR, "platform","CMSIS","Core","Include")
+        os.path.join(CMSIS_DIR, "CMSIS", "Core", "Include")
     ]
 )
 
@@ -57,7 +59,6 @@ env.Append(
         os.path.join(ARDUINO_PACKADGE_DIR, "libraries")
     ]
 )
-
 
 
 #
