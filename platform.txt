@@ -1,14 +1,7 @@
 name=Vostok k1921vk boards
 version=1.0.0
 
-tools.k1921vkx_flasher.path={runtime.platform.path}/tools/k1921vkx_flasher/
-tools.k1921vkx_flasher.cmd=k1921vkx_flasher
-tools.k1921vkx_flasher.cmd.linux=k1921vkx_flasher.py
-tools.k1921vkx_flasher.cmd.windows=k1921vkx_flasher.exe
 
-tools.k1921vkx_flasher.upload.pattern_args=-c -w -E -v -f mflash -n main -F 0 -p {serial.port} -b {upload.speed} "{build.path}/{build.project_name}.bin"
-tools.k1921vkx_flasher.upload.pattern="{path}/{cmd}" {upload.pattern_args}
-tools.k1921vkx_flasher.upload.pattern.linux=python "{path}/{cmd}" {upload.pattern_args}
 
 
 compiler.prefix=arm-none-eabi-
@@ -25,7 +18,7 @@ compiler.elf2hex.cmd={compiler.prefix}objcopy
 
 
 
-compiler.k1921vk.extra_include="-I{build.source.path}" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\Device\NIIET\K1921VK035\Source/GCC" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\plib035\src" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\plib035\inc" ""-I{runtime.tools.CMSIS.path}/CMSIS/Core/Include/"" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\Device\NIIET\K1921VK035\Source" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\Device\NIIET\K1921VK035\Include"
+compiler.k1921vk.extra_include="-I{build.source.path}" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\Device\NIIET\K1921VK035\Source/GCC" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\plib035\src" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\plib035\inc" "-I{runtime.tools.CMSIS.path}/CMSIS/Core/Include/" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\Device\NIIET\K1921VK035\Source" "-I{runtime.tools.framework-k1921vk-sdk.path}\platform\Device\NIIET\K1921VK035\Include"
 compiler.define="-DMCU_{build.mcu}" "-DF_CPU={build.f_cpu}" "-DARDUINO={runtime.ide.version}" "-DARDUINO_{build.board}" "-DARDUINO_ARCH_{build.arch}" "-D_GNU_SOURCE" "-D{build.clk_select}"
 
 compiler.extra_flags={compiler.define} -mcpu={build.cpu} {build.flags.fp} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls -fsingle-precision-constant
@@ -105,3 +98,14 @@ recipe.size.regex=^(?:\.text|\.data|\.rodata)\s+([0-9]+).*
 recipe.size.regex.data=^(?:\.data|\.bss|\.noinit)\s+([0-9]+).*
 recipe.size.regex.eeprom=^(?:\.eeprom)\s+([0-9]+).*
 
+
+tools.k1921vkx_flasher.upload.protocol=k1921vkx_flasher
+tools.k1921vkx_flasher.upload.params.verbose=
+tools.k1921vkx_flasher.upload.params.quiet=
+tools.k1921vkx_flasher.path={runtime.tools.k1921vk_flasher.path}
+tools.k1921vkx_flasher.cmd=k1921vkx_flasher
+tools.k1921vkx_flasher.cmd.linux=k1921vkx_flasher.py
+tools.k1921vkx_flasher.cmd.windows=k1921vkx_flasher.exe
+tools.k1921vkx_flasher.upload.pattern_args=-c -w {upload.verbose} -E -f mflash -n main -F 0x00000000 -p {serial.port} -b {upload.speed} --file "{build.path}/{build.project_name}.bin"
+tools.k1921vkx_flasher.upload.pattern="{path}/{cmd}" {upload.pattern_args}
+tools.k1921vkx_flasher.upload.pattern.linux=python "{path}/{cmd}" {upload.pattern_args}

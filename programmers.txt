@@ -4,4 +4,6 @@ k1921vkx_flasher.protocol=k1921vkx_flasher
 k1921vkx_flasher.program.protocol=k1921vkx_flasher
 k1921vkx_flasher.program.tool=k1921vkx_flasher
 k1921vkx_flasher.program.extra_params=-P{serial.port}
+k1921vkx_flasher.program.params.quiet=
+k1921vkx_flasher.program.params.verbose=
 
