@@ -142,6 +142,8 @@ void TwoWire::end() {
                    DISABLE);
 #endif
   _mode = OFF;
+  pinMode(_uc_pinSDA, INPUT);
+  pinMode(_uc_pinSCL, INPUT);
 }
 
 size_t TwoWire::requestFrom(uint8_t address, size_t quantity, bool stopBit) {
