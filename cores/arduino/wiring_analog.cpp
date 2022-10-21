@@ -228,21 +228,14 @@ void analogWrite(pin_size_t pin, int value)
       else{
        PWM_CMP_SetCmpB(pwm_ch_description->pwm, value);
       }
-      
-      
 
-      GPIO_StructInit(&GPIO_InitStruct);
-      GPIO_InitStruct.AltFunc = ENABLE;
-      GPIO_InitStruct.Pin = pin_description->pin_msk;
-      GPIO_Init(pin_description->port, &GPIO_InitStruct);
+      GPIO_AltFuncCmd(pin_description->port, pin_description->pin_msk, ENABLE);
       GPIO_DigitalCmd(pin_description->port, pin_description->pin_msk, ENABLE);
       PWM_TB_PrescCmd(PWM_TB_Presc_1, ENABLE);
       PWM_TB_PrescCmd(PWM_TB_Presc_0, ENABLE);
       PWM_TB_PrescCmd(PWM_TB_Presc_2, ENABLE);
     #elif MCU_K1921VK01T
     PWM_CTR_Init_TypeDef PWM_CTR_InitStruct;
-
-    
 
     PWM_CTR_StructInit(&PWM_CTR_InitStruct);
     PWM_CTR_InitStruct.PWM_ChAction_CTREqPeriod_A = PWM_ChAction_ToOne;
