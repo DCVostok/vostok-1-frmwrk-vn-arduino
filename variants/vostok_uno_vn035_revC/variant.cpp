@@ -8,18 +8,18 @@ const PinDescription pins_description_map[]=
 
   { GPIOB,  GPIO_Pin_11, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //  D0 / B11 / UART0 RX
   { GPIOB,  GPIO_Pin_10, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //  D1 / B10 / UART0 TX
-  { GPIOB,  GPIO_Pin_9,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D2 / B9 / UART1 RX
+  { GPIOB,  GPIO_Pin_9, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D2 / B9 / UART1 RX
   { GPIOA,  GPIO_Pin_11, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(3)}, //   D3 / A11 / PWM_1_B
-  { GPIOB,  GPIO_Pin_12, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D4 / B12 / CAN1RX
-  { GPIOA,  GPIO_Pin_4,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D5 / A4 / ECAP0
+  { GPIOA,  GPIO_Pin_14, (PIN_ATTR_TIMER_IN), PIN_ADC_NONE, PIN_PWM_NONE}, //   D4 / A14 / TMR_0_IN
+  { GPIOA,  GPIO_Pin_15, (PIN_ATTR_TIMER_IN), PIN_ADC_NONE, PIN_PWM_NONE}, //   D5 / A15 / TMR_1_IN
   { GPIOA,  GPIO_Pin_13, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(5)}, //   D6 / A13 / PWM_1_B
-  { GPIOB,  GPIO_Pin_8,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D7 / B8 / UART1 TX
-  { GPIOB,  GPIO_Pin_13, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D8 / B13 / CAN1TX
-  { GPIOA,  GPIO_Pin_8,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(0)}, //   D9 / A8 / PWM_0_A
-  { GPIOB,  GPIO_Pin_4,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D10 / B4 / SPI_CS
-  { GPIOB,  GPIO_Pin_7,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D11 / B7 / SPI_MOSI
-  { GPIOB,  GPIO_Pin_6,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D12 / B6 / SPI_MISO
-  { GPIOB,  GPIO_Pin_5,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D13 / B5 / SPI_SCK
+  { GPIOB,  GPIO_Pin_8, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D7 / B8 / UART1 TX
+  { GPIOA,  GPIO_Pin_4, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D8 / A4 / ECAP0_IO
+  { GPIOA,  GPIO_Pin_8, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(0)}, //   D9 / A8 / PWM_0_A
+  { GPIOB,  GPIO_Pin_4, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D10 / B4 / SPI_CS
+  { GPIOB,  GPIO_Pin_7, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D11 / B7 / SPI_MOSI
+  { GPIOB,  GPIO_Pin_6, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D12 / B6 / SPI_MISO
+  { GPIOB,  GPIO_Pin_5, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D13 / B5 / SPI_SCK
 
   { GPIOB,  GPIO_Pin_0, (PIN_ATTR_NEED_LS_CTRL), PIN_ADC_CH_NUM(0), PIN_PWM_NONE}, //   A0 / B0 / ADC_0
   { GPIOB,  GPIO_Pin_1, (PIN_ATTR_NEED_LS_CTRL), PIN_ADC_CH_NUM(1), PIN_PWM_NONE}, //   A1 / B1 / ADC_1
@@ -31,8 +31,8 @@ const PinDescription pins_description_map[]=
 
   { GPIOA,  GPIO_Pin_6, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   USER_BTN / A6 / USER_BTN
 
-  { GPIOA,  GPIO_Pin_14, (PIN_ATTR_LVL_SHIFTER_CTRL), PIN_ADC_NONE, PIN_PWM_NONE}, //   LS_0 / A14 
-  { GPIOA,  GPIO_Pin_15, (PIN_ATTR_LVL_SHIFTER_CTRL), PIN_ADC_NONE, PIN_PWM_NONE}, //   LS_1 / A15
+  { GPIOB,  GPIO_Pin_12, (PIN_ATTR_LVL_SHIFTER_CTRL), PIN_ADC_NONE, PIN_PWM_NONE}, //   LS_0 / B12 
+  { GPIOB,  GPIO_Pin_13, (PIN_ATTR_LVL_SHIFTER_CTRL), PIN_ADC_NONE, PIN_PWM_NONE}, //   LS_1 / B13 
   { GPIOB,  GPIO_Pin_14, (PIN_ATTR_LVL_SHIFTER_CTRL), PIN_ADC_NONE, PIN_PWM_NONE}, //   LS_2 / B14 
   { GPIOB,  GPIO_Pin_15, (PIN_ATTR_LVL_SHIFTER_CTRL), PIN_ADC_NONE, PIN_PWM_NONE}, //   LS_3 / B15 
 
@@ -131,18 +131,17 @@ pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){
          WRITE_REG(GPIOA->LOCKCLR, GPIO_Pin_4 | GPIO_Pin_6); // DISABLE LOCK at JTAG_TRST and JTAG_TDI 
          GPIO_LockKeyCmd(GPIOA,DISABLE);
   }
-}
-
 void digital_pin_use_hook(const PinDescription *pin_description){
   if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT_OPENDRAIN);
+    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
     digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
   }
 }
 
 void analog_pin_use_hook(const PinDescription *pin_description){
   if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT_OPENDRAIN);
+    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
     digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],LOW);
   }
+}
 }

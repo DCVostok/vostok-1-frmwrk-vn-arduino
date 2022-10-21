@@ -18,10 +18,7 @@ unsigned long pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
   if(pin_description == NULL){
     return 0;
   }
-  if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
-    digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
-  }
+  digital_pin_use_hook(pin_description);
 
   uint32_t bit = pin_description->pin_msk;
   __IO uint32_t *portIn = &(pin_description->port->DATA);

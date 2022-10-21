@@ -110,8 +110,6 @@ static const uint8_t SCL = PIN_WIRE_SCL;
 extern const pin_size_t pins_mux_map[];// key - arduino pin num
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num);
-
-
 #undef PIN_GET_DESCRIPTION_WITH_PWM
 #define PIN_GET_DESCRIPTION_WITH_PWM(pinNum) PIN_GET_DESCRIPTION(pin_get_description_with_pwm(pinNum))
 

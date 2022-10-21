@@ -13,10 +13,7 @@ void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus m
   if(pin_description == NULL){
     return;
   }
-  if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
-    digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
-  }
+  digital_pin_use_hook(pin_description);
   GPIO_IntType_TypeDef GPIO_IntType = mode == LOW || mode == HIGH ? GPIO_IntType_Level: GPIO_IntType_Edge;
   #ifdef MCU_K1921VK035
     GPIO_IntEdge_TypeDef GPIO_IntEDGE = mode == CHANGE ? GPIO_IntEdge_Any: GPIO_IntEdge_Polarity;

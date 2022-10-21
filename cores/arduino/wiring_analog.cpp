@@ -184,11 +184,8 @@ void analogWrite(pin_size_t pin, int value)
   if(pin_description == NULL){
     return;
   }
-  if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
-    digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
-  }
-  
+  digital_pin_use_hook(pin_description);
+
   if (pin_description->pwm_ch != PIN_PWM_NONE){
     if(pwn_enabled == 0){
       enablePwmBlocks();
@@ -290,12 +287,9 @@ int analogRead(pin_size_t pin)
     return 0;
   }
   if (pin_description->adc_ch != PIN_ADC_NONE){
-    if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-      pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
-      digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],LOW);
-    }
-    
-    #ifdef MCU_K1921VK035
+    analog_pin_use_hook(pin_description);
+
+#ifdef MCU_K1921VK035
       ADC_SEQ_Num_TypeDef ADC_SEQ_Module = ADC_SEQ_Num_0;
       ADC_SEQ_Init_TypeDef ADC_SEQ_InitStruct;
       GPIO_DigitalCmd(pin_description->port, pin_description->pin_msk, DISABLE);

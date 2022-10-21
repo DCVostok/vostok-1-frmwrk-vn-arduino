@@ -71,10 +71,7 @@ void tone (unsigned char outputPin, unsigned int frequency, unsigned long durati
     return;
   }
   frequency = frequency > TONE_MAX_FREQ ? TONE_MAX_FREQ : frequency;
-  if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
-    digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
-  }
+  digital_pin_use_hook(pin_description);
   // Configure interrupt request
   NVIC_DisableIRQ(TONE_TIMER_IRQ);
   NVIC_ClearPendingIRQ(TONE_TIMER_IRQ);
