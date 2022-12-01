@@ -11,8 +11,11 @@ void SysTick_Handler(){
 }
 
 uint32_t millis(void){
-  // ToDo: ensure no interrupts
-  return ticks_ms;
+    volatile uint32_t ticks_ms_readed;
+    __disable_irq();
+    ticks_ms_readed = ticks_ms;
+    __enable_irq();
+    return ticks_ms_readed;
 }
 
 uint8_t SysTick_read_count_flag(){
