@@ -191,7 +191,7 @@ void analogWrite(pin_size_t pin, int value)
       enablePwmBlocks();
     }
     value = mapResolution(value, _writeResolution, _internalWriteResolution);
-    GPIO_Init_TypeDef GPIO_InitStruct;
+    
     const PwmChDescription *pwm_ch_description = &(pwm_ch_description_map[pin_description->pwm_ch]);
     #ifdef MCU_K1921VK035
       PWM_TB_Init_TypeDef PWM_TB_InitStruct;
@@ -232,6 +232,7 @@ void analogWrite(pin_size_t pin, int value)
       PWM_TB_PrescCmd(PWM_TB_Presc_0, ENABLE);
       PWM_TB_PrescCmd(PWM_TB_Presc_2, ENABLE);
     #elif MCU_K1921VK01T
+    GPIO_Init_TypeDef GPIO_InitStruct;
     PWM_CTR_Init_TypeDef PWM_CTR_InitStruct;
 
     PWM_CTR_StructInit(&PWM_CTR_InitStruct);
