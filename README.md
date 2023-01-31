@@ -6,6 +6,8 @@
 
 This repo adds the support of [NIIET k1921vk MCUs](https://niiet.ru/product-category/chips/microcont/risc-32-bit/) in Arduino IDE and [PlatformIO](http://platformio.org).
 
+# User guide
+See [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
 
 # Usage with ArduinoIDE
 1. Install [arduino IDE](https://www.arduino.cc/en/software)

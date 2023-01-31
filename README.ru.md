@@ -6,7 +6,8 @@
 
 Данный репозиторий добавляет поддержку микроконтроллеров [НИИЭТ К1921ВК](https://niiet.ru/product-category/chips/microcont/risc-32-bit/) в Arduino IDE и [PlatformIO](http://platformio.org).
 
-
+# Руководство пользователя
+См. [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
 # Начало работы в ArduinoIDE
 1. Установите [arduino IDE](https://www.arduino.cc/en/software)
 2. Откройте меню `Файл > Настройки`
