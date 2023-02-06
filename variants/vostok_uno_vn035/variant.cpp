@@ -11,7 +11,7 @@ const PinDescription pins_description_map[]=
   { GPIOB,  GPIO_Pin_9,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D2 / B9 / UART1 RX
   { GPIOA,  GPIO_Pin_11, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(3)}, //   D3 / A11 / PWM_1_B
   { GPIOB,  GPIO_Pin_12, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D4 / B12 / CAN1RX
-  { GPIOA,  GPIO_Pin_4,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D5 / A4 / ECAP0
+  { GPIOA,  GPIO_Pin_12,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(4)}, //   D5 / A12 /PWM_2_A
   { GPIOA,  GPIO_Pin_13, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(5)}, //   D6 / A13 / PWM_1_B
   { GPIOB,  GPIO_Pin_8,  (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D7 / B8 / UART1 TX
   { GPIOB,  GPIO_Pin_13, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, //   D8 / B13 / CAN1TX
@@ -38,7 +38,7 @@ const PinDescription pins_description_map[]=
 
   { GPIOA,  GPIO_Pin_9, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(1)},  // mux with D11 / A9 /PWM_0_B
   { GPIOA,  GPIO_Pin_10, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(2)}, // mux with D10 / A10 /PWM_1_A
-  { GPIOA,  GPIO_Pin_12, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_CH_NUM(4)}, // mux with D5 / A12 /PWM_2_A
+  { GPIOA,  GPIO_Pin_12, (PIN_ATTR_NONE), PIN_ADC_NONE, PIN_PWM_NONE}, // mux with D5 / A4 / ECAP0 
 
 } ;
 const pin_size_t pins_mux_map[] = {
@@ -111,6 +111,9 @@ extern "C" {
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){
   pin_size_t  pwm_pin = pin_num;
+  if (pins_description_map[pin_num].pwm_ch != PIN_PWM_NONE){
+    return pin_num;
+  }
   while(pins_mux_map[pin_num] != PIN_MUX_NO){
     pinMode(pin_num,INPUT);
     pin_num  = pins_mux_map[pin_num];
