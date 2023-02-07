@@ -36,6 +36,9 @@ void SPIClassK1921VK::init() {
   const PinDescription *pin_description_SCK = PIN_GET_DESCRIPTION(_pinSCK);
   const PinDescription *pin_description_MOSI = PIN_GET_DESCRIPTION(_pinMOSI);
   const PinDescription *pin_description_MISO = PIN_GET_DESCRIPTION(_pinMISO);
+  digital_pin_use_hook(_pinSCK);
+  digital_pin_use_hook(_pinMOSI);
+  digital_pin_use_hook(_pinMISO);
 
   GPIO_Init_TypeDef GPIO_InitStruct;
 #ifdef MCU_K1921VK035

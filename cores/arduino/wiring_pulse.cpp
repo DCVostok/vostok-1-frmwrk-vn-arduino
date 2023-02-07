@@ -18,7 +18,7 @@ unsigned long pulseIn(uint32_t pin, uint32_t state, uint32_t timeout)
   if(pin_description == NULL){
     return 0;
   }
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(pin);
 
   uint32_t bit = pin_description->pin_msk;
   __IO uint32_t *portIn = &(pin_description->port->DATA);

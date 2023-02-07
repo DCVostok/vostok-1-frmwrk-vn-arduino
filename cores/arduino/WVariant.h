@@ -64,8 +64,8 @@ typedef struct _PwmChDescription
 extern const PinDescription pins_description_map[] ; // key - arduino pin num
 extern const pin_size_t adc_ls_ctrl_map[]; // key - ADC_CH_NUM
 
-void digital_pin_use_hook(const PinDescription *pin_description);
-void analog_pin_use_hook(const PinDescription *pin_description);
+void digital_pin_use_hook(pin_size_t pin_num);
+void analog_pin_use_hook(pin_size_t pin_num);
 
 
 #ifdef __cplusplus

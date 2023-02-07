@@ -71,7 +71,7 @@ void tone (unsigned char outputPin, unsigned int frequency, unsigned long durati
     return;
   }
   frequency = frequency > TONE_MAX_FREQ ? TONE_MAX_FREQ : frequency;
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(outputPin);
   // Configure interrupt request
   NVIC_DisableIRQ(TONE_TIMER_IRQ);
   NVIC_ClearPendingIRQ(TONE_TIMER_IRQ);

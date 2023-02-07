@@ -184,7 +184,7 @@ void analogWrite(pin_size_t pin, int value)
   if(pin_description == NULL){
     return;
   }
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(pin);
 
   if (pin_description->pwm_ch != PIN_PWM_NONE){
     if(pwn_enabled == 0){
@@ -288,7 +288,7 @@ int analogRead(pin_size_t pin)
     return 0;
   }
   if (pin_description->adc_ch != PIN_ADC_NONE){
-    analog_pin_use_hook(pin_description);
+    analog_pin_use_hook(pin);
 
 #ifdef MCU_K1921VK035
       ADC_SEQ_Num_TypeDef ADC_SEQ_Module = ADC_SEQ_Num_0;

@@ -13,7 +13,7 @@ void attachInterruptParam(pin_size_t pin, voidFuncPtrParam callback, PinStatus m
   if(pin_description == NULL){
     return;
   }
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(pin);
   GPIO_IntType_TypeDef GPIO_IntType = mode == LOW || mode == HIGH ? GPIO_IntType_Level: GPIO_IntType_Edge;
   #ifdef MCU_K1921VK035
     GPIO_IntEdge_TypeDef GPIO_IntEDGE = mode == CHANGE ? GPIO_IntEdge_Any: GPIO_IntEdge_Polarity;

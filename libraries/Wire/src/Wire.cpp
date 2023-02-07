@@ -37,20 +37,12 @@ void TwoWire::init_periph(void) {
   if (pin_description_sda == NULL) {
     return;
   }
-  if ((pin_description_sda->pin_attribute & PIN_ATTR_NEED_LS_CTRL) ==
-      PIN_ATTR_NEED_LS_CTRL) {
-    pinMode(adc_ls_ctrl_map[pin_description_sda->adc_ch], OUTPUT);
-    digitalWrite(adc_ls_ctrl_map[pin_description_sda->adc_ch], HIGH);
-  }
   const PinDescription *pin_description_scl = PIN_GET_DESCRIPTION(_uc_pinSCL);
   if (pin_description_scl == NULL) {
     return;
   }
-  if ((pin_description_scl->pin_attribute & PIN_ATTR_NEED_LS_CTRL) ==
-      PIN_ATTR_NEED_LS_CTRL) {
-    pinMode(adc_ls_ctrl_map[pin_description_scl->adc_ch], OUTPUT);
-    digitalWrite(adc_ls_ctrl_map[pin_description_scl->adc_ch], HIGH);
-  }
+  digital_pin_use_hook(_uc_pinSDA);
+  digital_pin_use_hook(_uc_pinSCL);
 
 #ifdef MCU_K1921VK035
   NVIC_EnableIRQ(I2C_IRQn);

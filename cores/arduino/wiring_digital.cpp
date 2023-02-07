@@ -54,7 +54,7 @@ void digitalWrite( pin_size_t ulPin, PinStatus ulVal )
   if(pin_description == NULL){
     return;
   }
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(ulPin);
   if(ulVal == LOW){
     GPIO_ClearBits(pin_description->port, pin_description->pin_msk);
   }
@@ -71,7 +71,7 @@ PinStatus digitalRead( pin_size_t ulPin )
   if(pin_description == NULL){
     return LOW;
   }
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(ulPin);
   return GPIO_ReadBit(pin_description->port, pin_description->pin_msk) ? HIGH: LOW;
 }
 
@@ -80,7 +80,7 @@ GPIO_TypeDef * digitalPinToPort(pin_size_t ulPin){
   if(pin_description == NULL){
     return 0;
   }
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(ulPin);
   return pin_description->port;
 }
 uint32_t digitalPinToBitMask(pin_size_t ulPin){
@@ -88,7 +88,7 @@ uint32_t digitalPinToBitMask(pin_size_t ulPin){
   if(pin_description == NULL){
     return 0;
   }
-  digital_pin_use_hook(pin_description);
+  digital_pin_use_hook(ulPin);
   return pin_description->pin_msk;
 }
 

@@ -111,6 +111,9 @@ extern "C" {
 
 pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){
   pin_size_t  pwm_pin = pin_num;
+  if (pins_description_map[pin_num].pwm_ch != PIN_PWM_NONE){
+    return pin_num;
+  }
   while(pins_mux_map[pin_num] != PIN_MUX_NO){
     pinMode(pin_num,INPUT);
     pin_num  = pins_mux_map[pin_num];
@@ -131,17 +134,30 @@ pin_size_t pin_get_description_with_pwm(pin_size_t pin_num){
          WRITE_REG(GPIOA->LOCKCLR, GPIO_Pin_4 | GPIO_Pin_6); // DISABLE LOCK at JTAG_TRST and JTAG_TDI 
          GPIO_LockKeyCmd(GPIOA,DISABLE);
   }
-void digital_pin_use_hook(const PinDescription *pin_description){
+}
+
+void digital_pin_use_hook(pin_size_t pin_num){
+  const PinDescription *pin_description = PIN_GET_DESCRIPTION(pin_num);
+
+  if (pins_mux_map[pin_num] != PIN_MUX_NO){
+    pinMode(pins_mux_map[pin_num],INPUT);
+  }
+
   if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
+    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT_OPENDRAIN);
     digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],HIGH);
   }
 }
 
-void analog_pin_use_hook(const PinDescription *pin_description){
+void analog_pin_use_hook(pin_size_t pin_num){
+  const PinDescription *pin_description = PIN_GET_DESCRIPTION(pin_num);
+
+    if (pins_mux_map[pin_num] != PIN_MUX_NO){
+    pinMode(pins_mux_map[pin_num],INPUT);
+  }
+
   if((pin_description->pin_attribute & PIN_ATTR_NEED_LS_CTRL) == PIN_ATTR_NEED_LS_CTRL){
-    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT);
+    pinMode(adc_ls_ctrl_map[pin_description->adc_ch], OUTPUT_OPENDRAIN);
     digitalWrite(adc_ls_ctrl_map[pin_description->adc_ch],LOW);
   }
-}
 }
