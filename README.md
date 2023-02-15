@@ -117,12 +117,12 @@ void analogWriteFrequency(eAnalogWriteFreq freq)
 |TimerOne|Built-in `TMR1` interrupt library|+|TMR1 is used. See [TimerOne readme.md](libraries/TimerOne/readme.md)|
 |TimerZero|Built-in `TMR0` interrupt library|+|TMR0 is used. See [TimerZero readme.md](libraries/TimerZero/readme.md)|
 |Wire|Built-in arduino `I2c` library|+||
-|[NewPing](https://bitbucket.org/teckel12/arduino-new-ping/src/master/)|Library for ultrasonic sensor|+|[See example](examples/Platformio/NewPing)|
-|[SD Library](https://www.arduino.cc/en/Reference/SD)|The SD library allows for reading from and writing to `SD` cards|+|[See example](examples/Platformio/SD_card)|
-|[MPU6050](https://github.com/electroniccats/mpu6050)|`MPU-6050` 6-axis accelerometer/gyroscope Arduino Library.|+|  |
-|[Adafruit_ADXL343](https://github.com/adafruit/Adafruit_ADXL343)|This driver is for the [Adafruit ADXL343 Breakout](http://www.adafruit.com/products/), and is based on [Adafruit's Unified Sensor Library](https://github.com/adafruit/Adafruit_Sensor).|+|  |
-|[BME280](https://github.com/finitespace/BME280)|Provides an Arduino library for reading and interpreting Bosch BME280 data over `I2C`, `SPI` or `Sw SPI`.|+|  |
-|[LiquidCrystal_I2C](https://github.com/enjoyneering/LiquidCrystal_I2C)|This is fast Arduino library for LCD `HD44780` and its clones. It works in 4-bit mode via `I²C` bus with 8-bit `PCF8574/PCF8574A` I/O expander.|+|  |
+|[NewPing](https://bitbucket.org/teckel12/arduino-new-ping/src/master/)|Library for ultrasonic sensor|v1.9.4|[See example](examples/Platformio/NewPing)|
+|[SD Library](https://www.arduino.cc/en/Reference/SD)|The SD library allows for reading from and writing to `SD` cards|v1.2.4|[See example](examples/Platformio/SD_card)|
+|[MPU6050](https://github.com/electroniccats/mpu6050)|`MPU-6050` 6-axis accelerometer/gyroscope Arduino Library.|v0.5.0|  |
+|[Adafruit_ADXL343](https://github.com/adafruit/Adafruit_ADXL343)|This driver is for the [Adafruit ADXL343 Breakout](http://www.adafruit.com/products/), and is based on [Adafruit's Unified Sensor Library](https://github.com/adafruit/Adafruit_Sensor).|v1.6.2|  |
+|[BME280](https://github.com/finitespace/BME280)|Provides an Arduino library for reading and interpreting Bosch BME280 data over `I2C`, `SPI` or `Sw SPI`.|v3.0.0|  |
+|[LCD_I2C](https://github.com/blackhack/LCD_I2C)|This is fast Arduino library for LCD `HD44780` and its clones. It works in 4-bit mode via `I²C` bus with 8-bit `PCF8574/PCF8574A` I/O expander.|v2.3.0|  |
 
 
 # Pinout Vostok UNO-VN035
