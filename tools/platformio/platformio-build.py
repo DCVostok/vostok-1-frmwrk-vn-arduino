@@ -11,7 +11,7 @@ mcu = board.get("build.mcu", "")
 variant = board.get("build.variant")
 
 
-ARDUINO_PACKADGE_DIR = platform.get_package_dir("framework-k1921vk-arduino")
+ARDUINO_PACKADGE_DIR = platform.get_package_dir("vostok-1-frmwrk-vn-arduino")
 CMSIS_DIR = platform.get_package_dir("framework-cmsis")
 ARDUINO_CORE_DIR = os.path.join(ARDUINO_PACKADGE_DIR, "cores", "arduino")
 SDK_DIR = platform.get_package_dir("framework-k1921vk-sdk")

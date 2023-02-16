@@ -62,7 +62,7 @@ framework = arduino
 upload_port = COM11
 monitor_port = COM11
 monitor_speed = 115200
-platform_packages = framework-k1921vk-arduino @ https://github.com/DCVostok/vostok-1-frmwrk-vn-arduino#main
+platform_packages = vostok-1-frmwrk-vn-arduino @ https://github.com/DCVostok/vostok-1-frmwrk-vn-arduino#main
 ...
 ```
 

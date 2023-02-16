@@ -1,6 +1,6 @@
 {
   "name": "vostok-1-frmwrk-vn-arduino",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Arduino core support for Vostok boards based on k1921vk MCUs",
   "keywords": [
     "framework",
