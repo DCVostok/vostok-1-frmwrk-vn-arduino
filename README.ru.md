@@ -1,13 +1,15 @@
 
 # Vostok k1921vk arduino
+[![PlatformIO Registry](https://badges.registry.platformio.org/packages/kenny5660/tool/vostok-1-frmwrk-vn-arduino.svg)](https://registry.platformio.org/tools/kenny5660/vostok-1-frmwrk-vn-arduino)
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 [![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)
 
 
 Данный репозиторий добавляет поддержку микроконтроллеров [НИИЭТ К1921ВК](https://niiet.ru/product-category/chips/microcont/risc-32-bit/) в Arduino IDE и [PlatformIO](http://platformio.org).
 
-# Руководство пользователя
-См. [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
+# Документация 
+*  Руководство пользователя [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
+*  Электрическая схема [VOSTOK_UNO-VN035_circuit.pdf](doc/VOSTOK_UNO-VN035.pdf)
 # Начало работы в ArduinoIDE
 1. Установите [arduino IDE](https://www.arduino.cc/en/software)
 2. Откройте меню `Файл > Настройки`
@@ -120,12 +122,12 @@ void analogWriteFrequency(eAnalogWriteFreq freq)
 |TimerOne|Встроенная библиотека arduino для настройки прерывания по таймеру|+|Используется TMR1. См. [TimerOne readme.md](libraries/TimerOne/readme.md)|
 |TimerZero|Встроенная библиотека arduino для настройки прерывания по таймеру|+|Используется TMR0. См. [TimerZero readme.md](libraries/TimerZero/readme.md)|
 |Wire|Встроенная библиотека arduino `I2c`|+||
-|[NewPing](https://bitbucket.org/teckel12/arduino-new-ping/src/master/)|Билиотека для ультразвукового дальномера|+|[See example](examples/Platformio/NewPing)|
-|[SD Library](https://www.arduino.cc/en/Reference/SD)|Библиотека позволяющая считывать и записывать информацию на карты `SD`|+|[Пример](examples/Platformio/SD_card)|
-|[MPU6050](https://github.com/electroniccats/mpu6050)|MPU-6050 6-осевой акселерометр/гироскоп.|+|  |
-|[Adafruit_ADXL343](https://github.com/adafruit/Adafruit_ADXL343)|Драйвер [Adafruit ADXL343 Breakout](http://www.adafruit.com/products/). Основан на [Adafruit's Unified Sensor Library](https://github.com/adafruit/Adafruit_Sensor).|+|  |
-|[BME280](https://github.com/finitespace/BME280)|Билиотека Arduino для чтения информации с датчика Bosch BME280 через протоколы `I2C`, `SPI` or `Sw SPI`.|+|  |
-|[LiquidCrystal_I2C](https://github.com/enjoyneering/LiquidCrystal_I2C)|Библиотека Arduino для LCD HD44780 и его клонов.Работает в 4 битном режиме через I²C интерфейс с 8-битным PCF8574/PCF8574A расширителем GPIO портов.|+|  |
+|[NewPing](https://bitbucket.org/teckel12/arduino-new-ping/src/master/)|Билиотека для ультразвукового дальномера|v1.9.4|[See example](examples/Platformio/NewPing)|
+|[SD Library](https://www.arduino.cc/en/Reference/SD)|Библиотека позволяющая считывать и записывать информацию на карты `SD`|v1.2.4|[Пример](examples/Platformio/SD_card)|
+|[MPU6050](https://github.com/electroniccats/mpu6050)|MPU-6050 6-осевой акселерометр/гироскоп.|v0.5.0|  |
+|[Adafruit_ADXL343](https://github.com/adafruit/Adafruit_ADXL343)|Драйвер [Adafruit ADXL343 Breakout](http://www.adafruit.com/products/). Основан на [Adafruit's Unified Sensor Library](https://github.com/adafruit/Adafruit_Sensor).|v1.6.2|  |
+|[BME280](https://github.com/finitespace/BME280)|Билиотека Arduino для чтения информации с датчика Bosch BME280 через протоколы `I2C`, `SPI` or `Sw SPI`.|v3.0.0|  |
+|[LCD_I2C](https://github.com/blackhack/LCD_I2C)|Библиотека Arduino для LCD HD44780 и его клонов.Работает в 4 битном режиме через I²C интерфейс с 8-битным PCF8574/PCF8574A расширителем GPIO портов.|v2.3.0|  |
 
 
 # Распиновка Vostok UNO-VN035
