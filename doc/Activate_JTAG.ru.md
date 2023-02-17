@@ -1,6 +1,6 @@
 # Активация отладки через JTAG/SWD разьем
-[![en](https://img.shields.io/badge/lang-en-red.svg)](doc/Activate_JTAG.md)
-[![ru](https://img.shields.io/badge/lang-ru-green.svg)](doc/Activate_JTAG.ru.md)  
+[![en](https://img.shields.io/badge/lang-en-red.svg)](Activate_JTAG.md)
+[![ru](https://img.shields.io/badge/lang-ru-green.svg)](Activate_JTAG.ru.md)  
 Изначально в VOSTOK UNO-VN035 загружен заводской bootloader и JTAG/SWD разьем деактивирован.
 Для того чтобы активировать JTAG/SWD разьем нужно выполнить полное сервисное стирание памяти МК. 
 ## Полное сервисное стирание памяти МК

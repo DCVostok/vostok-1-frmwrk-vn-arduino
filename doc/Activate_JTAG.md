@@ -1,6 +1,6 @@
 # Activation of debugging via JTAG/SWD
-[![en](https://img.shields.io/badge/lang-en-red.svg)](doc/Activate_JTAG.md)
-[![ru](https://img.shields.io/badge/lang-ru-green.svg)](doc/Activate_JTAG.ru.md)  
+[![en](https://img.shields.io/badge/lang-en-red.svg)](Activate_JTAG.md)
+[![ru](https://img.shields.io/badge/lang-ru-green.svg)](Activate_JTAG.ru.md)  
 Initially, the factory bootloader was loaded into VOSTOK UNO-VN035 and the JTAG/SWD connector was deactivated. In order to activate the JTAG/SWD connector, you need to perform a service full erase of the MCU memory. 
 ## Service full erase of the MCU memory
 1. Connect ST-LINK to JTAG/SWD connector: SWDIO>SWDIO, SWCLK>SWCLK, GND>GND.
