@@ -2,7 +2,7 @@
 # Vostok k1921vk arduino
 [![PlatformIO Registry](https://badges.registry.platformio.org/packages/kenny5660/tool/vostok-1-frmwrk-vn-arduino.svg)](https://registry.platformio.org/tools/kenny5660/vostok-1-frmwrk-vn-arduino)
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
-[![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)
+[![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)  
 
 
 Данный репозиторий добавляет поддержку микроконтроллеров [НИИЭТ К1921ВК](https://niiet.ru/product-category/chips/microcont/risc-32-bit/) в Arduino IDE и [PlatformIO](http://platformio.org).
@@ -10,6 +10,7 @@
 # Документация 
 *  Руководство пользователя [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
 *  Электрическая схема [VOSTOK_UNO-VN035_circuit.pdf](doc/VOSTOK_UNO-VN035.pdf)
+*  [Активация отладки через JTAG/SWD разьем](doc/Activate_JTAG.ru.md)
 # Начало работы в ArduinoIDE
 1. Установите [arduino IDE](https://www.arduino.cc/en/software)
 2. Откройте меню `Файл > Настройки`

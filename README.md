@@ -2,7 +2,7 @@
 # Vostok k1921vk arduino
 [![PlatformIO Registry](https://badges.registry.platformio.org/packages/kenny5660/tool/vostok-1-frmwrk-vn-arduino.svg)](https://registry.platformio.org/tools/kenny5660/vostok-1-frmwrk-vn-arduino)
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
-[![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)
+[![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)  
 
 
 This repo adds the support of [NIIET k1921vk MCUs](https://niiet.ru/product-category/chips/microcont/risc-32-bit/) in Arduino IDE and [PlatformIO](http://platformio.org).
@@ -10,6 +10,7 @@ This repo adds the support of [NIIET k1921vk MCUs](https://niiet.ru/product-cate
 # Documentation
 *  User guide [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
 *  Circuit [VOSTOK_UNO-VN035_circuit.pdf](doc/VOSTOK_UNO-VN035.pdf)
+*  [Activation of debugging via JTAG/SWD](doc/Activate_JTAG.md)
 
 # Usage with ArduinoIDE
 1. Install [arduino IDE](https://www.arduino.cc/en/software)
