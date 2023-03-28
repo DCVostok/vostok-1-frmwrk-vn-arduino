@@ -1,6 +1,6 @@
 
 # Vostok k1921vk arduino
-[![PlatformIO Registry](https://badges.registry.platformio.org/packages/kenny5660/tool/vostok-1-frmwrk-vn-arduino.svg)](https://registry.platformio.org/tools/kenny5660/vostok-1-frmwrk-vn-arduino)
+[![PlatformIO Registry](https://badges.registry.platformio.org/packages/dcvostok/tool/vostok-1-frmwrk-vn-arduino.svg)](https://registry.platformio.org/tools/dcvostok/vostok-1-frmwrk-vn-arduino)
 [![en](https://img.shields.io/badge/lang-en-red.svg)](README.md)
 [![ru](https://img.shields.io/badge/lang-ru-green.svg)](README.ru.md)  
 
