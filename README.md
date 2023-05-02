@@ -9,7 +9,7 @@ This repo adds the support of [NIIET k1921vk MCUs](https://niiet.ru/product-cate
 
 # Documentation
 *  User guide [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
-*  Circuit [VOSTOK_UNO-VN035_circuit.pdf](doc/VOSTOK_UNO-VN035.pdf)
+*  Circuit [VOSTOK_UNO-VN035_circuit.pdf](doc/VOSTOK_UNO-VN035_circuit.pdf)
 *  [Activation of debugging via JTAG/SWD](doc/Activate_JTAG.md)
 
 # Usage with ArduinoIDE
