@@ -9,7 +9,7 @@
 
 # Документация 
 *  Руководство пользователя [VOSTOK_UNO-VN035.pdf](doc/VOSTOK_UNO-VN035.pdf)
-*  Электрическая схема [VOSTOK_UNO-VN035_circuit.pdf](doc/VOSTOK_UNO-VN035.pdf)
+*  Электрическая схема [VOSTOK_UNO-VN035_circuit.pdf](doc/VOSTOK_UNO-VN035_circuit.pdf)
 *  [Активация отладки через JTAG/SWD разьем](doc/Activate_JTAG.ru.md)
 # Начало работы в ArduinoIDE
 1. Установите [arduino IDE](https://www.arduino.cc/en/software)
