@@ -1,5 +1,5 @@
 name=Vostok k1921vk boards
-version=1.0.2
+version=1.0.3
 
 
 
