@@ -18,7 +18,7 @@ compiler.elf2hex.cmd={compiler.prefix}objcopy
 
 
 
-compiler.k1921vk.extra_include="-I{build.source.path}" "-I{runtime.tools.framework-k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Source/GCC" "-I{runtime.tools.framework-k1921vk-sdk.path}/platform/plib035/src" "-I{runtime.tools.framework-k1921vk-sdk.path}/platform/plib035/inc" "-I{runtime.tools.CMSIS.path}/CMSIS/Core/Include/" "-I{runtime.tools.framework-k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Source" "-I{runtime.tools.framework-k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Include"
+compiler.k1921vk.extra_include="-I{build.source.path}" "-I{runtime.tools.k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Source/GCC" "-I{runtime.tools.k1921vk-sdk.path}/platform/plib035/src" "-I{runtime.tools.k1921vk-sdk.path}/platform/plib035/inc" "-I{runtime.tools.CMSIS.path}/CMSIS/Core/Include/" "-I{runtime.tools.k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Source" "-I{runtime.tools.k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Include"
 compiler.define="-DMCU_{build.mcu}" "-DF_CPU={build.f_cpu}" "-DARDUINO={runtime.ide.version}" "-DARDUINO_{build.board}" "-DARDUINO_ARCH_{build.arch}" "-D_GNU_SOURCE" "-D{build.clk_select}" "-DOSECLK_VAL={build.f_ext}"
 
 compiler.extra_flags={compiler.define} -mcpu={build.cpu} {build.flags.fp} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -mlong-calls -fsingle-precision-constant
@@ -60,7 +60,7 @@ build.flags.fp=
 build.flags.optimize=-Os
 build.flags.debug=
 build.flash_offset=0
-build.ldscript={runtime.tools.framework-k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Source/GCC/K1921VK035.ld
+build.ldscript={runtime.tools.k1921vk-sdk.path}/platform/Device/NIIET/K1921VK035/Source/GCC/K1921VK035.ld
 
 # compile patterns
 # ---------------------
